@@ -1336,25 +1336,18 @@
                 <div id="cert-print-area" style="font-family: 'Times New Roman', 'Georgia', serif;">
                     <div style="width: 210mm; min-height: 297mm; margin: 0 auto; background: ${colors.gradient}; position: relative; overflow: hidden; border-radius: 12px; box-shadow: 0 25px 80px rgba(0,0,0,0.18);">
                         
-                        <!-- Background Islamic Pattern -->
-                        <div style="position: absolute; inset: 0; opacity: 0.04; background-image: radial-gradient(circle at 20% 30%, ${colors.primary} 1px, transparent 1px), radial-gradient(circle at 80% 70%, ${colors.primary} 1px, transparent 1px), radial-gradient(circle at 50% 50%, ${colors.secondary} 1px, transparent 1px); background-size: 40px 40px, 60px 60px, 80px 80px; background-position: 0 0, 20px 20px, 40px 40px;"></div>
+                        <!-- Islamic Frame Background -->
+                        <div style="position: absolute; inset: 0; background-image: url('https://i.ibb.co.com/CK3rxnDf/Pngtree-islamic-frame-decoration-design-in-6544605.png'); background-size: 100% 100%; background-position: center; background-repeat: no-repeat; opacity: 0.18; pointer-events: none;"></div>
                         
-                        <!-- Decorative Border -->
-                        <div style="position: absolute; inset: 12px; border: 2px solid ${colors.primary}; border-radius: 8px; opacity: 0.25; pointer-events: none;"></div>
-                        <div style="position: absolute; inset: 18px; border: 1px solid ${colors.secondary}; border-radius: 6px; opacity: 0.4; pointer-events: none;"></div>
-                        
-                        <!-- Corner Ornaments -->
-                        <div style="position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; border-top: 3px solid ${colors.primary}; border-left: 3px solid ${colors.primary}; border-radius: 8px 0 0 0; opacity: 0.6;"></div>
-                        <div style="position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-top: 3px solid ${colors.primary}; border-right: 3px solid ${colors.primary}; border-radius: 0 8px 0 0; opacity: 0.6;"></div>
-                        <div style="position: absolute; bottom: 20px; left: 20px; width: 40px; height: 40px; border-bottom: 3px solid ${colors.primary}; border-left: 3px solid ${colors.primary}; border-radius: 0 0 0 8px; opacity: 0.6;"></div>
-                        <div style="position: absolute; bottom: 20px; right: 20px; width: 40px; height: 40px; border-bottom: 3px solid ${colors.primary}; border-right: 3px solid ${colors.primary}; border-radius: 0 0 8px 0; opacity: 0.6;"></div>
+                        <!-- Subtle inner border to enhance frame without overlapping content -->
+                        <div style="position: absolute; inset: 28px; border: 1px solid ${colors.primary}; border-radius: 4px; opacity: 0.12; pointer-events: none;"></div>
 
                         <!-- Content -->
-                        <div style="position: relative; z-index: 10; padding: 40px 48px 32px; display: flex; flex-direction: column; min-height: 297mm; box-sizing: border-box;">
+                        <div style="position: relative; z-index: 10; padding: 56px 52px 40px; display: flex; flex-direction: column; min-height: 297mm; box-sizing: border-box;">
                             
                             <!-- Header -->
-                            <div style="text-align: center; padding-bottom: 20px; border-bottom: 1.5px solid ${colors.primary}30;">
-                                <div style="margin-bottom: 12px;">
+                            <div style="text-align: center; padding-bottom: 24px; border-bottom: 1.5px solid ${colors.primary}30;">
+                                <div style="margin-bottom: 14px;">
                                     ${logo ? `<img src="${logo}" style="width: 90px; height: 90px; object-fit: contain; margin: 0 auto; display: block;">` : `<div style="width: 90px; height: 90px; border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 42px; background: ${colors.light}; color: ${colors.primary}; border: 2px solid ${colors.primary}30;"><i class="fa-solid fa-mosque"></i></div>`}
                                 </div>
                                 <h2 style="font-family: 'Times New Roman', serif; font-size: 15px; font-weight: bold; color: ${colors.dark}; letter-spacing: 1.5px; margin: 0 0 4px;">PESANTREN TAHFIDZ QUR'AN PUTRI ALMAWADDAH</h2>
