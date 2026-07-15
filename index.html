@@ -1,0 +1,2716 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Tahfidz Al Mawaddah - Pesantren Tahfidz Qur'an Putri Sorong</title>
+    
+    <!-- External Resources -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Theme: Rose (Default Feminin Theme) */
+            --m-50: #fff1f2;
+            --m-100: #ffe4e6;
+            --m-200: #fecdd3;
+            --m-300: #fda4af;
+            --m-400: #fb7185;
+            --m-500: #f43f5e;
+            --m-600: #e11d48;
+            --m-700: #be123c;
+            --m-800: #9f1239;
+            --m-900: #4c0519;
+            --m-gold: #D4AF37;
+            --m-goldlight: #F3E5AB;
+            --m-plum: #4A1525;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FAF4F5;
+            transition: background-color 0.3s ease;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--m-50);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--m-300);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--m-500);
+        }
+
+        .islamic-pattern {
+            background-image: radial-gradient(rgba(244, 63, 94, 0.04) 1px, transparent 0),
+                              radial-gradient(rgba(244, 63, 94, 0.04) 1px, transparent 0);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
+        }
+
+        .hero-pattern {
+            background: linear-gradient(135deg, rgba(74, 21, 37, 0.95) 0%, rgba(159, 18, 57, 0.9) 100%);
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            #public-header, header, nav, footer, #welcome-banner-card, .admin-tab-btn, #app-view > header, .no-print, button, input, select, textarea, .quick-login-badge {
+                display: none !important;
+            }
+            #modal-backdrop {
+                background: transparent !important;
+                position: absolute !important;
+                inset: 0 !important;
+                display: block !important;
+                overflow: visible !important;
+            }
+            #modal-container {
+                box-shadow: none !important;
+                border: none !important;
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+            #print-area {
+                border: none !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                visibility: visible !important;
+            }
+            #print-area button {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="islamic-pattern text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- Header publik -->
+    <header id="public-header" class="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-rose-100/60 shadow-sm transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div id="app-logo-container" class="w-10 h-10 rounded-full bg-gradient-to-tr from-rose-500 to-rose-700 flex items-center justify-center text-white shadow-md">
+                    <i class="fa-solid fa-mosque text-lg"></i>
+                </div>
+                <div>
+                    <h1 id="brand-name-header" class="font-serif font-bold text-base text-rose-950 tracking-tight">E-Tahfidz Al Mawaddah</h1>
+                    <p id="brand-tagline-header" class="text-[10px] text-rose-600 font-semibold tracking-wide uppercase">Pesantren Tahfidz Putri Sorong</p>
+                </div>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+                <a href="#beranda" onclick="showPublicView('landing')" class="text-rose-900 hover:text-rose-600 transition-colors">Beranda</a>
+                <a href="#berita" onclick="showPublicView('news')" class="text-rose-900 hover:text-rose-600 transition-colors">Berita</a>
+                <a href="#tentang" onclick="scrollToElement('section-tentang')" class="text-rose-900 hover:text-rose-600 transition-colors">Profil</a>
+                <a href="#kontak" onclick="scrollToElement('section-kontak')" class="text-rose-900 hover:text-rose-600 transition-colors">Hubungi Kami</a>
+            </nav>
+
+            <div class="flex items-center gap-2">
+                <button onclick="openLoginModal()" class="px-5 py-2 bg-gradient-to-r from-rose-500 to-rose-700 hover:from-rose-600 hover:to-rose-800 text-white rounded-full text-xs font-bold transition-all shadow-md shadow-rose-200 flex items-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> Portal E-Tahfidz
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Landing Page View -->
+        <div id="view-landing" class="view-section">
+            <!-- Hero Banner -->
+            <section id="beranda" class="hero-pattern text-white py-16 sm:py-24 px-4 relative overflow-hidden">
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-rose-900/30 via-transparent to-transparent opacity-75"></div>
+                <div class="max-w-5xl mx-auto text-center relative z-10 space-y-6">
+                    <span class="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-xs font-semibold text-rose-200 tracking-wide border border-white/10">
+                        ✨ Menyiapkan Generasi Hafidzah Mumtazah
+                    </span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold tracking-tight leading-tight">
+                        Membina Akhlak Mulia, Menjaga <br class="hidden sm:inline">
+                        <span class="text-rose-200 italic font-normal">Kalam-Mu</span> di Bumi Sorong
+                    </h2>
+                    <p class="text-sm sm:text-base text-rose-100 max-w-2xl mx-auto leading-relaxed">
+                        Selamat datang di portal E-Tahfidz Pesantren Putri Al Mawaddah, Kab. Sorong. Wadah mutabaah hafalan terpadu demi kenyamanan perkembangan tahfidz putri tercinta Anda.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-3 pt-4">
+                        <button onclick="openLoginModal()" class="px-6 py-3 bg-white text-rose-950 font-bold rounded-full text-xs hover:bg-rose-50 transition-all shadow-lg">
+                            <i class="fa-solid fa-address-book mr-2"></i> Pantau Mutabaah
+                        </button>
+                        <button onclick="scrollToElement('section-tentang')" class="px-6 py-3 bg-rose-950/40 backdrop-blur-sm text-white font-bold rounded-full text-xs border border-white/20 hover:bg-rose-900/40 transition-all">
+                            Profil Pesantren <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Stats Section -->
+            <section class="max-w-7xl mx-auto px-4 -mt-10 relative z-20">
+                <div class="bg-white rounded-3xl p-6 sm:p-8 border border-rose-100/80 shadow-xl grid grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center space-y-1 border-r border-rose-50 last:border-0">
+                        <span class="block text-2xl sm:text-3xl font-serif font-bold text-rose-950" id="stat-count-santri">0</span>
+                        <span class="text-[10px] sm:text-xs text-rose-600 font-bold uppercase tracking-wider">Santriwati Aktif</span>
+                    </div>
+                    <div class="text-center space-y-1 border-r border-rose-50 last:border-0">
+                        <span class="block text-2xl sm:text-3xl font-serif font-bold text-rose-950" id="stat-count-halaqah">0</span>
+                        <span class="text-[10px] sm:text-xs text-rose-600 font-bold uppercase tracking-wider">Halaqah Asrama</span>
+                    </div>
+                    <div class="text-center space-y-1 border-r border-rose-50 last:border-0">
+                        <span class="block text-2xl sm:text-3xl font-serif font-bold text-rose-950" id="stat-count-ustadzah">0</span>
+                        <span class="text-[10px] sm:text-xs text-rose-600 font-bold uppercase tracking-wider">Ustadzah Pembina</span>
+                    </div>
+                    <div class="text-center space-y-1 last:border-0">
+                        <span class="block text-2xl sm:text-3xl font-serif font-bold text-rose-950" id="stat-count-juz">0</span>
+                        <span class="text-[10px] sm:text-xs text-rose-600 font-bold uppercase tracking-wider">Total Juz Terjaga</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="section-tentang" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <span class="text-xs text-rose-600 font-bold tracking-widest uppercase block">Mengenal Al Mawaddah</span>
+                    <h3 class="font-serif text-2xl sm:text-3xl font-bold text-rose-950 leading-tight">Pendidikan Berkelas Dunia dengan Nilai Keputrian & Qur'ani</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Pesantren Tahfidz Putri Al Mawaddah Kabupaten Sorong hadir sebagai oase pendidikan Islam terpadu yang memfokuskan pembinaan pada hafalan Al-Qur'an secara tartil, makhraj yang fasih, serta pemahaman tajwid yang mendalam khusus untuk santriwati.
+                    </p>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Didukung oleh lingkungan asrama yang asri, aman, dan kondusif, para pembimbing (ustadzah) bersertifikasi senantiasa mendampingi proses mutabaah harian menggunakan konsep pendekatan kasih sayang (mawaddah).
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 pt-2">
+                        <div class="flex items-start gap-2">
+                            <span class="w-5 h-5 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-xs mt-0.5"><i class="fa-solid fa-check"></i></span>
+                            <div>
+                                <h4 class="font-bold text-xs text-rose-950">Program Unggulan</h4>
+                                <p class="text-[10px] text-slate-500">Kelas Tahassus 30 Juz</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="w-5 h-5 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-xs mt-0.5"><i class="fa-solid fa-check"></i></span>
+                            <div>
+                                <h4 class="font-bold text-xs text-rose-950">Mutabaah Digital</h4>
+                                <p class="text-[10px] text-slate-500">Akses Real-time Wali Santri</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-rose-500 to-amber-500 rounded-3xl rotate-3 opacity-10"></div>
+                    <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800" alt="Islamic Study Group" class="rounded-3xl shadow-xl w-full object-cover h-72 sm:h-96 relative z-10 border border-white" onerror="this.src='https://placehold.co/800x600/fbcfe8/4c0519?text=Pesantren+Putri'">
+                </div>
+            </section>
+
+            <!-- Latest News Preview Block -->
+            <section class="bg-rose-50/50 py-16">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-end mb-8">
+                        <div>
+                            <span class="text-xs text-rose-600 font-bold tracking-widest uppercase block">Kabar Terbaru</span>
+                            <h3 class="font-serif text-2xl font-bold text-rose-950 mt-1">Berita & Kegiatan Pondok</h3>
+                        </div>
+                        <button onclick="showPublicView('news')" class="text-xs text-rose-600 font-bold hover:underline flex items-center gap-1">
+                            Lihat Semua Berita <i class="fa-solid fa-arrow-right-long"></i>
+                        </button>
+                    </div>
+                    <div id="landing-news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- News Page View -->
+        <div id="view-news" class="view-section hidden py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="border-b border-rose-100 pb-6 mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h2 class="font-serif text-2xl sm:text-3xl font-bold text-rose-950">Warta Al Mawaddah</h2>
+                    <p class="text-xs text-rose-600 mt-1 font-semibold">Berita, pengumuman, dan artikel terbaru seputar asrama putri.</p>
+                </div>
+                <button onclick="showPublicView('landing')" class="self-start sm:self-auto px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-900 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-rose-100">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
+                </button>
+            </div>
+            <div id="news-page-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
+
+        <!-- Private Dashboard View -->
+        <div id="view-dashboard" class="view-section hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div id="welcome-banner-card" class="bg-gradient-to-r from-rose-950 to-rose-900 text-white p-6 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden mb-8">
+                <div class="absolute right-0 bottom-0 text-white/5 text-[150px] font-serif select-none pointer-events-none translate-y-16 translate-x-6">
+                    🕌
+                </div>
+                <div class="relative z-10 space-y-1">
+                    <span class="px-2.5 py-0.5 bg-rose-500/30 backdrop-blur-sm rounded-full text-[10px] font-bold text-rose-200 uppercase tracking-wide border border-rose-400/20" id="user-role-badge">Admin</span>
+                    <h2 class="text-lg sm:text-xl font-serif font-bold" id="cms-banner-welcome">Ahlan Wa Sahlan, Pengguna</h2>
+                    <p class="text-xs text-rose-100/90 max-w-xl" id="cms-banner-desc">Kelola dan pantau data rekapitulasi perkembangan tahfidz putri Al Mawaddah.</p>
+                </div>
+                <div class="flex gap-2 relative z-10 self-stretch sm:self-auto">
+                    <!-- Google Sheet Sync Status Badge (Top Right of Panel) -->
+                    <div id="sync-cloud-status" class="hidden items-center gap-1.5 px-3 py-2 bg-emerald-500/20 border border-emerald-400/30 rounded-xl text-[10px] text-emerald-300 font-bold">
+                        <i class="fa-solid fa-cloud-arrow-up animate-pulse"></i> GS Cloud Active
+                    </div>
+                    <button onclick="openChangePasswordModal()" class="px-4 py-2 bg-white/10 hover:bg-white/15 text-white rounded-xl text-xs font-semibold transition-all border border-white/10 flex-grow text-center"><i class="fa-solid fa-key mr-1.5"></i> Ganti Password</button>
+                    <button onclick="logout()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow flex-grow text-center"><i class="fa-solid fa-right-from-bracket mr-1.5"></i> Keluar</button>
+                </div>
+            </div>
+
+            <!-- Sticky Notice Announcement Block -->
+            <div id="announcement-block" class="hidden bg-amber-50 border border-amber-200/80 rounded-2xl p-4 flex gap-3 text-xs mb-8">
+                <div class="text-amber-600 text-lg"><i class="fa-solid fa-bullhorn animate-bounce"></i></div>
+                <div class="space-y-0.5">
+                    <h4 class="font-bold text-amber-900" id="announcement-title">Pengumuman Terkini</h4>
+                    <p class="text-amber-800" id="announcement-body">Seluruh santriwati dihimbau murajaah mandiri sebelum ujian hafalan lusa.</p>
+                    <span class="text-[9px] text-amber-500 block" id="announcement-date">12 Juli 2026</span>
+                </div>
+            </div>
+
+            <div id="admin-dashboard-view" class="dashboard-role-panel space-y-6 hidden">
+                <!-- Sub Menu Navigation for Admin -->
+                <div class="bg-white border border-rose-100/80 rounded-2xl p-2 shadow-sm flex flex-wrap gap-1 justify-around">
+                    <button onclick="setAdminTab('stats')" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5" id="tab-btn-stats">
+                        <i class="fa-solid fa-chart-pie"></i> Statistik & Grafik
+                    </button>
+                    <button onclick="setAdminTab('students')" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5" id="tab-btn-students">
+                        <i class="fa-solid fa-graduation-cap"></i> Manajemen Santriwati
+                    </button>
+                    <button onclick="setAdminTab('teachers')" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5" id="tab-btn-teachers">
+                        <i class="fa-solid fa-chalkboard-user"></i> Manajemen Ustadzah
+                    </button>
+                    <button onclick="setAdminTab('master')" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5" id="tab-btn-master">
+                        <i class="fa-solid fa-database"></i> Master Kelas & Halaqah
+                    </button>
+                    <button onclick="setAdminTab('news')" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5" id="tab-btn-news">
+                        <i class="fa-solid fa-newspaper"></i> Kelola Berita
+                    </button>
+                    <button onclick="setAdminTab('cms')" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5" id="tab-btn-cms">
+                        <i class="fa-solid fa-bullhorn"></i> Kelola Konten & CMS
+                    </button>
+                    <button onclick="setAdminTab('branding')" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5" id="tab-btn-branding">
+                        <i class="fa-solid fa-sliders"></i> Pengaturan & Spreadsheet
+                    </button>
+                    <button onclick="setAdminTab('accounts')" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5" id="tab-btn-accounts">
+                        <i class="fa-solid fa-user-lock"></i> Manajemen Akun
+                    </button>
+                </div>
+
+                <!-- Tab Content Area -->
+                <div id="admin-tab-content" class="space-y-6"></div>
+            </div>
+
+            <!-- Ustadzah Dashboard Panel -->
+            <div id="ustadzah-dashboard-view" class="dashboard-role-panel space-y-6 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left: Input setoran -->
+                    <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
+                        <div>
+                            <h3 class="text-base font-bold font-serif text-rose-950"><i class="fa-solid fa-pen-to-square text-rose-500 mr-1.5"></i> Input Setoran Baru</h3>
+                            <p class="text-[11px] text-slate-500">Catat setoran hafalan harian sabaq atau manzil santriwati secara instan.</p>
+                        </div>
+                        <form onsubmit="handleSaveDeposit(event)" class="space-y-3 text-xs">
+                            <div>
+                                <label class="block font-bold text-slate-700 mb-1">Pilih Santriwati</label>
+                                <select id="f-dep-student" required class="w-full px-3 py-2 bg-rose-50/50 border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-500">
+                                    <option value="">-- Pilih Santriwati --</option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Tanggal</label>
+                                    <input type="date" id="f-dep-date" required class="w-full px-3 py-2 bg-rose-50/50 border border-rose-100 rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Kategori Setoran</label>
+                                    <select id="f-dep-type" class="w-full px-3 py-2 bg-rose-50/50 border border-rose-100 rounded-xl">
+                                        <option value="Sabaq (Baru)">Sabaq (Baru)</option>
+                                        <option value="Manzil (Lama)">Manzil (Lama)</option>
+                                        <option value="Sabaq Baru (Ulang)">Sabaq Baru (Ulang)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Juz Ke</label>
+                                    <input type="number" id="f-dep-juz" min="1" max="30" required class="w-full px-3 py-2 bg-rose-50/50 border border-rose-100 rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Nama Surah</label>
+                                    <input type="text" id="f-dep-surah" placeholder="Misal: Al-Baqarah" required class="w-full px-3 py-2 bg-rose-50/50 border border-rose-100 rounded-xl">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Ayat Mulai</label>
+                                    <input type="number" id="f-dep-start" min="1" required class="w-full px-3 py-2 bg-rose-50/50 border border-rose-100 rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Ayat Selesai</label>
+                                    <input type="number" id="f-dep-end" min="1" required class="w-full px-3 py-2 bg-rose-50/50 border border-rose-100 rounded-xl">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Nilai / Predikat</label>
+                                    <select id="f-dep-grade" class="w-full px-3 py-2 bg-rose-50/50 border border-rose-100 rounded-xl">
+                                        <option value="Mumtaz">Mumtaz (Istimewa)</option>
+                                        <option value="Jayyid Jiddan">Jayyid Jiddan (Sangat Baik)</option>
+                                        <option value="Jayyid">Jayyid (Baik)</option>
+                                        <option value="Maqbul">Maqbul (Cukup)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Catatan Koreksi</label>
+                                    <input type="text" id="f-dep-notes" placeholder="Catatan kesalahan tajwid dll" class="w-full px-3 py-2 bg-rose-50/50 border border-rose-100 rounded-xl">
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold transition-all mt-2 shadow">
+                                <i class="fa-solid fa-save mr-1"></i> Simpan Setoran Hafalan
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Right: Daftar setoran di halaqah yang diampu -->
+                    <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm lg:col-span-2 space-y-4">
+                        <div class="flex justify-between items-center border-b pb-3">
+                            <div>
+                                <h3 class="text-base font-bold font-serif text-rose-950"><i class="fa-solid fa-list-check text-rose-500 mr-1.5"></i> Jurnal Hafalan Halaqah</h3>
+                                <p class="text-[11px] text-slate-500" id="ustadzah-halaqah-subtitle">Halaqah: -</p>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-rose-50 text-left text-xs">
+                                <thead>
+                                    <tr class="text-rose-700 font-bold bg-rose-50/50">
+                                        <th class="py-2.5 px-3 rounded-l-xl">Tanggal</th>
+                                        <th class="py-2.5 px-3">Santriwati</th>
+                                        <th class="py-2.5 px-3">Surah / Juz</th>
+                                        <th class="py-2.5 px-3">Nilai</th>
+                                        <th class="py-2.5 px-3">Keterangan</th>
+                                        <th class="py-2.5 px-3 rounded-r-xl text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ustadzah-deposit-list" class="divide-y divide-rose-50/60"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wali Santri Dashboard Panel -->
+            <div id="parent-dashboard-view" class="dashboard-role-panel space-y-6 hidden">
+                <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-4 mb-6">
+                        <div>
+                            <h3 class="text-lg font-bold font-serif text-rose-950"><i class="fa-solid fa-address-card text-rose-500 mr-1.5"></i> Lembar Mutabaah & Raport Santriwati</h3>
+                            <p class="text-xs text-slate-500">Laporan realtime capaian serta histori setoran hafalan putri Anda.</p>
+                        </div>
+                        <div class="flex items-center gap-2 w-full sm:w-auto">
+                            <label class="text-xs font-bold text-slate-700 whitespace-nowrap">Pilih Putri:</label>
+                            <select id="parent-student-select" onchange="changeParentStudent(this.value)" class="px-3 py-2 text-xs bg-rose-50/80 border border-rose-200 rounded-xl focus:outline-none w-full sm:w-48 font-semibold"></select>
+                        </div>
+                    </div>
+
+                    <!-- Printable Card Content -->
+                    <div id="print-area" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Profil Putri Card -->
+                            <div class="bg-gradient-to-br from-rose-50 to-rose-100/50 p-5 rounded-2xl border border-rose-100/80 space-y-4">
+                                <h4 class="font-bold text-xs text-rose-950 border-b border-rose-200 pb-1.5 uppercase tracking-wider"><i class="fa-solid fa-id-card-clip mr-1.5"></i> Profil Ringkas</h4>
+                                <div class="space-y-2.5 text-xs">
+                                    <div>
+                                        <span class="text-[10px] text-slate-500 uppercase block font-medium">Nama Lengkap</span>
+                                        <span class="font-bold text-rose-950" id="p-stud-name">-</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div>
+                                            <span class="text-[10px] text-slate-500 uppercase block font-medium">NIS</span>
+                                            <span class="font-semibold text-slate-800" id="p-stud-nis">-</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-[10px] text-slate-500 uppercase block font-medium">Jenjang / Program</span>
+                                            <span class="font-semibold text-slate-800" id="p-stud-program">-</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] text-slate-500 uppercase block font-medium">Halaqah Asrama</span>
+                                        <span class="font-semibold text-slate-800" id="p-stud-class">-</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] text-slate-500 uppercase block font-medium">Wali Santri</span>
+                                        <span class="font-semibold text-slate-800" id="p-stud-parent">-</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Progress Hafalan Card -->
+                            <div class="bg-gradient-to-br from-rose-50 to-rose-100/50 p-5 rounded-2xl border border-rose-100/80 space-y-4 md:col-span-2">
+                                <div class="flex justify-between items-center border-b border-rose-200 pb-1.5">
+                                    <h4 class="font-bold text-xs text-rose-950 uppercase tracking-wider"><i class="fa-solid fa-chart-line mr-1.5"></i> Progres Capaian Hafalan</h4>
+                                    <span class="text-[11px] font-bold text-rose-600" id="p-stud-percent">0%</span>
+                                </div>
+                                <div class="space-y-4 text-xs">
+                                    <div class="w-full bg-rose-200 rounded-full h-3 overflow-hidden border">
+                                        <div id="p-stud-progress-bar" class="bg-gradient-to-r from-rose-500 to-rose-700 h-full transition-all duration-500" style="width: 0%"></div>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-4 text-center">
+                                        <div class="bg-white p-3 rounded-xl border border-rose-100">
+                                            <span class="text-[10px] text-slate-500 block">Telah Dihafal</span>
+                                            <span class="text-base font-bold font-serif text-rose-950" id="p-stud-current-juz">0 Juz</span>
+                                        </div>
+                                        <div class="bg-white p-3 rounded-xl border border-rose-100">
+                                            <span class="text-[10px] text-slate-500 block">Target Pondok</span>
+                                            <span class="text-base font-bold font-serif text-rose-950" id="p-stud-target-juz">0 Juz</span>
+                                        </div>
+                                        <div class="bg-white p-3 rounded-xl border border-rose-100">
+                                            <span class="text-[10px] text-slate-500 block">Terakhir Setor</span>
+                                            <span class="text-xs font-bold text-rose-950 truncate block mt-0.5" id="p-stud-last-surah">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Histori Mutabaah Setoran -->
+                        <div class="bg-white rounded-2xl border border-rose-100 overflow-hidden space-y-3">
+                            <div class="flex justify-between items-center px-5 py-4 bg-rose-50/50 border-b border-rose-100">
+                                <h4 class="font-serif font-bold text-sm text-rose-950"><i class="fa-solid fa-clock-rotate-left text-rose-500 mr-1"></i> Log Histori Setoran</h4>
+                                <button onclick="window.print()" class="no-print px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+                                    <i class="fa-solid fa-print"></i> Cetak / Unduh PDF
+                                </button>
+                            </div>
+                            <div class="overflow-x-auto px-4 pb-4">
+                                <table class="min-w-full divide-y divide-rose-50 text-left text-[11px] sm:text-xs">
+                                    <thead>
+                                        <tr class="text-rose-700 font-bold bg-rose-50/30">
+                                            <th class="py-2.5 px-3 rounded-l-xl">Tanggal</th>
+                                            <th class="py-2.5 px-3">Juz Ke</th>
+                                            <th class="py-2.5 px-3">Surah & Ayat</th>
+                                            <th class="py-2.5 px-3">Jenis</th>
+                                            <th class="py-2.5 px-3">Predikat</th>
+                                            <th class="py-2.5 px-3">Ustadzah Penerima</th>
+                                            <th class="py-2.5 px-3 rounded-r-xl">Catatan / Koreksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="parent-deposit-table" class="divide-y divide-rose-50/60"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-rose-950 text-rose-200 py-12 border-t-2 border-rose-500/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="space-y-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-rose-500/20 text-rose-300 flex items-center justify-center border border-rose-400/20"><i class="fa-solid fa-mosque"></i></div>
+                    <span class="font-serif font-bold text-white text-base">Ma'had Al Mawaddah</span>
+                </div>
+                <p class="text-xs text-rose-200/80 leading-relaxed">
+                    Pesantren Tahfidz Khusus Putri yang berfokus membentuk generasi hafidzah mutamakinah, mandiri, santun, dan siap mengabdi di tanah Papua dan nusantara.
+                </p>
+            </div>
+            <div class="space-y-4">
+                <h4 class="font-serif font-bold text-white text-sm">Pranala Link</h4>
+                <ul class="text-xs space-y-2">
+                    <li><a href="#beranda" class="hover:text-white transition-colors">Beranda Publik</a></li>
+                    <li><a href="#berita" class="hover:text-white transition-colors">Kabar & Berita Pesantren</a></li>
+                    <li><a href="#tentang" class="hover:text-white transition-colors">Profil Pembina & Yayasan</a></li>
+                </ul>
+            </div>
+            <div id="section-kontak" class="space-y-4">
+                <h4 class="font-serif font-bold text-white text-sm">Alamat Kontak</h4>
+                <p class="text-xs text-rose-200/80 leading-relaxed flex items-start gap-2">
+                    <i class="fa-solid fa-location-dot mt-0.5 text-rose-400"></i>
+                    Jl. Pesantren Baru, Aimas, Kab. Sorong, Papua Barat Daya, Indonesia
+                </p>
+                <p class="text-xs text-rose-200/80 flex items-center gap-2">
+                    <i class="fa-solid fa-phone text-rose-400"></i>
+                    +62 812-4455-8899
+                </p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-8 border-t border-rose-900/50 text-center text-[11px] text-rose-300/60 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p>&copy; 2026 E-Tahfidz Al Mawaddah Sorong. Seluruh Hak Cipta Dilindungi.</p>
+            <p class="font-semibold text-rose-300">Tema: Feminin Syar'i & Modern</p>
+        </div>
+    </footer>
+
+    <!-- Modal dialog container -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div id="modal-container" class="bg-white rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden scale-95 transform transition-all duration-300">
+            <div class="bg-gradient-to-r from-rose-950 to-rose-900 px-6 py-4 text-white flex justify-between items-center">
+                <h3 id="modal-title" class="font-serif font-bold text-sm tracking-tight">Judul Dialog</h3>
+                <button onclick="closeModal()" class="text-rose-100 hover:text-white text-lg transition-colors"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="modal-content" class="p-6 max-h-[75vh] overflow-y-auto">
+                <!-- Dynamic Content Loads Here -->
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-box" class="fixed bottom-5 right-5 z-50 pointer-events-none space-y-2"></div>
+
+    <script>
+        /* ==================== DATABASE & INITIAL STATE ==================== */
+        const DEFAULT_STUDENTS = [
+            { id: "S001", name: "Aisyah Humaira Salsabila", nis: "260901", class: "Halaqah Khodijah (Unggulan)", jenjang: "MA", program: "Tahassus", totalJuz: 12, lastSurah: "Yusuf", parentName: "Ahmad Suhardi", parentPhone: "0812-3456-7890", targetJuz: 30, progressPercent: 40, history: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+            { id: "S002", name: "Fathimah Az-Zahra", nis: "260902", class: "Halaqah Khodijah (Unggulan)", jenjang: "MTs", program: "Tahassus", totalJuz: 8, lastSurah: "Al-Anfal", parentName: "Lukman Hakim", parentPhone: "0813-8822-9900", targetJuz: 30, progressPercent: 26, history: [1, 2, 3, 4, 5, 6, 29, 30] },
+            { id: "S003", name: "Khadijah Al-Kubro", nis: "260903", class: "Halaqah Aisyah", jenjang: "MI", program: "Reguler", totalJuz: 5, lastSurah: "An-Nisa", parentName: "M. Yusuf Sorong", parentPhone: "0821-9988-1122", targetJuz: 15, progressPercent: 33, history: [1, 2, 3, 29, 30] },
+            { id: "S004", name: "Safiyyah Al-Muthmainnah", nis: "260904", class: "Halaqah Aisyah", jenjang: "MA", program: "Tahassus", totalJuz: 30, lastSurah: "An-Nas (Khatam)", parentName: "Rahmat Hidayat", parentPhone: "0811-4455-6677", targetJuz: 30, progressPercent: 100, history: Array.from({length: 30}, (_, i) => i + 1) },
+            { id: "S005", name: "Zainab Az-Zahra", nis: "260905", class: "Halaqah Ummu Salamah", jenjang: "TK", program: "Reguler", totalJuz: 3, lastSurah: "Ali 'Imran", parentName: "Hasanuddin", parentPhone: "0852-7777-1122", targetJuz: 10, progressPercent: 30, history: [1, 2, 30] }
+        ];
+
+        const DEFAULT_TEACHERS = [
+            { id: "U001", name: "Ustadzah Maryam Al-Hafidzah", halaqah: "Halaqah Khodijah (Unggulan)", phone: "0812-4455-8899" },
+            { id: "U002", name: "Ustadzah Asmaul Husna", halaqah: "Halaqah Aisyah", phone: "0852-9900-1122" },
+            { id: "U003", name: "Ustadzah Wardah Syafiqah", halaqah: "Halaqah Ummu Salamah", phone: "0811-2233-4455" }
+        ];
+
+        const DEFAULT_MASTER_CLASSES = ["Kelas VII", "Kelas VIII", "Kelas IX", "Kelas X", "Kelas XI", "Kelas XII"];
+        const DEFAULT_MASTER_JENJANGS = ["TK", "MI", "MTs", "MA"];
+        const DEFAULT_MASTER_HALAQAHS = ["Halaqah Khodijah (Unggulan)", "Halaqah Aisyah", "Halaqah Ummu Salamah"];
+
+        const DEFAULT_DEPOSITS = [
+            { id: "DEP001", studentId: "S001", date: "2026-07-12", juz: 12, surah: "Yusuf", startAyat: 1, endAyat: 15, type: "Sabaq (Baru)", grade: "Mumtaz", ustadzahName: "Ustadzah Maryam Al-Hafidzah", notes: "Makhraj & tajwid sempurna, lancar sekali" },
+            { id: "DEP002", studentId: "S001", date: "2026-07-13", juz: 12, surah: "Yusuf", startAyat: 16, endAyat: 30, type: "Sabaq (Baru)", grade: "Jayyid Jiddan", ustadzahName: "Ustadzah Maryam Al-Hafidzah", notes: "Lancar, ada sedikit kesalahan harakat di ayat 22" },
+            { id: "DEP003", studentId: "S002", date: "2026-07-11", juz: 8, surah: "Al-Anfal", startAyat: 1, endAyat: 10, type: "Sabaq (Baru)", grade: "Mumtaz", ustadzahName: "Ustadzah Maryam Al-Hafidzah", notes: "Sangat baik, pertahankan murattal yang tenang" },
+            { id: "DEP004", studentId: "S003", date: "2026-07-13", juz: 3, surah: "Ali 'Imran", startAyat: 100, endAyat: 120, type: "Manzil (Lama)", grade: "Jayyid", ustadzahName: "Ustadzah Asmaul Husna", notes: "Perlu diulang bagian mad wajib muttashil" },
+            { id: "DEP005", studentId: "S002", date: "2026-07-14", juz: 8, surah: "Al-Anfal", startAyat: 11, endAyat: 25, type: "Sabaq (Baru)", grade: "Mumtaz", ustadzahName: "Ustadzah Maryam Al-Hafidzah", notes: "Khatam sabaq hari ini dengan mulus" }
+        ];
+
+        const DEFAULT_NEWS = [
+            {
+                id: "N001",
+                title: "Khataman Kubro 30 Juz Santriwati Al Mawaddah Kab. Sorong",
+                tag: "Prestasi",
+                date: "2026-07-10",
+                content: "Pesantren Putri Al Mawaddah Sorong merayakan khataman kubro 30 Juz oleh ananda Safiyyah Al-Muthmainnah. Acara ini dihadiri oleh tokoh masyarakat serta seluruh wali santri dengan suasana penuh haru dan syukur. Capaian ini diharapkan menjadi pemantik semangat bagi santriwati lainnya."
+            },
+            {
+                id: "N002",
+                title: "Kunjungan Kemenag Kab. Sorong ke Kompleks Pesantren Tahfidz Putri",
+                tag: "Kunjungan",
+                date: "2026-07-05",
+                content: "Kepala Kantor Kementerian Agama Kabupaten Sorong melakukan kunjungan kerja sekaligus peninjauan fasilitas asrama putri di Al Mawaddah. Pihak Kemenag memberikan pujian atas kebersihan, ketertiban, dan inovasi sistem digital E-Tahfidz asrama."
+            },
+            {
+                id: "N003",
+                title: "Tips Menjaga Istiqomah Hafalan Al-Qur'an Bagi Santriwati Baru",
+                tag: "Edukatif",
+                date: "2026-06-28",
+                content: "Ustadzah Maryam Al-Hafidzah membagikan 5 tips emas menjaga hafalan. Salah satunya adalah selalu mendengarkan murattal sebelum tidur, bangun sepertiga malam untuk murojaah mandiri, serta mendoakan orang tua di setiap ba'da shalat fardhu."
+            }
+        ];
+
+        const DEFAULT_APP_SETTINGS = {
+            name: "E-Tahfidz Al Mawaddah",
+            tagline: "Pesantren Tahfidz Putri",
+            logo: "", 
+            theme: "rose", 
+            bannerWelcome: "Ahlan Wa Sahlan, Admin Utama",
+            bannerDesc: "Kelola data santri, ustadzah, halaqah, dan pantau perkembangan tahfidz Al Mawaddah.",
+            announcement: {
+                active: true,
+                title: "Persiapan Imtihan Quarter Pertama",
+                body: "Dihimbau untuk seluruh ustadzah membimbing intensif murajaah 3 juz terakhir menjelang penilaian harian pekan depan. Wali santri dapat meninjau kartu progres di bawah.",
+                date: "2026-07-14"
+            }
+        };
+
+        const DEFAULT_ACCOUNTS = [
+            { email: "admin@example.com", username: "admin", role: "admin", password: "123456", name: "Ustadzah Mudirah" },
+            { email: "ustadzah@example.com", username: "ustadzah", role: "ustadzah", password: "123456", name: "Ustadzah Maryam Al-Hafidzah" },
+            { email: "walisantri@example.com", username: "walisantri", role: "parent", password: "123456", name: "Wali Aisyah Humaira" }
+        ];
+
+        /* ==================== LOCAL STORAGE & CLOUD CONFIG ==================== */
+        let students = JSON.parse(localStorage.getItem('m_students')) || DEFAULT_STUDENTS;
+        let teachers = JSON.parse(localStorage.getItem('m_teachers')) || DEFAULT_TEACHERS;
+        let deposits = JSON.parse(localStorage.getItem('m_deposits')) || DEFAULT_DEPOSITS;
+        let news = JSON.parse(localStorage.getItem('m_news')) || DEFAULT_NEWS;
+        let appSettings = JSON.parse(localStorage.getItem('m_settings')) || DEFAULT_APP_SETTINGS;
+        let accounts = JSON.parse(localStorage.getItem('m_accounts')) || DEFAULT_ACCOUNTS;
+        let masterClasses = JSON.parse(localStorage.getItem('m_master_classes')) || DEFAULT_MASTER_CLASSES;
+        let masterJenjangs = JSON.parse(localStorage.getItem('m_master_jenjangs')) || DEFAULT_MASTER_JENJANGS;
+        let masterHalaqahs = JSON.parse(localStorage.getItem('m_master_halaqahs')) || DEFAULT_MASTER_HALAQAHS;
+        let webAppUrl = localStorage.getItem('m_webapp_url') || '';
+
+        function saveData() {
+            localStorage.setItem('m_students', JSON.stringify(students));
+            localStorage.setItem('m_teachers', JSON.stringify(teachers));
+            localStorage.setItem('m_deposits', JSON.stringify(deposits));
+            localStorage.setItem('m_news', JSON.stringify(news));
+            localStorage.setItem('m_settings', JSON.stringify(appSettings));
+            localStorage.setItem('m_accounts', JSON.stringify(accounts));
+            localStorage.setItem('m_master_classes', JSON.stringify(masterClasses));
+            localStorage.setItem('m_master_jenjangs', JSON.stringify(masterJenjangs));
+            localStorage.setItem('m_master_halaqahs', JSON.stringify(masterHalaqahs));
+            
+            // Sync with Google Sheets in background if URL is present
+            if (webAppUrl) {
+                pushDataToGoogleSheetsSilent();
+            }
+        }
+
+        let currentRole = 'admin'; 
+        let selectedStudentForParent = students[0] ? students[0].id : 'S001';
+        let selectedUstadzahId = teachers[0] ? teachers[0].id : 'U001';
+        let adminActiveTab = 'stats'; 
+        let loggedInUser = null;
+        let targetChartInstance = null; 
+        let jenjangChartInstance = null;
+
+        /* ==================== THEME SYSTEM ==================== */
+        const COLOR_THEMES = {
+            rose: {
+                "50": "#fff1f2", "100": "#ffe4e6", "200": "#fecdd3", "300": "#fda4af",
+                "400": "#fb7185", "500": "#f43f5e", "600": "#e11d48", "700": "#be123c",
+                "800": "#9f1239", "900": "#4c0519", "plum": "#4a1525"
+            },
+            orchid: {
+                "50": "#faf5ff", "100": "#f3e8ff", "200": "#e9d5ff", "300": "#d8b4fe",
+                "400": "#c084fc", "500": "#a855f7", "600": "#9333ea", "700": "#7e22ce",
+                "800": "#6b21a8", "900": "#581c87", "plum": "#3b0764"
+            },
+            teal: {
+                "50": "#f0fdfa", "100": "#ccfbf1", "200": "#99f6e4", "300": "#5eead4",
+                "400": "#2dd4bf", "500": "#14b8a6", "600": "#0d9488", "700": "#0f766e",
+                "800": "#115e59", "900": "#134e4a", "plum": "#022c22"
+            },
+            peach: {
+                "50": "#fff7ed", "100": "#ffedd5", "200": "#fed7aa", "300": "#fdbb74",
+                "400": "#f97316", "500": "#ea580c", "600": "#ca8a04", "700": "#b45309",
+                "800": "#7c2d12", "900": "#431407", "plum": "#2e0f05"
+            },
+            ruby: {
+                "50": "#fff1f1", "100": "#ffe4e4", "200": "#fecaca", "300": "#fca5a5",
+                "400": "#f87171", "500": "#ef4444", "600": "#dc2626", "700": "#b91c1c",
+                "800": "#991b1b", "900": "#7f1d1d", "plum": "#3b0707"
+            }
+        };
+
+        function applyTheme(themeKey) {
+            const currentSelected = COLOR_THEMES[themeKey] || COLOR_THEMES.rose;
+            for (const [key, val] of Object.entries(currentSelected)) {
+                document.documentElement.style.setProperty(`--m-${key}`, val);
+            }
+            appSettings.theme = themeKey;
+            
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            mawaddah: {
+                                50: 'var(--m-50)',
+                                100: 'var(--m-100)',
+                                200: 'var(--m-200)',
+                                300: 'var(--m-300)',
+                                400: 'var(--m-400)',
+                                500: 'var(--m-500)',
+                                600: 'var(--m-600)',
+                                700: 'var(--m-700)',
+                                800: 'var(--m-800)',
+                                900: 'var(--m-900)',
+                                gold: 'var(--m-gold)',
+                                goldlight: 'var(--m-goldlight)',
+                                plum: 'var(--m-plum)'
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /* ==================== SYSTEM ONLOAD / SETUP ==================== */
+        window.onload = function () {
+            applyTheme(appSettings.theme);
+            syncBrandingAndSettings();
+            renderLandingStats();
+            renderLandingNews();
+            renderNewsPage();
+            showPublicView('landing');
+            
+            // If Web App URL configured, update sync status and attempt load
+            if (webAppUrl) {
+                document.getElementById('sync-cloud-status').classList.remove('hidden');
+                pullDataFromGoogleSheetsSilent();
+            }
+        };
+
+        function syncBrandingAndSettings() {
+            const logoContainer = document.getElementById('app-logo-container');
+            if (logoContainer) {
+                if (appSettings.logo) {
+                    logoContainer.innerHTML = `<img src="${appSettings.logo}" class="w-full h-full object-cover rounded-full">`;
+                } else {
+                    logoContainer.innerHTML = `<i class="fa-solid fa-mosque text-lg"></i>`;
+                }
+            }
+
+            document.title = `${appSettings.name} - Portal Mutabaah`;
+            const headerBrandName = document.getElementById('brand-name-header');
+            if (headerBrandName) headerBrandName.textContent = appSettings.name;
+
+            const headerTagline = document.getElementById('brand-tagline-header');
+            if (headerTagline) headerTagline.textContent = appSettings.tagline;
+
+            const annBlock = document.getElementById('announcement-block');
+            if (annBlock) {
+                if (appSettings.announcement.active) {
+                    annBlock.classList.remove('hidden');
+                    document.getElementById('announcement-title').textContent = appSettings.announcement.title;
+                    document.getElementById('announcement-body').textContent = appSettings.announcement.body;
+                    document.getElementById('announcement-date').textContent = appSettings.announcement.date;
+                } else {
+                    annBlock.classList.add('hidden');
+                }
+            }
+        }
+
+        /* ==================== SPREADSHEET BACKEND HANDLERS ==================== */
+        async function testSheetConnection() {
+            const urlInput = document.getElementById('sheet-api-url').value.trim();
+            if (!urlInput) {
+                showToast('Isi URL Web App Google Apps Script terlebih dahulu.', 'warning');
+                return;
+            }
+            
+            showToast('Menghubungkan ke Google Sheets...', 'info');
+            try {
+                const response = await fetch(`${urlInput}?action=ping`);
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    showToast(result.message, 'success');
+                    localStorage.setItem('m_webapp_url', urlInput);
+                    webAppUrl = urlInput;
+                    document.getElementById('sync-cloud-status').classList.remove('hidden');
+                } else {
+                    showToast('Gagal terhubung: ' + result.message, 'danger');
+                }
+            } catch (error) {
+                showToast('Koneksi Gagal! Periksa kembali URL dan Deployment Apps Script Anda.', 'danger');
+                console.error(error);
+            }
+        }
+
+        async function pushDataToGoogleSheets() {
+            if (!webAppUrl) {
+                showToast('Spreadsheet Backend belum dikonfigurasi.', 'warning');
+                return;
+            }
+            
+            showToast('Mengunggah data ke Google Sheets...', 'info');
+            const payload = {
+                action: "syncAll",
+                payload: {
+                    Students: students,
+                    Teachers: teachers,
+                    Deposits: deposits,
+                    News: news,
+                    Settings: [
+                        { key: "name", value: appSettings.name },
+                        { key: "tagline", value: appSettings.tagline },
+                        { key: "theme", value: appSettings.theme },
+                        { key: "bannerWelcome", value: appSettings.bannerWelcome },
+                        { key: "bannerDesc", value: appSettings.bannerDesc },
+                        { key: "announcement_active", value: appSettings.announcement.active.toString() },
+                        { key: "announcement_title", value: appSettings.announcement.title },
+                        { key: "announcement_body", value: appSettings.announcement.body },
+                        { key: "announcement_date", value: appSettings.announcement.date }
+                    ],
+                    Accounts: accounts,
+                    MasterClasses: masterClasses.map(c => ({ name: c })),
+                    MasterJenjangs: masterJenjangs.map(j => ({ name: j })),
+                    MasterHalaqahs: masterHalaqahs.map(h => ({ name: h }))
+                }
+            };
+            
+            try {
+                const response = await fetch(webAppUrl, {
+                    method: 'POST',
+                    mode: 'no-cors', // handle CORS limitation in browser environments
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                // Since 'no-cors' mode won't return full response headers, we wait briefly and assume success
+                showToast('Sinkronisasi data ke Google Sheets selesai diproses!', 'success');
+            } catch (error) {
+                showToast('Gagal mengunggah data.', 'danger');
+                console.error(error);
+            }
+        }
+
+        async function pushDataToGoogleSheetsSilent() {
+            const payload = {
+                action: "syncAll",
+                payload: {
+                    Students: students,
+                    Teachers: teachers,
+                    Deposits: deposits,
+                    News: news,
+                    Settings: [
+                        { key: "name", value: appSettings.name },
+                        { key: "tagline", value: appSettings.tagline },
+                        { key: "theme", value: appSettings.theme },
+                        { key: "bannerWelcome", value: appSettings.bannerWelcome },
+                        { key: "bannerDesc", value: appSettings.bannerDesc },
+                        { key: "announcement_active", value: appSettings.announcement.active.toString() },
+                        { key: "announcement_title", value: appSettings.announcement.title },
+                        { key: "announcement_body", value: appSettings.announcement.body },
+                        { key: "announcement_date", value: appSettings.announcement.date }
+                    ],
+                    Accounts: accounts,
+                    MasterClasses: masterClasses.map(c => ({ name: c })),
+                    MasterJenjangs: masterJenjangs.map(j => ({ name: j })),
+                    MasterHalaqahs: masterHalaqahs.map(h => ({ name: h }))
+                }
+            };
+            try {
+                await fetch(webAppUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            } catch (e) {
+                console.log("Silent sync failed, changes saved locally.");
+            }
+        }
+
+        async function pullDataFromGoogleSheets() {
+            if (!webAppUrl) {
+                showToast('Spreadsheet Backend belum dikonfigurasi.', 'warning');
+                return;
+            }
+            
+            showToast('Mengambil data dari Google Sheets...', 'info');
+            try {
+                const response = await fetch(webAppUrl);
+                const result = await response.json();
+                
+                if (result.status === 'success' && result.data) {
+                    importCloudData(result.data);
+                    showToast('Data Google Sheets berhasil disinkronkan ke lokal!', 'success');
+                } else {
+                    showToast('Gagal sinkron: ' + result.message, 'danger');
+                }
+            } catch (error) {
+                showToast('Gagal memuat data dari Spreadsheet.', 'danger');
+                console.error(error);
+            }
+        }
+
+        async function pullDataFromGoogleSheetsSilent() {
+            try {
+                const response = await fetch(webAppUrl);
+                const result = await response.json();
+                if (result.status === 'success' && result.data) {
+                    importCloudData(result.data);
+                }
+            } catch (e) {
+                console.log("Silent pull failed, using local storage database.");
+            }
+        }
+
+        function importCloudData(cloudDb) {
+            if (cloudDb.Students && cloudDb.Students.length > 0) {
+                students = cloudDb.Students.map(s => ({
+                    ...s,
+                    totalJuz: parseInt(s.totalJuz) || 0,
+                    targetJuz: parseInt(s.targetJuz) || 30,
+                    progressPercent: parseInt(s.progressPercent) || 0,
+                    history: Array.isArray(s.history) ? s.history : []
+                }));
+            }
+            if (cloudDb.Teachers && cloudDb.Teachers.length > 0) teachers = cloudDb.Teachers;
+            if (cloudDb.Deposits && cloudDb.Deposits.length > 0) {
+                deposits = cloudDb.Deposits.map(d => ({
+                    ...d,
+                    juz: parseInt(d.juz) || 1,
+                    startAyat: parseInt(d.startAyat) || 1,
+                    endAyat: parseInt(d.endAyat) || 1
+                }));
+            }
+            if (cloudDb.News && cloudDb.News.length > 0) news = cloudDb.News;
+            if (cloudDb.Accounts && cloudDb.Accounts.length > 0) accounts = cloudDb.Accounts;
+            
+            if (cloudDb.MasterClasses && cloudDb.MasterClasses.length > 0) {
+                masterClasses = cloudDb.MasterClasses.map(c => c.name);
+            }
+            if (cloudDb.MasterJenjangs && cloudDb.MasterJenjangs.length > 0) {
+                masterJenjangs = cloudDb.MasterJenjangs.map(j => j.name);
+            }
+            if (cloudDb.MasterHalaqahs && cloudDb.MasterHalaqahs.length > 0) {
+                masterHalaqahs = cloudDb.MasterHalaqahs.map(h => h.name);
+            }
+
+            // Sync Settings if mapped
+            if (cloudDb.Settings && cloudDb.Settings.length > 0) {
+                cloudDb.Settings.forEach(s => {
+                    if (s.key === "name") appSettings.name = s.value;
+                    if (s.key === "tagline") appSettings.tagline = s.value;
+                    if (s.key === "theme") appSettings.theme = s.value;
+                    if (s.key === "bannerWelcome") appSettings.bannerWelcome = s.value;
+                    if (s.key === "bannerDesc") appSettings.bannerDesc = s.value;
+                    if (s.key === "announcement_active") appSettings.announcement.active = s.value === "true";
+                    if (s.key === "announcement_title") appSettings.announcement.title = s.value;
+                    if (s.key === "announcement_body") appSettings.announcement.body = s.value;
+                    if (s.key === "announcement_date") appSettings.announcement.date = s.value;
+                });
+            }
+
+            // Save immediately to localstorage
+            localStorage.setItem('m_students', JSON.stringify(students));
+            localStorage.setItem('m_teachers', JSON.stringify(teachers));
+            localStorage.setItem('m_deposits', JSON.stringify(deposits));
+            localStorage.setItem('m_news', JSON.stringify(news));
+            localStorage.setItem('m_settings', JSON.stringify(appSettings));
+            localStorage.setItem('m_accounts', JSON.stringify(accounts));
+            localStorage.setItem('m_master_classes', JSON.stringify(masterClasses));
+            localStorage.setItem('m_master_jenjangs', JSON.stringify(masterJenjangs));
+            localStorage.setItem('m_master_halaqahs', JSON.stringify(masterHalaqahs));
+
+            syncBrandingAndSettings();
+            renderLandingStats();
+            renderLandingNews();
+            renderNewsPage();
+        }
+
+        /* ==================== NAVIGATION CONTROLLERS ==================== */
+        function showPublicView(viewName) {
+            document.querySelectorAll('.view-section').forEach(view => view.classList.add('hidden'));
+            document.getElementById('public-header').classList.remove('hidden');
+            
+            if (viewName === 'landing') {
+                document.getElementById('view-landing').classList.remove('hidden');
+            } else if (viewName === 'news') {
+                document.getElementById('view-news').classList.remove('hidden');
+                renderNewsPage();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showPrivateDashboard() {
+            document.querySelectorAll('.view-section').forEach(view => view.classList.add('hidden'));
+            document.getElementById('view-dashboard').classList.remove('hidden');
+            document.querySelectorAll('.dashboard-role-panel').forEach(panel => panel.classList.add('hidden'));
+            
+            document.getElementById('cms-banner-welcome').textContent = appSettings.bannerWelcome;
+            document.getElementById('cms-banner-desc').textContent = appSettings.bannerDesc;
+            document.getElementById('user-role-badge').textContent = currentRole.toUpperCase();
+
+            if (currentRole === 'admin') {
+                document.getElementById('admin-dashboard-view').classList.remove('hidden');
+                setAdminTab('stats');
+            } else if (currentRole === 'ustadzah') {
+                document.getElementById('ustadzah-dashboard-view').classList.remove('hidden');
+                setupUstadzahView();
+            } else if (currentRole === 'parent') {
+                document.getElementById('parent-dashboard-view').classList.remove('hidden');
+                setupParentView();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToElement(id) {
+            showPublicView('landing');
+            setTimeout(() => {
+                const el = document.getElementById(id);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }, 150);
+        }
+
+        /* ==================== PUBLIC VIEW GENERATIONS ==================== */
+        function renderLandingStats() {
+            const totalSantri = students.length;
+            const totalHalaqah = Array.from(new Set(students.map(s => s.class))).length;
+            const totalUstadzah = teachers.length;
+            const totalJuz = students.reduce((sum, s) => sum + s.totalJuz, 0);
+
+            document.getElementById('stat-count-santri').textContent = totalSantri;
+            document.getElementById('stat-count-halaqah').textContent = totalHalaqah;
+            document.getElementById('stat-count-ustadzah').textContent = totalUstadzah;
+            document.getElementById('stat-count-juz').textContent = totalJuz;
+        }
+
+        function renderLandingNews() {
+            const container = document.getElementById('landing-news-grid');
+            if (!container) return;
+            
+            const sorted = [...news].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0,3);
+            container.innerHTML = sorted.map(item => `
+                <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-rose-100 hover:shadow-md transition-all flex flex-col h-full">
+                    <div class="p-6 space-y-3 flex-grow">
+                        <div class="flex justify-between items-center text-[10px] font-bold text-rose-600 uppercase tracking-wider">
+                            <span><i class="fa-solid fa-tag"></i> ${item.tag}</span>
+                            <span><i class="fa-solid fa-calendar-days"></i> ${item.date}</span>
+                        </div>
+                        <h4 class="font-serif font-bold text-sm text-rose-950 line-clamp-2">${item.title}</h4>
+                        <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">${item.content}</p>
+                    </div>
+                    <div class="px-6 py-4 bg-rose-50/50 border-t border-rose-50/80">
+                        <button onclick="readNewsDetail('${item.id}')" class="text-xs text-rose-900 font-bold hover:text-rose-600 transition-all flex items-center gap-1">
+                            Baca Selengkapnya <i class="fa-solid fa-circle-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderNewsPage() {
+            const container = document.getElementById('news-page-list');
+            if (!container) return;
+
+            const sorted = [...news].sort((a,b) => new Date(b.date) - new Date(a.date));
+            container.innerHTML = sorted.map(item => `
+                <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-rose-100 flex flex-col h-full">
+                    <div class="p-6 space-y-3 flex-grow">
+                        <div class="flex justify-between items-center text-[10px] font-bold text-rose-600 uppercase tracking-wider">
+                            <span><i class="fa-solid fa-tag"></i> ${item.tag}</span>
+                            <span><i class="fa-solid fa-calendar"></i> ${item.date}</span>
+                        </div>
+                        <h4 class="font-serif font-bold text-base text-rose-950">${item.title}</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">${item.content}</p>
+                    </div>
+                    <div class="px-6 py-4 bg-rose-50/50 border-t border-rose-100/50">
+                        <button onclick="readNewsDetail('${item.id}')" class="text-xs text-rose-900 font-semibold hover:underline">
+                            Detail Artikel <i class="fa-solid fa-arrow-right-long ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function readNewsDetail(id) {
+            const item = news.find(n => n.id === id);
+            if (!item) return;
+
+            openModal(item.title, `
+                <div class="space-y-4 text-xs leading-relaxed text-slate-700">
+                    <div class="flex items-center gap-4 text-[10px] font-bold text-rose-600 border-b pb-2">
+                        <span><i class="fa-solid fa-tag"></i> ${item.tag}</span>
+                        <span><i class="fa-solid fa-calendar"></i> ${item.date}</span>
+                    </div>
+                    <p class="text-sm text-slate-800 font-medium whitespace-pre-line">${item.content}</p>
+                    <div class="pt-4 border-t flex justify-end">
+                        <button onclick="closeModal()" class="px-5 py-2 bg-rose-50 text-rose-900 font-bold rounded-xl text-xs hover:bg-rose-100 transition-colors">Tutup</button>
+                    </div>
+                </div>
+            `);
+        }
+
+        /* ==================== LOGIN / AUTHENTICATION ==================== */
+        function openLoginModal() {
+            openModal('<i class="fa-solid fa-user-lock text-rose-500 mr-1.5"></i> Portal E-Tahfidz', `
+                <div class="space-y-4 text-xs">
+                    <p class="text-[11px] text-slate-500 text-center">Pintu gerbang pantau rekap setoran, mutabaah & kustomisasi website.</p>
+                    
+                    <div class="bg-rose-50 p-3 rounded-2xl border border-rose-100/80 space-y-2 quick-login-badge">
+                        <span class="block text-[10px] font-bold text-rose-900 uppercase text-center">Masuk Instan (Simulasi)</span>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="quickLogin('admin')" class="py-1.5 bg-rose-600 text-white rounded-lg font-bold hover:bg-rose-700 text-[10px]">Admin</button>
+                            <button onclick="quickLogin('ustadzah')" class="py-1.5 bg-rose-600 text-white rounded-lg font-bold hover:bg-rose-700 text-[10px]">Ustadzah</button>
+                            <button onclick="quickLogin('parent')" class="py-1.5 bg-rose-600 text-white rounded-lg font-bold hover:bg-rose-700 text-[10px]">Wali Santri</button>
+                        </div>
+                    </div>
+
+                    <form onsubmit="handleLogin(event)" class="space-y-3">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Alamat Email / Username</label>
+                            <input type="text" id="login-email" required placeholder="admin@example.com" class="w-full px-4 py-2 bg-rose-50/50 border border-rose-200 rounded-xl focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Kata Sandi</label>
+                            <input type="password" id="login-password" required placeholder="******" class="w-full px-4 py-2 bg-rose-50/50 border border-rose-200 rounded-xl focus:outline-none">
+                        </div>
+                        <div class="flex justify-between items-center pt-1 text-[11px]">
+                            <button type="button" onclick="simulateForgotPassword()" class="text-rose-600 font-bold hover:underline">Lupa password?</button>
+                            <span class="text-slate-400">Default sandi: 123456</span>
+                        </div>
+                        <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-rose-500 to-rose-700 text-white rounded-xl font-bold mt-2 shadow-md">
+                            Masuk Ke Portal
+                        </button>
+                    </form>
+                </div>
+            `);
+        }
+
+        function quickLogin(role) {
+            let email = "";
+            if (role === 'admin') email = "admin@example.com";
+            if (role === 'ustadzah') email = "ustadzah@example.com";
+            if (role === 'parent') email = "walisantri@example.com";
+
+            document.getElementById('login-email').value = email;
+            document.getElementById('login-password').value = "123456";
+            showToast(`Mengisi kredensial ${role}...`, 'info');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-password').value.trim();
+
+            const user = accounts.find(acc => (acc.email === email || acc.username === email) && acc.password === pass);
+
+            if (user) {
+                loggedInUser = user;
+                currentRole = user.role;
+                closeModal();
+                showToast(`Berhasil masuk sebagai ${user.name}!`, 'success');
+                showPrivateDashboard();
+            } else {
+                showToast('Kredensial salah. Silakan coba kembali.', 'danger');
+            }
+        }
+
+        function simulateForgotPassword() {
+            openModal('<i class="fa-solid fa-key text-rose-500 mr-1"></i> Pulihkan Kata Sandi', `
+                <div class="space-y-4 text-xs text-center p-2">
+                    <p class="text-slate-600">Daftar sandi terdaftar untuk kebutuhan simulasi login:</p>
+                    <div class="bg-rose-50 p-3 rounded-2xl text-left font-mono text-[10px] space-y-1.5 border">
+                        ${accounts.map(acc => `<div><strong>${acc.role.toUpperCase()}:</strong> ${acc.email} <span class="text-rose-600">(${acc.password})</span></div>`).join('')}
+                    </div>
+                    <button onclick="openLoginModal()" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold">Kembali Ke Login</button>
+                </div>
+            `);
+        }
+
+        function logout() {
+            loggedInUser = null;
+            showPublicView('landing');
+            showToast('Anda telah keluar dari portal asrama.', 'info');
+        }
+
+        /* ==================== ADMIN TAB SWITCHING ==================== */
+        function setAdminTab(tab) {
+            adminActiveTab = tab;
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.className = `admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                    btn.id === `tab-btn-${tab}` 
+                        ? 'bg-rose-600 text-white shadow-md shadow-rose-200' 
+                        : 'text-rose-900 hover:bg-rose-50 bg-white border border-rose-100/50'
+                }`;
+            });
+            renderAdminTab();
+        }
+
+        /* ==================== STREAMING_CHUNK: Render Tab Admin ==================== */
+        function renderAdminTab() {
+            const container = document.getElementById('admin-tab-content');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            if (adminActiveTab === 'stats') {
+                const totalStudents = students.length;
+                const totalJuzMemorized = students.reduce((sum, s) => sum + s.totalJuz, 0);
+                const avgJuz = totalStudents > 0 ? (totalJuzMemorized / totalStudents).toFixed(1) : 0;
+                const totalUstadzah = teachers.length;
+
+                container.innerHTML = `
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-white p-5 rounded-3xl border border-rose-100 shadow-sm flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center text-xl"><i class="fa-solid fa-graduation-cap"></i></div>
+                            <div>
+                                <span class="text-xs text-rose-500 block font-medium">Total Santriwati</span>
+                                <span class="text-2xl font-bold font-serif text-rose-plum">${totalStudents}</span>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-3xl border border-rose-100 shadow-sm flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-rose-gold flex items-center justify-center text-xl"><i class="fa-solid fa-book-open-reader"></i></div>
+                            <div>
+                                <span class="text-xs text-rose-500 block font-medium">Juz Dihafal</span>
+                                <span class="text-2xl font-bold font-serif text-rose-plum">${totalJuzMemorized}</span>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-3xl border border-rose-100 shadow-sm flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl"><i class="fa-solid fa-chart-line"></i></div>
+                            <div>
+                                <span class="text-xs text-rose-500 block font-medium">Rerata Per Santri</span>
+                                <span class="text-2xl font-bold font-serif text-rose-plum">${avgJuz} Juz</span>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-3xl border border-rose-100 shadow-sm flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl"><i class="fa-solid fa-users"></i></div>
+                            <div>
+                                <span class="text-xs text-rose-500 block font-medium">Total Halaqah</span>
+                                <span class="text-2xl font-bold font-serif text-rose-plum">${totalUstadzah} Halaqah</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm lg:col-span-2">
+                            <h3 class="text-base font-bold font-serif text-rose-plum mb-3"><i class="fa-solid fa-chart-line text-rose-500"></i> Capaian Target Juz</h3>
+                            <div class="w-full h-64"><canvas id="targetDistChart"></canvas></div>
+                        </div>
+                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm">
+                            <h3 class="text-base font-bold font-serif text-rose-plum mb-3"><i class="fa-solid fa-circle-info text-amber-500"></i> Proporsi Jenjang</h3>
+                            <div class="w-full h-64 flex items-center justify-center"><canvas id="jenjangDistChart"></canvas></div>
+                        </div>
+                    </div>
+                `;
+                initDistCharts();
+            }
+
+            else if (adminActiveTab === 'students') {
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                            <div>
+                                <h3 class="text-lg font-bold font-serif text-rose-plum"><i class="fa-solid fa-address-book text-rose-500"></i> Direktori Santriwati</h3>
+                                <p class="text-xs text-rose-500">Daftar lengkap siswi pondok Al Mawaddah dengan klasifikasi jenjang & program.</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+                                <button onclick="downloadStudentCSV()" class="px-3 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 flex items-center gap-1.5 shadow">
+                                    <i class="fa-solid fa-file-excel"></i> CSV
+                                </button>
+                                <button onclick="printAdminStudentReport()" class="px-3 py-2 bg-rose-950 text-white rounded-xl text-xs font-bold hover:bg-rose-900 flex items-center gap-1.5 shadow">
+                                    <i class="fa-solid fa-file-pdf"></i> Cetak PDF
+                                </button>
+                                <input type="text" id="student-search" oninput="filterStudents(this.value)" placeholder="Cari nama atau NIS..." class="px-4 py-2 text-xs bg-rose-50 border border-rose-200 rounded-xl">
+                                <button onclick="openAddStudentModal()" class="px-3 py-2 bg-rose-500 text-white rounded-xl text-xs font-bold hover:bg-rose-600">
+                                    <i class="fa-solid fa-plus"></i> Tambah
+                                </button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-rose-100 text-left text-xs">
+                                <thead>
+                                    <tr class="text-rose-600 uppercase bg-rose-50/50">
+                                        <th class="py-3 px-4 rounded-l-xl">Santriwati</th>
+                                        <th class="py-3 px-4">Jenjang & Program</th>
+                                        <th class="py-3 px-4">Halaqah</th>
+                                        <th class="py-3 px-4">Progres Hafalan</th>
+                                        <th class="py-3 px-4">Wali & WhatsApp</th>
+                                        <th class="py-3 px-4 rounded-r-xl text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-student-list" class="divide-y divide-rose-50"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                renderAdminStudentTable(students);
+            }
+
+            else if (adminActiveTab === 'teachers') {
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <h3 class="text-lg font-bold font-serif text-rose-plum"><i class="fa-solid fa-chalkboard-user text-rose-500"></i> Pembimbing Halaqah</h3>
+                                <p class="text-xs text-rose-500">Manajemen ustadzah pembina halaqah asrama putri.</p>
+                            </div>
+                            <button onclick="openAddTeacherModal()" class="px-3 py-2 bg-rose-500 text-white rounded-xl text-xs font-bold">
+                                <i class="fa-solid fa-plus mr-1"></i> Tambah Ustadzah
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="admin-teacher-list"></div>
+                    </div>
+                `;
+                renderAdminTeacherList();
+            }
+
+            else if (adminActiveTab === 'master') {
+                container.innerHTML = `
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Card Manajemen Kelas -->
+                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
+                            <div class="flex justify-between items-center pb-2 border-b">
+                                <h3 class="font-serif font-bold text-sm text-rose-plum"><i class="fa-solid fa-door-open text-rose-500 mr-1.5"></i> Master Kelas</h3>
+                                <button onclick="openAddMasterItemModal('class')" class="text-xs text-rose-600 font-bold hover:underline"><i class="fa-solid fa-plus-circle"></i> Tambah</button>
+                            </div>
+                            <div class="space-y-2 max-h-[300px] overflow-y-auto pr-1" id="master-class-list"></div>
+                        </div>
+
+                        <!-- Card Manajemen Jenjang -->
+                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
+                            <div class="flex justify-between items-center pb-2 border-b">
+                                <h3 class="font-serif font-bold text-sm text-rose-plum"><i class="fa-solid fa-graduation-cap text-teal-500 mr-1.5"></i> Master Jenjang</h3>
+                                <button onclick="openAddMasterItemModal('jenjang')" class="text-xs text-teal-600 font-bold hover:underline"><i class="fa-solid fa-plus-circle"></i> Tambah</button>
+                            </div>
+                            <div class="space-y-2 max-h-[300px] overflow-y-auto pr-1" id="master-jenjang-list"></div>
+                        </div>
+
+                        <!-- Card Manajemen Halaqah -->
+                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
+                            <div class="flex justify-between items-center pb-2 border-b">
+                                <h3 class="font-serif font-bold text-sm text-rose-plum"><i class="fa-solid fa-users-viewfinder text-amber-500 mr-1.5"></i> Master Halaqah</h3>
+                                <button onclick="openAddMasterItemModal('halaqah')" class="text-xs text-amber-600 font-bold hover:underline"><i class="fa-solid fa-plus-circle"></i> Tambah</button>
+                            </div>
+                            <div class="space-y-2 max-h-[300px] overflow-y-auto pr-1" id="master-halaqah-list"></div>
+                        </div>
+                    </div>
+                `;
+                renderMasterLists();
+            }
+
+            else if (adminActiveTab === 'news') {
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="text-lg font-bold font-serif text-rose-plum"><i class="fa-solid fa-newspaper text-rose-500"></i> Kelola Berita Pesantren</h3>
+                                <p class="text-xs text-rose-500">Tambah, sunting, atau hapus artikel berita yang dipublikasikan di Landing Page publik.</p>
+                            </div>
+                            <button onclick="openAddNewsModal()" class="px-3 py-2 bg-rose-500 text-white rounded-xl text-xs font-bold">
+                                <i class="fa-solid fa-plus mr-1"></i> Berita Baru
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-rose-100 text-left text-xs">
+                                <thead>
+                                    <tr class="text-rose-600 uppercase bg-rose-50/50">
+                                        <th class="py-2.5 px-3 rounded-l-xl">Tanggal</th>
+                                        <th class="py-2.5 px-3">Kategori</th>
+                                        <th class="py-2.5 px-3">Judul Berita</th>
+                                        <th class="py-2.5 px-3 rounded-r-xl text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-news-list" class="divide-y divide-rose-50"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                renderAdminNewsTable();
+            }
+
+            else if (adminActiveTab === 'cms') {
+                container.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Welcome Banner CMS -->
+                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
+                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-rectangle-ad text-rose-500 mr-1.5"></i> Banner Sambutan Dashboard</h3>
+                            <div class="space-y-3 text-xs">
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Judul Sambutan</label>
+                                    <input type="text" id="cms-welcome-title" value="${appSettings.bannerWelcome}" class="w-full px-4 py-2 border rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Deskripsi Tambahan</label>
+                                    <textarea id="cms-welcome-desc" rows="3" class="w-full px-4 py-2 border rounded-xl">${appSettings.bannerDesc}</textarea>
+                                </div>
+                                <button onclick="saveCMSBanner()" class="px-4 py-2 bg-rose-600 text-white font-bold rounded-xl hover:bg-rose-700">Simpan Perubahan</button>
+                            </div>
+                        </div>
+
+                        <!-- Announcement / Sticky Notice CMS -->
+                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
+                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-bullhorn text-rose-500 mr-1.5"></i> Pengumuman Berjalan (Sticky Notice)</h3>
+                            <div class="space-y-3 text-xs">
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" id="cms-ann-active" ${appSettings.announcement.active ? 'checked' : ''} class="w-4 h-4 text-rose-600 rounded">
+                                    <label class="font-bold text-slate-700">Aktifkan Pengumuman</label>
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Judul Pengumuman</label>
+                                    <input type="text" id="cms-ann-title" value="${appSettings.announcement.title}" class="w-full px-4 py-2 border rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Isi Pengumuman</label>
+                                    <textarea id="cms-ann-body" rows="2" class="w-full px-4 py-2 border rounded-xl">${appSettings.announcement.body}</textarea>
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Tanggal Publikasi</label>
+                                    <input type="date" id="cms-ann-date" value="${appSettings.announcement.date}" class="w-full px-4 py-2 border rounded-xl">
+                                </div>
+                                <button onclick="saveCMSAnnouncement()" class="px-4 py-2 bg-rose-600 text-white font-bold rounded-xl hover:bg-rose-700">Simpan Pengumuman</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            else if (adminActiveTab === 'branding') {
+                container.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Branding & Logo -->
+                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
+                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-id-card text-rose-500 mr-1.5"></i> Identitas & Branding</h3>
+                            <div class="space-y-3 text-xs">
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Nama Aplikasi / Portal</label>
+                                    <input type="text" id="brand-name-input" value="${appSettings.name}" class="w-full px-4 py-2 border rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Tagline Pesantren</label>
+                                    <input type="text" id="brand-tagline-input" value="${appSettings.tagline}" class="w-full px-4 py-2 border rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Unggah Logo (Foto Asli)</label>
+                                    <input type="file" id="brand-logo-file" accept="image/*" onchange="handleLogoUpload(this)" class="w-full text-xs">
+                                </div>
+                                <button onclick="saveBrandingBranding()" class="px-4 py-2 bg-rose-600 text-white font-bold rounded-xl hover:bg-rose-700">Simpan Branding</button>
+                            </div>
+                        </div>
+
+                        <!-- Spreadsheet Connection settings -->
+                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
+                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-file-excel text-emerald-600 mr-1.5"></i> Google Sheets Integrasi Backend</h3>
+                            <div class="space-y-3 text-xs">
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">URL Web App Google Apps Script</label>
+                                    <input type="text" id="sheet-api-url" value="${webAppUrl}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-4 py-2 border rounded-xl">
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="testSheetConnection()" class="py-2.5 bg-rose-950 text-white font-bold rounded-xl hover:bg-rose-900"><i class="fa-solid fa-link"></i> Tes Koneksi</button>
+                                    <button onclick="pushDataToGoogleSheets()" class="py-2.5 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700"><i class="fa-solid fa-cloud-arrow-up"></i> Push ke Cloud</button>
+                                </div>
+                                <button onclick="pullDataFromGoogleSheets()" class="w-full py-2 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-600"><i class="fa-solid fa-cloud-arrow-down"></i> Ambil Data Cloud (Pull)</button>
+                                <p class="text-[10px] text-slate-400 leading-relaxed mt-1">
+                                    * Hubungkan backend Google Sheet untuk menyimpan data setoran hafalan & master secara permanen dan real-time.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Color Themes -->
+                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4 md:col-span-2">
+                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-palette text-rose-500 mr-1.5"></i> Skema Warna Feminin & Syar'i</h3>
+                            <p class="text-xs text-slate-500">Pilih palet warna estetis yang secara serentak mendandani interior portal E-Tahfidz.</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                                <button onclick="applyTheme('rose')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'rose' ? 'border-rose-500 bg-rose-50' : 'bg-white'}">
+                                    <span class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-rose-500"></span> Rosy</span>
+                                </button>
+                                <button onclick="applyTheme('orchid')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'orchid' ? 'border-purple-500 bg-purple-50' : 'bg-white'}">
+                                    <span class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-purple-500"></span> Orchid</span>
+                                </button>
+                                <button onclick="applyTheme('teal')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'teal' ? 'border-teal-500 bg-teal-50' : 'bg-white'}">
+                                    <span class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-teal-500"></span> Teal</span>
+                                </button>
+                                <button onclick="applyTheme('peach')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'peach' ? 'border-amber-500 bg-amber-50' : 'bg-white'}">
+                                    <span class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-amber-500"></span> Peach</span>
+                                </button>
+                                <button onclick="applyTheme('ruby')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'ruby' ? 'border-red-500 bg-red-50' : 'bg-white'}">
+                                    <span class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-red-500"></span> Ruby</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            else if (adminActiveTab === 'accounts') {
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center pb-2 border-b">
+                            <div>
+                                <h3 class="font-serif font-bold text-sm text-rose-plum"><i class="fa-solid fa-users text-rose-500 mr-1.5"></i> Portal Kredensial Akun</h3>
+                                <p class="text-[10px] text-slate-500">Konfigurasi hak akses masuk bagi pembimbing dan walisantri.</p>
+                            </div>
+                            <button onclick="openAddAccountModal()" class="px-3 py-1.5 bg-rose-500 text-white rounded-xl text-xs font-bold hover:bg-rose-600"><i class="fa-solid fa-user-plus mr-1"></i> Akun Baru</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-rose-100 text-left text-xs">
+                                <thead>
+                                    <tr class="text-rose-700 bg-rose-50/50">
+                                        <th class="py-2.5 px-3 rounded-l-xl">Nama Pengguna</th>
+                                        <th class="py-2.5 px-3">Email Kredensial</th>
+                                        <th class="py-2.5 px-3">Tingkatan Hak Akses</th>
+                                        <th class="py-2.5 px-3">Kata Sandi</th>
+                                        <th class="py-2.5 px-3 rounded-r-xl text-center">Tindakan</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-rose-50" id="admin-account-list"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                renderAdminAccountTable();
+            }
+        }
+
+        /* ==================== STREAMING_CHUNK: Master Configuration CRUD methods... ==================== */
+        function renderMasterLists() {
+            const classContainer = document.getElementById('master-class-list');
+            const jenjangContainer = document.getElementById('master-jenjang-list');
+            const halaqahContainer = document.getElementById('master-halaqah-list');
+
+            if (classContainer) {
+                classContainer.innerHTML = masterClasses.length === 0 ? '<p class="text-xs text-gray-400 italic">Belum ada data kelas.</p>' :
+                    masterClasses.map((c, i) => `
+                        <div class="flex justify-between items-center p-2.5 bg-gray-50 border rounded-xl text-xs hover:bg-gray-100 transition-all">
+                            <span class="font-semibold text-rose-900">${c}</span>
+                            <div class="flex gap-1">
+                                <button onclick="editMasterItem('class', ${i})" class="w-6 h-6 rounded bg-amber-50 hover:bg-amber-100 text-amber-700 flex items-center justify-center"><i class="fa-solid fa-edit text-[10px]"></i></button>
+                                <button onclick="deleteMasterItem('class', ${i})" class="w-6 h-6 rounded bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
+                            </div>
+                        </div>
+                    `).join('');
+            }
+
+            if (jenjangContainer) {
+                jenjangContainer.innerHTML = masterJenjangs.length === 0 ? '<p class="text-xs text-gray-400 italic">Belum ada data jenjang.</p>' :
+                    masterJenjangs.map((j, i) => `
+                        <div class="flex justify-between items-center p-2.5 bg-gray-50 border rounded-xl text-xs hover:bg-gray-100 transition-all">
+                            <span class="font-semibold text-rose-900 uppercase">${j}</span>
+                            <div class="flex gap-1">
+                                <button onclick="editMasterItem('jenjang', ${i})" class="w-6 h-6 rounded bg-amber-50 hover:bg-amber-100 text-amber-700 flex items-center justify-center"><i class="fa-solid fa-edit text-[10px]"></i></button>
+                                <button onclick="deleteMasterItem('jenjang', ${i})" class="w-6 h-6 rounded bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
+                            </div>
+                        </div>
+                    `).join('');
+            }
+
+            if (halaqahContainer) {
+                halaqahContainer.innerHTML = masterHalaqahs.length === 0 ? '<p class="text-xs text-gray-400 italic">Belum ada data halaqah.</p>' :
+                    masterHalaqahs.map((h, i) => `
+                        <div class="flex justify-between items-center p-2.5 bg-gray-50 border rounded-xl text-xs hover:bg-gray-100 transition-all">
+                            <span class="font-semibold text-rose-900">${h}</span>
+                            <div class="flex gap-1">
+                                <button onclick="editMasterItem('halaqah', ${i})" class="w-6 h-6 rounded bg-amber-50 hover:bg-amber-100 text-amber-700 flex items-center justify-center"><i class="fa-solid fa-edit text-[10px]"></i></button>
+                                <button onclick="deleteMasterItem('halaqah', ${i})" class="w-6 h-6 rounded bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
+                            </div>
+                        </div>
+                    `).join('');
+            }
+        }
+
+        function openAddMasterItemModal(type) {
+            let label = "Kategori";
+            if (type === 'class') label = "Nama Kelas Baru (Misal: Kelas VII)";
+            if (type === 'jenjang') label = "Nama Jenjang Baru (Misal: TK, MI, MTs, MA)";
+            if (type === 'halaqah') label = "Nama Halaqah Baru (Misal: Halaqah Fatimah)";
+
+            openModal(`<i class="fa-solid fa-plus-circle text-rose-500"></i> Tambah Master Data`, `
+                <form onsubmit="handleSaveMasterItem(event, '${type}')" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-bold text-rose-700 mb-1">${label}</label>
+                        <input type="text" id="f-master-val" required class="w-full px-4 py-2 border border-rose-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-500">
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3 border-t border-rose-100">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-5 py-2 bg-gradient-to-r from-rose-500 to-rose-700 text-white rounded-xl font-bold">Simpan</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function handleSaveMasterItem(e, type) {
+            e.preventDefault();
+            const val = document.getElementById('f-master-val').value.trim();
+            if (!val) return;
+
+            if (type === 'class') masterClasses.push(val);
+            if (type === 'jenjang') masterJenjangs.push(val);
+            if (type === 'halaqah') masterHalaqahs.push(val);
+
+            saveData();
+            closeModal();
+            showToast('Master data berhasil ditambahkan!', 'success');
+            renderMasterLists();
+        }
+
+        function editMasterItem(type, index) {
+            let val = "";
+            if (type === 'class') val = masterClasses[index];
+            if (type === 'jenjang') val = masterJenjangs[index];
+            if (type === 'halaqah') val = masterHalaqahs[index];
+
+            openModal(`<i class="fa-solid fa-edit text-rose-500"></i> Sunting Master Data`, `
+                <form onsubmit="handleUpdateMasterItem(event, '${type}', ${index})" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-bold text-rose-700 mb-1">Nama / Keterangan Baru</label>
+                        <input type="text" id="f-master-edit-val" value="${val}" required class="w-full px-4 py-2 border border-rose-200 rounded-xl">
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3 border-t border-rose-100">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-5 py-2 bg-gradient-to-r from-rose-500 to-rose-700 text-white rounded-xl font-bold">Perbarui</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function handleUpdateMasterItem(e, type, index) {
+            e.preventDefault();
+            const val = document.getElementById('f-master-edit-val').value.trim();
+            if (!val) return;
+
+            if (type === 'class') masterClasses[index] = val;
+            if (type === 'jenjang') masterJenjangs[index] = val;
+            if (type === 'halaqah') masterHalaqahs[index] = val;
+
+            saveData();
+            closeModal();
+            showToast('Master data berhasil diperbarui!', 'success');
+            renderMasterLists();
+        }
+
+        function deleteMasterItem(type, index) {
+            openModal('<span class="text-red-600">Hapus Master Data</span>', `
+                <div class="text-center p-4 space-y-3 text-xs">
+                    <p class="text-sm text-rose-800">Apakah Anda yakin ingin menghapus data master ini?</p>
+                    <p class="text-[10px] text-red-500">Catatan: Pastikan item master ini tidak digunakan lagi pada pendaftaran santriwati.</p>
+                    <div class="flex justify-center gap-3 pt-4">
+                        <button onclick="closeModal()" class="px-4 py-2 bg-rose-100 text-rose-800 rounded-xl">Batal</button>
+                        <button onclick="executeDeleteMasterItem('${type}', ${index})" class="px-4 py-2 bg-red-600 text-white rounded-xl font-bold">Ya, Hapus</button>
+                    </div>
+                </div>
+            `);
+        }
+
+        function executeDeleteMasterItem(type, index) {
+            if (type === 'class') masterClasses.splice(index, 1);
+            if (type === 'jenjang') masterJenjangs.splice(index, 1);
+            if (type === 'halaqah') masterHalaqahs.splice(index, 1);
+
+            saveData();
+            closeModal();
+            showToast('Master data berhasil dihapus.', 'warning');
+            renderMasterLists();
+        }
+
+        /* ==================== STREAMING_CHUNK: Admin Export Reports Methods (CSV & print PDF layout)... ==================== */
+        function downloadStudentCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; 
+            csvContent += "NIS,Nama Santriwati,Jenjang,Program,Halaqah,Total Juz Hafalan,Target Juz,Wali Santri,No WhatsApp\n";
+
+            students.forEach(s => {
+                let row = `${s.nis},"${s.name}",${s.jenjang},${s.program},"${s.class}",${s.totalJuz},${s.targetJuz},"${s.parentName}","${s.parentPhone}"`;
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Direktori_Santriwati_${appSettings.name.replace(/\s+/g, '_')}_Aimas.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('Laporan CSV berhasil diunduh!', 'success');
+        }
+
+        function printAdminStudentReport() {
+            openModal(`Laporan Data Santriwati Al Mawaddah`, `
+                <div class="p-6 bg-white border border-rose-200 rounded-2xl text-xs text-rose-900" id="print-area">
+                    <div class="text-center border-b pb-4 mb-4">
+                        <h4 class="text-base font-bold font-serif text-rose-plum uppercase">${appSettings.name}</h4>
+                        <p class="text-[9px] text-rose-500 font-medium">Kabupaten Sorong, Papua Barat Daya</p>
+                        <p class="text-[10px] font-bold text-rose-gold mt-1">LAPORAN REKAPITULASI CAPAIAN HAFALAN SANTRIWATI</p>
+                    </div>
+
+                    <table class="min-w-full divide-y divide-gray-200 text-left border mb-6 text-[10px]">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="py-2 px-3 border font-bold">NIS</th>
+                                <th class="py-2 px-3 border font-bold">Nama Santriwati</th>
+                                <th class="py-2 px-3 border font-bold">Jenjang/Prog</th>
+                                <th class="py-2 px-3 border font-bold">Halaqah</th>
+                                <th class="py-2 px-3 border font-bold">Capaian</th>
+                                <th class="py-2 px-3 border font-bold">Wali Santri</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${students.map(s => `
+                                <tr>
+                                    <td class="py-2 px-3 border">${s.nis}</td>
+                                    <td class="py-2 px-3 border font-bold">${s.name}</td>
+                                    <td class="py-2 px-3 border">${s.jenjang} / ${s.program}</td>
+                                    <td class="py-2 px-3 border">${s.class}</td>
+                                    <td class="py-2 px-3 border font-bold">${s.totalJuz} / ${s.targetJuz} Juz</td>
+                                    <td class="py-2 px-3 border">${s.parentName}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div class="mt-8 text-right text-[9px] pt-4 border-t">
+                        <p class="text-rose-500">Kab. Sorong, ${new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</p>
+                        <p class="font-bold text-rose-plum mt-10">Mudirah Ma'had Al Mawaddah</p>
+                    </div>
+
+                    <div class="mt-6 flex justify-center gap-2 no-print">
+                        <button onclick="window.print()" class="px-4 py-2 bg-rose-plum text-white hover:bg-rose-900 rounded-xl font-semibold flex items-center gap-1.5 shadow">
+                            <i class="fa-solid fa-print"></i> Cetak Laporan
+                        </button>
+                        <button onclick="closeModal()" class="px-4 py-2 bg-rose-100 text-rose-800 rounded-xl font-semibold">
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            `);
+        }
+
+        /* ==================== STREAMING_CHUNK: Save CMS & Brand Functions ==================== */
+        function saveCMSBanner() {
+            appSettings.bannerWelcome = document.getElementById('cms-welcome-title').value.trim();
+            appSettings.bannerDesc = document.getElementById('cms-welcome-desc').value.trim();
+            saveData();
+            showToast('Banner sambutan berhasil diperbarui!', 'success');
+            syncBrandingAndSettings();
+        }
+
+        function saveCMSAnnouncement() {
+            appSettings.announcement.active = document.getElementById('cms-ann-active').checked;
+            appSettings.announcement.title = document.getElementById('cms-ann-title').value.trim();
+            appSettings.announcement.body = document.getElementById('cms-ann-body').value.trim();
+            appSettings.announcement.date = document.getElementById('cms-ann-date').value;
+            saveData();
+            showToast('Pengumuman notice berhasil diperbarui!', 'success');
+            syncBrandingAndSettings();
+        }
+
+        function saveBrandingBranding() {
+            appSettings.name = document.getElementById('brand-name-input').value.trim();
+            appSettings.tagline = document.getElementById('brand-tagline-input').value.trim();
+            saveData();
+            showToast('Identitas branding berhasil disimpan!', 'success');
+            syncBrandingAndSettings();
+        }
+
+        function handleLogoUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                appSettings.logo = e.target.result;
+                saveData();
+                showToast('Logo kustom berhasil diunggah & disimpan!', 'success');
+                syncBrandingAndSettings();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        /* ==================== STATS GRAFIK - CHART INITIALIZATION ==================== */
+        function initDistCharts() {
+            const ctx1 = document.getElementById('targetDistChart');
+            const ctx2 = document.getElementById('jenjangDistChart');
+
+            if (!ctx1 || !ctx2) return;
+
+            if (targetChartInstance) targetChartInstance.destroy();
+            if (jenjangChartInstance) jenjangChartInstance.destroy();
+
+            const targetJuzRanges = { "1-10 Juz": 0, "11-20 Juz": 0, "21-30 Juz": 0 };
+            students.forEach(s => {
+                if (s.totalJuz <= 10) targetJuzRanges["1-10 Juz"]++;
+                else if (s.totalJuz <= 20) targetJuzRanges["11-20 Juz"]++;
+                else targetJuzRanges["21-30 Juz"]++;
+            });
+
+            const jenjangCounts = {};
+            students.forEach(s => {
+                jenjangCounts[s.jenjang] = (jenjangCounts[s.jenjang] || 0) + 1;
+            });
+
+            const themeColor = document.documentElement.style.getPropertyValue('--m-500').trim() || '#f43f5e';
+
+            targetChartInstance = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(targetJuzRanges),
+                    datasets: [{
+                        label: 'Jumlah Santri',
+                        data: Object.values(targetJuzRanges),
+                        backgroundColor: themeColor,
+                        borderRadius: 8,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                    }
+                }
+            });
+
+            jenjangChartInstance = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(jenjangCounts),
+                    datasets: [{
+                        data: Object.values(jenjangCounts),
+                        backgroundColor: ['#fda4af', '#f43f5e', '#be123c', '#e11d48', '#fb7185'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+
+        /* ==================== STREAMING_CHUNK: Admin News CRUD ==================== */
+        function renderAdminNewsTable() {
+            const tbody = document.getElementById('admin-news-list');
+            if (!tbody) return;
+
+            tbody.innerHTML = news.map(item => `
+                <tr class="hover:bg-rose-50/40 text-slate-700">
+                    <td class="py-3 px-3 font-semibold">${item.date}</td>
+                    <td class="py-3 px-3"><span class="px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full text-[10px] font-bold">${item.tag}</span></td>
+                    <td class="py-3 px-3 font-bold text-rose-950">${item.title}</td>
+                    <td class="py-3 px-3 text-center flex justify-center gap-1.5">
+                        <button onclick="openEditNewsModal('${item.id}')" class="w-7 h-7 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 flex items-center justify-center"><i class="fa-solid fa-pen text-xs"></i></button>
+                        <button onclick="deleteNews('${item.id}')" class="w-7 h-7 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center"><i class="fa-solid fa-trash text-xs"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openAddNewsModal() {
+            openModal('<i class="fa-solid fa-plus-circle text-rose-500"></i> Publikasikan Kabar Baru', `
+                <form onsubmit="handleSaveNews(event)" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Judul Berita</label>
+                        <input type="text" id="f-news-title" required placeholder="Contoh: Pembukaan Masa Orientasi Tahfidz" class="w-full px-4 py-2 border rounded-xl">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Kategori / Tag</label>
+                            <input type="text" id="f-news-tag" required placeholder="Misal: Prestasi, Kunjungan, Tips" class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Tanggal</label>
+                            <input type="date" id="f-news-date" required class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Konten / Isi Artikel</label>
+                        <textarea id="f-news-content" required rows="5" placeholder="Tuliskan berita lengkap..." class="w-full px-4 py-2 border rounded-xl"></textarea>
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3 border-t">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold">Terbitkan</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function handleSaveNews(e) {
+            e.preventDefault();
+            const title = document.getElementById('f-news-title').value.trim();
+            const tag = document.getElementById('f-news-tag').value.trim();
+            const date = document.getElementById('f-news-date').value;
+            const content = document.getElementById('f-news-content').value.trim();
+
+            const newItem = {
+                id: 'N' + Date.now(),
+                title, tag, date, content
+            };
+
+            news.push(newItem);
+            saveData();
+            closeModal();
+            showToast('Kabar berita pesantren berhasil diterbitkan!', 'success');
+            renderAdminNewsTable();
+            renderLandingNews();
+        }
+
+        function openEditNewsModal(id) {
+            const item = news.find(n => n.id === id);
+            if (!item) return;
+
+            openModal('<i class="fa-solid fa-edit text-rose-500"></i> Sunting Artikel Berita', `
+                <form onsubmit="handleUpdateNews(event, '${id}')" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Judul Berita</label>
+                        <input type="text" id="f-news-edit-title" value="${item.title}" required class="w-full px-4 py-2 border rounded-xl">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Kategori / Tag</label>
+                            <input type="text" id="f-news-edit-tag" value="${item.tag}" required class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Tanggal</label>
+                            <input type="date" id="f-news-edit-date" value="${item.date}" required class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Konten / Isi Artikel</label>
+                        <textarea id="f-news-edit-content" required rows="5" class="w-full px-4 py-2 border rounded-xl">${item.content}</textarea>
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3 border-t">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold">Perbarui</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function handleUpdateNews(e, id) {
+            e.preventDefault();
+            const title = document.getElementById('f-news-edit-title').value.trim();
+            const tag = document.getElementById('f-news-edit-tag').value.trim();
+            const date = document.getElementById('f-news-edit-date').value;
+            const content = document.getElementById('f-news-edit-content').value.trim();
+
+            const idx = news.findIndex(n => n.id === id);
+            if (idx !== -1) {
+                news[idx] = { id, title, tag, date, content };
+                saveData();
+                closeModal();
+                showToast('Kabar berita berhasil diperbarui.', 'success');
+                renderAdminNewsTable();
+                renderLandingNews();
+            }
+        }
+
+        function deleteNews(id) {
+            if (confirm("Apakah Anda yakin ingin menghapus berita ini?")) {
+                news = news.filter(n => n.id !== id);
+                saveData();
+                showToast('Berita berhasil dihapus.', 'warning');
+                renderAdminNewsTable();
+                renderLandingNews();
+            }
+        }
+
+        /* ==================== STREAMING_CHUNK: Admin Students CRUD ==================== */
+        function renderAdminStudentTable(studentList) {
+            const tbody = document.getElementById('admin-student-list');
+            if (!tbody) return;
+
+            tbody.innerHTML = studentList.map(s => {
+                const percentage = s.targetJuz > 0 ? Math.round((s.totalJuz / s.targetJuz) * 100) : 0;
+                return `
+                    <tr class="hover:bg-rose-50/40 transition-colors">
+                        <td class="py-3 px-4">
+                            <div class="font-bold text-rose-950">${s.name}</div>
+                            <div class="text-[10px] text-slate-400 font-mono">NIS: ${s.nis}</div>
+                        </td>
+                        <td class="py-3 px-4">
+                            <span class="px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full text-[10px] font-bold uppercase">${s.jenjang}</span>
+                            <span class="px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full text-[10px] font-bold uppercase ml-1">${s.program}</span>
+                        </td>
+                        <td class="py-3 px-4 text-slate-600 font-semibold text-xs">${s.class}</td>
+                        <td class="py-3 px-4">
+                            <div class="flex items-center gap-2">
+                                <div class="w-16 bg-slate-100 rounded-full h-2 overflow-hidden border">
+                                    <div class="bg-gradient-to-r from-rose-400 to-rose-600 h-full" style="width: ${percentage}%"></div>
+                                </div>
+                                <span class="text-xs font-bold text-rose-950">${s.totalJuz}/${s.targetJuz} Juz <span class="text-[9px] text-slate-400 font-normal">(${percentage}%)</span></span>
+                            </div>
+                        </td>
+                        <td class="py-3 px-4">
+                            <div class="font-bold text-slate-700">${s.parentName}</div>
+                            <div class="text-[10px] text-emerald-600 font-bold"><i class="fa-brands fa-whatsapp"></i> ${s.parentPhone}</div>
+                        </td>
+                        <td class="py-3 px-4 text-center">
+                            <div class="flex justify-center gap-1.5">
+                                <button onclick="editStudent('${s.id}')" class="w-7 h-7 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 flex items-center justify-center"><i class="fa-solid fa-edit text-xs"></i></button>
+                                <button onclick="deleteStudent('${s.id}')" class="w-7 h-7 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function filterStudents(val) {
+            const query = val.toLowerCase();
+            const filtered = students.filter(s => s.name.toLowerCase().includes(query) || s.nis.includes(query));
+            renderAdminStudentTable(filtered);
+        }
+
+        function openAddStudentModal() {
+            openModal('<i class="fa-solid fa-user-plus text-rose-500"></i> Pendaftaran Santriwati Baru', `
+                <form onsubmit="handleSaveStudent(event)" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block text-xs font-bold text-rose-700 mb-1">Nama Lengkap Santriwati <span class="text-red-500">*</span></label>
+                        <input type="text" id="form-name" required placeholder="Contoh: Aisyah Az-Zahra" class="w-full px-4 py-2 border border-rose-200 rounded-xl">
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">NIS <span class="text-red-500">*</span></label>
+                            <input type="text" id="form-nis" required placeholder="Contoh: 260906" class="w-full px-4 py-2 border border-rose-200 rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">Halaqah Pembimbing <span class="text-red-500">*</span></label>
+                            <select id="form-class" required class="w-full px-3 py-2 border border-rose-200 rounded-xl">
+                                ${masterHalaqahs.map(h => `<option value="${h}">${h}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">Jenjang Pendidikan <span class="text-red-500">*</span></label>
+                            <select id="form-jenjang" class="w-full px-3 py-2 border border-rose-200 rounded-xl">
+                                ${masterJenjangs.map(j => `<option value="${j}">${j}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">Program Hafalan <span class="text-red-500">*</span></label>
+                            <select id="form-program" class="w-full px-3 py-2 border border-rose-200 rounded-xl">
+                                <option value="Reguler">Reguler</option>
+                                <option value="Tahassus">Tahassus (Fokus Tahfidz Putri)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">Target Hafalan (Juz)</label>
+                            <input type="number" id="form-target" min="1" max="30" value="30" class="w-full px-4 py-2 border border-rose-200 rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">Hafalan Saat Ini (Juz)</label>
+                            <input type="number" id="form-current" min="0" max="30" value="0" class="w-full px-4 py-2 border border-rose-200 rounded-xl">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">Nama Wali / Orang Tua <span class="text-red-500">*</span></label>
+                            <input type="text" id="form-parent" required placeholder="Nama Ayah/Ibu" class="w-full px-4 py-2 border border-rose-200 rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">No. WhatsApp Wali <span class="text-red-500">*</span></label>
+                            <input type="text" id="form-phone" required placeholder="Contoh: 0812-..." class="w-full px-4 py-2 border border-rose-200 rounded-xl">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex justify-end gap-3 border-t border-rose-100">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-5 py-2 bg-gradient-to-r from-rose-500 to-rose-700 text-white rounded-xl font-bold">Simpan Santriwati</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function handleSaveStudent(event) {
+            event.preventDefault();
+            const name = document.getElementById('form-name').value.trim();
+            const nis = document.getElementById('form-nis').value.trim();
+            const cl = document.getElementById('form-class').value;
+            const jenjang = document.getElementById('form-jenjang').value;
+            const program = document.getElementById('form-program').value;
+            const targetJuz = parseInt(document.getElementById('form-target').value) || 30;
+            const totalJuz = parseInt(document.getElementById('form-current').value) || 0;
+            const parentName = document.getElementById('form-parent').value.trim();
+            const parentPhone = document.getElementById('form-phone').value.trim();
+
+            const newStudent = {
+                id: 'S' + Date.now(),
+                name, nis, class: cl, jenjang, program, targetJuz, totalJuz,
+                parentName, parentPhone, lastSurah: totalJuz > 0 ? "Fatihah" : "Mulai",
+                history: Array.from({length: totalJuz}, (_, i) => i + 1)
+            };
+
+            students.push(newStudent);
+            saveData();
+            closeModal();
+            showToast('Pendaftaran santriwati baru berhasil!', 'success');
+            renderAdminStudentTable(students);
+            renderLandingStats();
+        }
+
+        function editStudent(id) {
+            const student = students.find(s => s.id === id);
+            if (!student) return;
+
+            openModal(`<i class="fa-solid fa-edit text-rose-plum"></i> Edit Santriwati: ${student.name}`, `
+                <form onsubmit="handleUpdateStudent(event, '${id}')" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block text-xs font-bold text-rose-700 mb-1">Nama Lengkap Santriwati</label>
+                        <input type="text" id="form-edit-name" value="${student.name}" required class="w-full px-4 py-2 border border-rose-200 rounded-xl">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">NIS</label>
+                            <input type="text" id="form-edit-nis" value="${student.nis}" required class="w-full px-4 py-2 border border-rose-200 rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">Halaqah Pembimbing</label>
+                            <select id="form-edit-class" class="w-full px-3 py-2 border border-rose-200 rounded-xl">
+                                ${masterHalaqahs.map(h => `<option value="${h}" ${student.class === h ? 'selected' : ''}>${h}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">Jenjang Pendidikan</label>
+                            <select id="form-edit-jenjang" class="w-full px-3 py-2 border border-rose-200 rounded-xl">
+                                ${masterJenjangs.map(j => `<option value="${j}" ${student.jenjang === j ? 'selected' : ''}>${j}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">Program Hafalan</label>
+                            <select id="form-edit-program" class="w-full px-3 py-2 border border-rose-200 rounded-xl">
+                                <option value="Reguler" ${student.program === 'Reguler' ? 'selected' : ''}>Reguler</option>
+                                <option value="Tahassus" ${student.program === 'Tahassus' ? 'selected' : ''}>Tahassus (Fokus Tahfidz Putri)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">Target Hafalan (Juz)</label>
+                            <input type="number" id="form-edit-target" value="${student.targetJuz}" min="1" max="30" class="w-full px-4 py-2 border border-rose-200 rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">Wali / Orang Tua</label>
+                            <input type="text" id="form-edit-parent" value="${student.parentName}" required class="w-full px-4 py-2 border border-rose-200 rounded-xl">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-rose-700 mb-1">No. WhatsApp Wali</label>
+                        <input type="text" id="form-edit-phone" value="${student.parentPhone}" required class="w-full px-4 py-2 border border-rose-200 rounded-xl">
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3 border-t border-rose-100">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-5 py-2 bg-gradient-to-r from-rose-500 to-rose-700 text-white rounded-xl font-bold">Perbarui Data</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function handleUpdateStudent(event, id) {
+            event.preventDefault();
+            const name = document.getElementById('form-edit-name').value.trim();
+            const nis = document.getElementById('form-edit-nis').value.trim();
+            const cl = document.getElementById('form-edit-class').value;
+            const jenjang = document.getElementById('form-edit-jenjang').value;
+            const program = document.getElementById('form-edit-program').value;
+            const targetJuz = parseInt(document.getElementById('form-edit-target').value) || 30;
+            const parentName = document.getElementById('form-edit-parent').value.trim();
+            const parentPhone = document.getElementById('form-edit-phone').value.trim();
+
+            const idx = students.findIndex(s => s.id === id);
+            if (idx !== -1) {
+                students[idx] = {
+                    ...students[idx],
+                    name, nis, class: cl, jenjang, program, targetJuz, parentName, parentPhone
+                };
+                saveData();
+                closeModal();
+                showToast('Biodata santriwati berhasil diperbarui!', 'success');
+                renderAdminStudentTable(students);
+            }
+        }
+
+        function deleteStudent(id) {
+            if (confirm("Apakah Anda yakin ingin menghapus data santriwati ini beserta seluruh sejarah sejarahnya?")) {
+                students = students.filter(s => s.id !== id);
+                deposits = deposits.filter(d => d.studentId !== id);
+                saveData();
+                showToast('Data berhasil dihapus dari server.', 'warning');
+                renderAdminStudentTable(students);
+                renderLandingStats();
+            }
+        }
+
+        /* ==================== STREAMING_CHUNK: Admin Ustadzah CRUD ==================== */
+        function renderAdminTeacherList() {
+            const container = document.getElementById('admin-teacher-list');
+            if (!container) return;
+
+            container.innerHTML = teachers.map(u => `
+                <div class="bg-gradient-to-tr from-rose-50/50 to-white p-5 rounded-2xl border border-rose-100 shadow-sm flex items-start gap-4 hover:shadow-md transition-all">
+                    <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center text-lg"><i class="fa-solid fa-chalkboard-user"></i></div>
+                    <div class="space-y-1 text-xs flex-grow">
+                        <h4 class="font-bold text-rose-plum">${u.name}</h4>
+                        <p class="text-[10px] text-slate-500 font-medium">Halaqah: <span class="font-semibold text-rose-700">${u.halaqah}</span></p>
+                        <p class="text-[10px] text-slate-500 font-semibold"><i class="fa-brands fa-whatsapp text-emerald-600"></i> ${u.phone}</p>
+                        <div class="pt-2 flex gap-1 justify-end">
+                            <button onclick="editTeacher('${u.id}')" class="w-6 h-6 rounded bg-amber-50 hover:bg-amber-100 text-amber-600 flex items-center justify-center"><i class="fa-solid fa-edit text-[10px]"></i></button>
+                            <button onclick="deleteTeacher('${u.id}')" class="w-6 h-6 rounded bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openAddTeacherModal() {
+            openModal('<i class="fa-solid fa-plus-circle text-rose-500"></i> Rekrut Ustadzah Pembimbing', `
+                <form onsubmit="handleSaveTeacher(event)" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-bold text-rose-700 mb-1">Nama Lengkap Pembimbing <span class="text-red-500">*</span></label>
+                        <input type="text" id="f-u-name" required placeholder="Contoh: Ustadzah Fatimah Al-Hafidzah" class="w-full px-4 py-2 border rounded-xl">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Halaqah Yang Diampu <span class="text-red-500">*</span></label>
+                            <select id="f-u-halaqah" class="w-full px-3 py-2 border rounded-xl">
+                                ${masterHalaqahs.map(h => `<option value="${h}">${h}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">No. WhatsApp <span class="text-red-500">*</span></label>
+                            <input type="text" id="f-u-phone" required placeholder="Contoh: 0812-..." class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3 border-t">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold">Simpan</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function handleSaveTeacher(e) {
+            e.preventDefault();
+            const name = document.getElementById('f-u-name').value.trim();
+            const halaqah = document.getElementById('f-u-halaqah').value;
+            const phone = document.getElementById('f-u-phone').value.trim();
+
+            const newTeacher = { id: 'U' + Date.now(), name, halaqah, phone };
+            teachers.push(newTeacher);
+            saveData();
+            closeModal();
+            showToast('Ustadzah baru berhasil terdaftar!', 'success');
+            renderAdminTeacherList();
+            renderLandingStats();
+        }
+
+        function editTeacher(id) {
+            const u = teachers.find(x => x.id === id);
+            if (!u) return;
+
+            openModal(`<i class="fa-solid fa-edit text-rose-500"></i> Edit Ustadzah`, `
+                <form onsubmit="handleUpdateTeacher(event, '${id}')" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-bold text-rose-700 mb-1">Nama Lengkap</label>
+                        <input type="text" id="f-u-edit-name" value="${u.name}" required class="w-full px-4 py-2 border rounded-xl">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Halaqah Yang Diampu</label>
+                            <select id="f-u-edit-halaqah" class="w-full px-3 py-2 border rounded-xl">
+                                ${masterHalaqahs.map(h => `<option value="${h}" ${u.halaqah === h ? 'selected' : ''}>${h}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">No. WhatsApp</label>
+                            <input type="text" id="f-u-edit-phone" value="${u.phone}" required class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3 border-t">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold">Simpan</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function handleUpdateTeacher(e, id) {
+            e.preventDefault();
+            const name = document.getElementById('f-u-edit-name').value.trim();
+            const halaqah = document.getElementById('f-u-edit-halaqah').value;
+            const phone = document.getElementById('f-u-edit-phone').value.trim();
+
+            const idx = teachers.findIndex(x => x.id === id);
+            if (idx !== -1) {
+                teachers[idx] = { id, name, halaqah, phone };
+                saveData();
+                closeModal();
+                showToast('Profil Ustadzah berhasil diperbarui.', 'success');
+                renderAdminTeacherList();
+            }
+        }
+
+        function deleteTeacher(id) {
+            if (confirm("Hapus ustadzah ini?")) {
+                teachers = teachers.filter(x => x.id !== id);
+                saveData();
+                showToast('Data berhasil dihapus.', 'warning');
+                renderAdminTeacherList();
+                renderLandingStats();
+            }
+        }
+
+        /* ==================== STREAMING_CHUNK: Admin Account CRUD & Password Systems ==================== */
+        function renderAdminAccountTable() {
+            const list = document.getElementById('admin-account-list');
+            if (!list) return;
+
+            list.innerHTML = accounts.map((acc, i) => `
+                <tr class="hover:bg-rose-50/50">
+                    <td class="py-2.5 px-3 font-bold text-rose-950">${acc.name}</td>
+                    <td class="py-2.5 px-3 font-mono">${acc.email}</td>
+                    <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase ${acc.role === 'admin' ? 'bg-red-100 text-red-700' : acc.role === 'ustadzah' ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}">${acc.role}</span></td>
+                    <td class="py-2.5 px-3 font-mono">${acc.password}</td>
+                    <td class="py-2.5 px-3 text-center">
+                        <div class="flex justify-center gap-1">
+                            <button onclick="resetAccountPassword(${i})" class="px-2 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 text-[10px] rounded-lg"><i class="fa-solid fa-rotate-left"></i> Reset Sandi</button>
+                            <button onclick="deleteAccount(${i})" class="w-6 h-6 rounded bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openAddAccountModal() {
+            openModal('<i class="fa-solid fa-user-plus text-rose-500"></i> Buat Kredensial Akun Baru', `
+                <form onsubmit="handleSaveAccount(event)" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-bold text-rose-700 mb-1">Nama Lengkap Pemegang Akun <span class="text-red-500">*</span></label>
+                        <input type="text" id="f-acc-name" required placeholder="Contoh: Wali Santri Fatimah" class="w-full px-4 py-2 border rounded-xl">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Alamat Email <span class="text-red-500">*</span></label>
+                            <input type="email" id="f-acc-email" required placeholder="email@domain.com" class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Nama Pengguna (Username) <span class="text-red-500">*</span></label>
+                            <input type="text" id="f-acc-user" required placeholder="wali_fatimah" class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Tingkatan Akses (Role)</label>
+                            <select id="f-acc-role" class="w-full px-3 py-2 border rounded-xl">
+                                <option value="parent">Wali Santri (Orang Tua)</option>
+                                <option value="ustadzah">Ustadzah (Pembimbing)</option>
+                                <option value="admin">Administrator Utama</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Kata Sandi Baru <span class="text-red-500">*</span></label>
+                            <input type="text" id="f-acc-pass" required placeholder="Minimal 6 karakter" class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3 border-t">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold">Buat Akun</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function handleSaveAccount(e) {
+            e.preventDefault();
+            const name = document.getElementById('f-acc-name').value.trim();
+            const email = document.getElementById('f-acc-email').value.trim();
+            const username = document.getElementById('f-acc-user').value.trim();
+            const role = document.getElementById('f-acc-role').value;
+            const password = document.getElementById('f-acc-pass').value.trim();
+
+            const newAcc = { name, email, username, role, password };
+            accounts.push(newAcc);
+            saveData();
+            closeModal();
+            showToast('Akun kredensial baru berhasil ditambahkan!', 'success');
+            renderAdminAccountTable();
+        }
+
+        function resetAccountPassword(index) {
+            const acc = accounts[index];
+            if (!acc) return;
+
+            openModal(`<i class="fa-solid fa-key text-rose-500"></i> Atur Ulang Sandi`, `
+                <form onsubmit="handleExecuteResetPassword(event, ${index})" class="space-y-4 text-xs">
+                    <p class="text-[11px] text-slate-500">Anda mengatur ulang sandi untuk pengguna: <strong class="text-rose-950">${acc.name}</strong> (${acc.email})</p>
+                    <div>
+                        <label class="block font-bold text-rose-700 mb-1">Kata Sandi Kustom Baru</label>
+                        <input type="text" id="f-reset-pass" required placeholder="Masukkan sandi baru" class="w-full px-4 py-2 border rounded-xl">
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3 border-t">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-5 py-2 bg-rose-600 text-white rounded-xl font-bold">Simpan Sandi</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function handleExecuteResetPassword(e, index) {
+            e.preventDefault();
+            const newPass = document.getElementById('f-reset-pass').value.trim();
+            if (newPass.length < 4) {
+                showToast('Sandi minimal 4 karakter!', 'warning');
+                return;
+            }
+
+            accounts[index].password = newPass;
+            saveData();
+            closeModal();
+            showToast('Sandi akun berhasil disetel ulang.', 'success');
+            renderAdminAccountTable();
+        }
+
+        function deleteAccount(index) {
+            if (confirm("Hapus akun kredensial ini?")) {
+                accounts.splice(index, 1);
+                saveData();
+                showToast('Akun berhasil dihapus.', 'warning');
+                renderAdminAccountTable();
+            }
+        }
+
+        function openChangePasswordModal() {
+            openModal('<i class="fa-solid fa-key text-rose-500 mr-1.5"></i> Ganti Kata Sandi Pribadi', `
+                <form onsubmit="handleChangePassword(event)" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Sandi Lama</label>
+                        <input type="password" id="pass-old" required class="w-full px-4 py-2 border rounded-xl">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Sandi Baru</label>
+                        <input type="password" id="pass-new" required placeholder="Minimal 6 karakter" class="w-full px-4 py-2 border rounded-xl">
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3 border-t">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-5 py-2 bg-rose-600 text-white rounded-xl font-bold">Perbarui Sandi</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function handleChangePassword(e) {
+            e.preventDefault();
+            const oldP = document.getElementById('pass-old').value.trim();
+            const newP = document.getElementById('pass-new').value.trim();
+
+            if (loggedInUser.password !== oldP) {
+                showToast('Sandi lama salah!', 'danger');
+                return;
+            }
+            if (newP.length < 5) {
+                showToast('Sandi baru terlalu pendek!', 'warning');
+                return;
+            }
+
+            const idx = accounts.findIndex(x => x.email === loggedInUser.email);
+            if (idx !== -1) {
+                accounts[idx].password = newP;
+                loggedInUser.password = newP;
+                saveData();
+                closeModal();
+                showToast('Kata sandi Anda berhasil diperbarui!', 'success');
+            }
+        }
+
+        /* ==================== STREAMING_CHUNK: Ustadzah Halaqah View Management ==================== */
+        function setupUstadzahView() {
+            const teach = teachers.find(t => t.email === loggedInUser.email) || teachers[0];
+            const halaqahName = teach ? teach.halaqah : masterHalaqahs[0];
+            
+            document.getElementById('ustadzah-halaqah-subtitle').textContent = `Halaqah Pengasuhan: ${halaqahName} (Pembina: ${teach ? teach.name : "Ustadzah"})`;
+
+            const studentSelect = document.getElementById('f-dep-student');
+            if (studentSelect) {
+                studentSelect.innerHTML = '<option value="">-- Pilih Santriwati --</option>';
+                const matchingStudents = students.filter(s => s.class === halaqahName);
+                matchingStudents.forEach(s => {
+                    studentSelect.innerHTML += `<option value="${s.id}">${s.name} (${s.nis})</option>`;
+                });
+            }
+
+            document.getElementById('f-dep-date').value = new Date().toISOString().split('T')[0];
+
+            renderUstadzahDepositHistory(halaqahName);
+        }
+
+        function renderUstadzahDepositHistory(halaqahName) {
+            const tbody = document.getElementById('ustadzah-deposit-list');
+            if (!tbody) return;
+
+            const matchingStudentIds = students.filter(s => s.class === halaqahName).map(s => s.id);
+            const halaqahDeposits = deposits.filter(d => matchingStudentIds.includes(d.studentId));
+
+            tbody.innerHTML = halaqahDeposits.map(d => {
+                const s = students.find(x => x.id === d.studentId);
+                return `
+                    <tr class="hover:bg-rose-50/40 text-slate-700">
+                        <td class="py-2 px-3 font-semibold">${d.date}</td>
+                        <td class="py-2 px-3 font-bold text-rose-950">${s ? s.name : "Unknown"}</td>
+                        <td class="py-2 px-3 font-medium">Juz ${d.juz} (${d.surah}: ${d.startAyat}-${d.endAyat})</td>
+                        <td class="py-2 px-3"><span class="px-2 py-0.5 bg-rose-100 text-rose-800 rounded text-[9px] font-bold">${d.grade}</span></td>
+                        <td class="py-2 px-3 text-slate-500 italic max-w-xs truncate">${d.notes || "-"}</td>
+                        <td class="py-2 px-3 text-center">
+                            <button onclick="deleteDeposit('${d.id}')" class="w-6 h-6 rounded bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function handleSaveDeposit(e) {
+            e.preventDefault();
+            const studentId = document.getElementById('f-dep-student').value;
+            const date = document.getElementById('f-dep-date').value;
+            const type = document.getElementById('f-dep-type').value;
+            const juz = parseInt(document.getElementById('f-dep-juz').value);
+            const surah = document.getElementById('f-dep-surah').value.trim();
+            const startAyat = parseInt(document.getElementById('f-dep-start').value);
+            const endAyat = parseInt(document.getElementById('f-dep-end').value);
+            const grade = document.getElementById('f-dep-grade').value;
+            const notes = document.getElementById('f-dep-notes').value.trim();
+
+            if (!studentId) {
+                showToast('Harap pilih santriwati terlebih dahulu.', 'warning');
+                return;
+            }
+
+            const activeTeach = teachers.find(t => t.email === loggedInUser.email) || teachers[0];
+
+            const newDep = {
+                id: 'DEP' + Date.now(),
+                studentId, date, juz, surah, startAyat, endAyat, type, grade, notes,
+                ustadzahName: activeTeach ? activeTeach.name : "Ustadzah Pembina"
+            };
+
+            deposits.push(newDep);
+
+            const sIdx = students.findIndex(s => s.id === studentId);
+            if (sIdx !== -1) {
+                students[sIdx].lastSurah = `${surah} (${endAyat})`;
+                if (!students[sIdx].history.includes(juz)) {
+                    students[sIdx].history.push(juz);
+                    students[sIdx].totalJuz = students[sIdx].history.length;
+                    const percent = Math.round((students[sIdx].totalJuz / students[sIdx].targetJuz) * 100);
+                    students[sIdx].progressPercent = percent > 100 ? 100 : percent;
+                }
+            }
+
+            saveData();
+            showToast('Setoran hafalan berhasil direkam!', 'success');
+            
+            document.getElementById('f-dep-juz').value = '';
+            document.getElementById('f-dep-surah').value = '';
+            document.getElementById('f-dep-start').value = '';
+            document.getElementById('f-dep-end').value = '';
+            document.getElementById('f-dep-notes').value = '';
+
+            setupUstadzahView();
+            renderLandingStats();
+        }
+
+        function deleteDeposit(id) {
+            if (confirm("Apakah Anda yakin ingin menghapus catatan setoran hafalan ini?")) {
+                deposits = deposits.filter(d => d.id !== id);
+                saveData();
+                showToast('Catatan setoran berhasil dihapus.', 'warning');
+                setupUstadzahView();
+                renderLandingStats();
+            }
+        }
+
+        /* ==================== STREAMING_CHUNK: Wali Santri (Parent) View Management ==================== */
+        function setupParentView() {
+            const select = document.getElementById('parent-student-select');
+            if (!select) return;
+
+            select.innerHTML = '';
+            students.forEach(s => {
+                select.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+            });
+
+            if (students.length > 0) {
+                selectedStudentForParent = students[0].id;
+                renderParentStudentDetails(students[0].id);
+            }
+        }
+
+        function changeParentStudent(studentId) {
+            selectedStudentForParent = studentId;
+            renderParentStudentDetails(studentId);
+        }
+
+        function renderParentStudentDetails(id) {
+            const s = students.find(x => x.id === id);
+            if (!s) return;
+
+            document.getElementById('p-stud-name').textContent = s.name;
+            document.getElementById('p-stud-nis').textContent = s.nis;
+            document.getElementById('p-stud-program').textContent = `${s.jenjang} / ${s.program}`;
+            document.getElementById('p-stud-class').textContent = s.class;
+            document.getElementById('p-stud-parent').textContent = s.parentName;
+
+            const percentage = s.targetJuz > 0 ? Math.round((s.totalJuz / s.targetJuz) * 100) : 0;
+            document.getElementById('p-stud-percent').textContent = `${percentage}%`;
+            document.getElementById('p-stud-progress-bar').style.width = `${percentage}%`;
+            document.getElementById('p-stud-current-juz').textContent = `${s.totalJuz} Juz`;
+            document.getElementById('p-stud-target-juz').textContent = `${s.targetJuz} Juz`;
+            document.getElementById('p-stud-last-surah').textContent = s.lastSurah;
+
+            const sDeps = deposits.filter(d => d.studentId === id).sort((a,b) => new Date(b.date) - new Date(a.date));
+            const table = document.getElementById('parent-deposit-table');
+            if (table) {
+                table.innerHTML = sDeps.length === 0 
+                    ? `<tr><td colspan="7" class="py-6 text-center text-slate-400 italic">Belum ada catatan setoran terekam untuk ananda.</td></tr>`
+                    : sDeps.map(d => `
+                        <tr class="hover:bg-rose-50/20 text-slate-700">
+                            <td class="py-2.5 px-3 font-semibold whitespace-nowrap">${d.date}</td>
+                            <td class="py-2.5 px-3 font-bold text-rose-950">Juz ${d.juz}</td>
+                            <td class="py-2.5 px-3 font-medium">${d.surah} (Ayat ${d.startAyat}-${d.endAyat})</td>
+                            <td class="py-2.5 px-3 text-[10px] uppercase font-bold text-slate-500">${d.type}</td>
+                            <td class="py-2.5 px-3"><span class="px-2 py-0.5 bg-rose-100 text-rose-800 rounded font-bold text-[9px]">${d.grade}</span></td>
+                            <td class="py-2.5 px-3 font-semibold text-slate-600">${d.ustadzahName}</td>
+                            <td class="py-2.5 px-3 max-w-xs italic text-slate-500">${d.notes || "-"}</td>
+                        </tr>
+                    `).join('');
+            }
+        }
+
+        /* ==================== STREAMING_CHUNK: Global Reusable UI Elements (Modals & Toasts) ==================== */
+        function openModal(title, contentHtml) {
+            const backdrop = document.getElementById('modal-backdrop');
+            const container = document.getElementById('modal-container');
+            
+            document.getElementById('modal-title').innerHTML = title;
+            document.getElementById('modal-content').innerHTML = contentHtml;
+
+            backdrop.classList.remove('hidden');
+            setTimeout(() => {
+                backdrop.classList.add('opacity-100');
+                container.classList.remove('scale-95');
+                container.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const backdrop = document.getElementById('modal-backdrop');
+            const container = document.getElementById('modal-container');
+
+            backdrop.classList.remove('opacity-100');
+            container.classList.remove('scale-100');
+            container.classList.add('scale-95');
+            setTimeout(() => {
+                backdrop.classList.add('hidden');
+            }, 300);
+        }
+
+        function showToast(message, type = 'success') {
+            const box = document.getElementById('toast-box');
+            if (!box) return;
+
+            const colors = {
+                success: 'bg-emerald-600 text-white',
+                danger: 'bg-rose-600 text-white',
+                warning: 'bg-amber-500 text-white',
+                info: 'bg-rose-950 text-white'
+            };
+
+            const toast = document.createElement('div');
+            toast.className = `px-4 py-2.5 rounded-2xl text-xs font-semibold shadow-lg transform translate-y-2 opacity-0 transition-all duration-300 flex items-center gap-2 ${colors[type] || colors.success}`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${message}`;
+            
+            box.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
