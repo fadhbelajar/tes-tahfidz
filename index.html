@@ -652,6 +652,9 @@
             bannerDesc: "Kelola data santri, ustadzah, halaqah, dan pantau perkembangan tahfidz Al Mawaddah.",
             certLeaderName: "Kepala Pondok Al Mawaddah",
             certLogo: "",
+            certSignature: "",
+            certStamp: "",
+            certTheme: "rose",
             profile: {
                 description: "Pesantren Tahfidz Putri Al Mawaddah Kabupaten Sorong hadir sebagai oasis pendidikan Islam terpadu yang memfokuskan pembinaan pada hafalan Al-Qur'an secara tartil, makhraj yang fasih, serta pemahaman tajwid yang mendalam khusus untuk santriwati.",
                 photo: "",
@@ -729,6 +732,9 @@
                     { key: "announcement_date", value: appSettings.announcement.date },
                     { key: "certLeaderName", value: appSettings.certLeaderName },
                     { key: "certLogo", value: appSettings.certLogo },
+                    { key: "certSignature", value: appSettings.certSignature },
+                    { key: "certStamp", value: appSettings.certStamp },
+                    { key: "certTheme", value: appSettings.certTheme },
                     { key: "profile_description", value: appSettings.profile.description },
                     { key: "profile_photo", value: appSettings.profile.photo },
                     { key: "profile_address", value: appSettings.profile.address },
@@ -964,7 +970,18 @@
                         { key: "announcement_active", value: appSettings.announcement.active.toString() },
                         { key: "announcement_title", value: appSettings.announcement.title },
                         { key: "announcement_body", value: appSettings.announcement.body },
-                        { key: "announcement_date", value: appSettings.announcement.date }
+                        { key: "announcement_date", value: appSettings.announcement.date },
+                        { key: "certLeaderName", value: appSettings.certLeaderName },
+                        { key: "certLogo", value: appSettings.certLogo },
+                        { key: "certSignature", value: appSettings.certSignature },
+                        { key: "certStamp", value: appSettings.certStamp },
+                        { key: "certTheme", value: appSettings.certTheme },
+                        { key: "profile_description", value: appSettings.profile.description },
+                        { key: "profile_photo", value: appSettings.profile.photo },
+                        { key: "profile_address", value: appSettings.profile.address },
+                        { key: "profile_phone", value: appSettings.profile.phone },
+                        { key: "profile_email", value: appSettings.profile.email },
+                        { key: "profile_mapUrl", value: appSettings.profile.mapUrl }
                     ],
                     Accounts: accounts,
                     MasterClasses: masterClasses.map(c => ({ name: c })),
@@ -1007,7 +1024,18 @@
                         { key: "announcement_active", value: appSettings.announcement.active.toString() },
                         { key: "announcement_title", value: appSettings.announcement.title },
                         { key: "announcement_body", value: appSettings.announcement.body },
-                        { key: "announcement_date", value: appSettings.announcement.date }
+                        { key: "announcement_date", value: appSettings.announcement.date },
+                        { key: "certLeaderName", value: appSettings.certLeaderName },
+                        { key: "certLogo", value: appSettings.certLogo },
+                        { key: "certSignature", value: appSettings.certSignature },
+                        { key: "certStamp", value: appSettings.certStamp },
+                        { key: "certTheme", value: appSettings.certTheme },
+                        { key: "profile_description", value: appSettings.profile.description },
+                        { key: "profile_photo", value: appSettings.profile.photo },
+                        { key: "profile_address", value: appSettings.profile.address },
+                        { key: "profile_phone", value: appSettings.profile.phone },
+                        { key: "profile_email", value: appSettings.profile.email },
+                        { key: "profile_mapUrl", value: appSettings.profile.mapUrl }
                     ],
                     Accounts: accounts,
                     MasterClasses: masterClasses.map(c => ({ name: c })),
@@ -1115,6 +1143,9 @@
                     if (s.key === "announcement_date") appSettings.announcement.date = s.value;
                     if (s.key === "certLeaderName") appSettings.certLeaderName = s.value;
                     if (s.key === "certLogo") appSettings.certLogo = s.value;
+                    if (s.key === "certSignature") appSettings.certSignature = s.value;
+                    if (s.key === "certStamp") appSettings.certStamp = s.value;
+                    if (s.key === "certTheme") appSettings.certTheme = s.value;
                     if (s.key === "profile_description") appSettings.profile.description = s.value;
                     if (s.key === "profile_photo") appSettings.profile.photo = s.value;
                     if (s.key === "profile_address") appSettings.profile.address = s.value;
@@ -1144,6 +1175,8 @@
 
         /* ==================== CERTIFICATE & LEAVE MANAGEMENT ==================== */
         let pendingCertLogo = '';
+        let pendingCertSignature = '';
+        let pendingCertStamp = '';
         function handleCertLogo(input) {
             const file = input.files[0];
             if (!file) return;
@@ -1151,10 +1184,27 @@
             reader.onload = (e) => { pendingCertLogo = e.target.result; showToast('Logo sertifikat siap disimpan!', 'success'); };
             reader.readAsDataURL(file);
         }
+        function handleCertSignature(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => { pendingCertSignature = e.target.result; showToast('Tanda tangan siap disimpan!', 'success'); };
+            reader.readAsDataURL(file);
+        }
+        function handleCertStamp(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => { pendingCertStamp = e.target.result; showToast('Stempel pondok siap disimpan!', 'success'); };
+            reader.readAsDataURL(file);
+        }
 
         function saveCertSettings() {
             if (pendingCertLogo) appSettings.certLogo = pendingCertLogo;
+            if (pendingCertSignature) appSettings.certSignature = pendingCertSignature;
+            if (pendingCertStamp) appSettings.certStamp = pendingCertStamp;
             appSettings.certLeaderName = document.getElementById('cert-leader').value.trim();
+            appSettings.certTheme = document.getElementById('cert-theme')?.value || 'rose';
             saveData();
             showToast('Pengaturan sertifikat disimpan!', 'success');
             setAdminTab('cert');
@@ -1221,32 +1271,58 @@
             const juz = s.totalJuz || 0;
             const leader = appSettings.certLeaderName || 'Kepala Pondok';
             const logo = appSettings.certLogo || '';
+            const signature = appSettings.certSignature || '';
+            const stamp = appSettings.certStamp || '';
+            const certTheme = appSettings.certTheme || 'rose';
+
+            const themeColors = {
+                rose: { primary: '#be123c', secondary: '#fda4af', accent: '#f43f5e', light: '#fff1f2', dark: '#4c0519', gradient: 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 50%, #fecdd3 100%)' },
+                gold: { primary: '#b45309', secondary: '#fcd34d', accent: '#d97706', light: '#fffbeb', dark: '#78350f', gradient: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fde68a 100%)' },
+                emerald: { primary: '#065f46', secondary: '#6ee7b7', accent: '#059669', light: '#ecfdf5', dark: '#064e3b', gradient: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%)' },
+                navy: { primary: '#1e3a8a', secondary: '#93c5fd', accent: '#2563eb', light: '#eff6ff', dark: '#1e40af', gradient: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #bfdbfe 100%)' },
+                burgundy: { primary: '#881337', secondary: '#fda4af', accent: '#be123c', light: '#fff1f2', dark: '#4c0519', gradient: 'linear-gradient(135deg, #fff1f2 0%, #fce7f3 50%, #fbcfe8 100%)' }
+            };
+            const colors = themeColors[certTheme] || themeColors.rose;
 
             openModal(`<i class="fa-solid fa-award text-rose-500"></i> Pratinjau Sertifikat`, `
-                <div id="cert-print-area" class="bg-white p-6 border-2 border-rose-200 rounded-xl" style="font-family: 'Times New Roman', serif;">
-                    <div class="text-center border-b-4 border-double border-rose-300 pb-4 mb-4">
-                        ${logo ? `<img src="${logo}" class="w-18 h-18 object-contain mx-auto mb-2">` : `<div class="w-16 h-16 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-2xl mx-auto mb-2"><i class="fa-solid fa-mosque"></i></div>`}
-                        <h2 class="text-lg font-bold text-rose-900 leading-tight">PESANTREN TAHFIDZ QUR'AN PUTRI ALMAWADDAH</h2>
-                        <p class="text-[10px] text-slate-500">Kabupaten Sorong, Papua Barat Daya</p>
-                        <h1 class="text-xl font-extrabold text-rose-700 mt-2 tracking-wide">SERTIFIKAT TAHFIDZ</h1>
-                        <p class="text-sm text-slate-600" dir="rtl">شهادة تحفيظ القرآن الكريم</p>
-                    </div>
-                    <p class="text-center text-xs text-slate-600 mb-1">Dengan ini menyatakan bahwa / نشهد أن</p>
-                    <h3 class="text-center text-2xl font-bold text-rose-900 my-2">${s.name}</h3>
-                    <p class="text-center text-xs text-slate-700 mb-1">${t.sub} <b>${juz} Juz</b></p>
-                    <p class="text-center text-sm font-bold text-rose-800">${t.id}</p>
-                    <p class="text-center text-xs text-slate-600" dir="rtl">${t.ar}</p>
-                    <p class="text-center text-[10px] text-slate-500 mt-1">Jenjang: ${s.jenjang || '-'} | Kelas: ${s.class || '-'}</p>
-                    <div class="flex justify-between items-end mt-8 px-4">
-                        <div class="text-center">
-                            <div class="border-t border-slate-400 w-32 pt-1"></div>
-                            <p class="text-[10px] text-slate-600 mt-1">Tanggal: ${new Date().toLocaleDateString('id-ID')}</p>
+                <div id="cert-print-area" class="relative overflow-hidden" style="font-family: 'Times New Roman', serif; background: ${colors.gradient}; aspect-ratio: 210/297; max-height: 85vh; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.15);">
+                    <div class="absolute inset-4 border-4 rounded-lg pointer-events-none" style="border-color: ${colors.primary}; opacity: 0.3;"></div>
+                    <div class="absolute inset-6 border-2 rounded-lg pointer-events-none" style="border-color: ${colors.secondary}; opacity: 0.5;"></div>
+                    <div class="relative z-10 p-8 flex flex-col h-full">
+                        <div class="text-center border-b-2 pb-4 mb-4" style="border-color: ${colors.primary}40;">
+                            ${logo ? `<img src="${logo}" class="w-16 h-16 object-contain mx-auto mb-2">` : `<div class="w-16 h-16 rounded-full flex items-center justify-center text-3xl mx-auto mb-2" style="background: ${colors.light}; color: ${colors.primary};"><i class="fa-solid fa-mosque"></i></div>`}
+                            <h2 class="text-base font-bold leading-tight mb-1" style="color: ${colors.dark};">PESANTREN TAHFIDZ QUR'AN PUTRI ALMAWADDAH</h2>
+                            <p class="text-[9px] tracking-wide" style="color: ${colors.primary};">Kabupaten Sorong, Papua Barat Daya</p>
+                            <div class="mt-3 py-2 px-4 inline-block rounded-full" style="background: ${colors.primary}15;">
+                                <h1 class="text-lg font-extrabold tracking-wider" style="color: ${colors.primary};">SERTIFIKAT TAHFIDZ</h1>
+                            </div>
+                            <p class="text-xs mt-1 italic" style="color: ${colors.primary}99;" dir="rtl">شهادة تحفيظ القرآن الكريم</p>
                         </div>
-                        <div class="text-center">
-                            <div class="border-t border-slate-400 w-40 pt-1">
-                                <div class="h-10"></div>
-                                <p class="text-[9px] text-slate-600 mt-1 font-bold">${leader}</p>
-                                <p class="text-[8px] text-slate-400">Pimpinan Pondok</p>
+                        <div class="text-center flex-grow">
+                            <p class="text-[11px] mb-2" style="color: ${colors.dark};">Dengan ini menyatakan bahwa / نشهد أن</p>
+                            <div class="py-2 mb-2">
+                                <h3 class="text-xl font-bold mb-1" style="color: ${colors.primary};">${s.name}</h3>
+                            </div>
+                            <p class="text-[11px] mb-2" style="color: ${colors.dark};"><span class="font-semibold">${t.sub}</span> <b class="text-base" style="color: ${colors.accent};">${juz} Juz</b></p>
+                            <div class="py-2 px-4 rounded-lg mb-2" style="background: ${colors.light};">
+                                <p class="text-sm font-bold" style="color: ${colors.primary};">${t.id}</p>
+                            </div>
+                            <p class="text-[10px] italic" style="color: ${colors.primary}99;" dir="rtl">${t.ar}</p>
+                            <p class="text-[9px] mt-2 font-medium" style="color: ${colors.dark}99;">Jenjang: ${s.jenjang || '-'} | Kelas: ${s.class || '-'}</p>
+                        </div>
+                        <div class="flex justify-between items-end mt-4 px-4">
+                            <div class="text-center">
+                                <div class="border-t-2 pt-2 w-32" style="border-color: ${colors.primary}60;">
+                                    <p class="text-[9px] font-medium" style="color: ${colors.dark};">Tanggal: ${new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</p>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <div class="border-t-2 pt-3 w-40" style="border-color: ${colors.primary}60;">
+                                    ${stamp ? `<img src="${stamp}" class="w-16 h-16 object-contain mx-auto mb-1 opacity-90">` : `<div class="w-14 h-14 rounded-full mx-auto mb-1 flex items-center justify-center" style="border: 2px dashed ${colors.primary}40; color: ${colors.primary}40;"><i class="fa-solid fa-stamp text-lg"></i></div>`}
+                                    ${signature ? `<img src="${signature}" class="h-8 object-contain mx-auto mb-0.5" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));">` : `<div class="h-6"></div>`}
+                                    <p class="text-[9px] font-bold mt-0.5" style="color: ${colors.dark};">${leader}</p>
+                                    <p class="text-[8px] font-medium" style="color: ${colors.primary};">Pimpinan Pondok</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1265,9 +1341,18 @@
             const win = window.open('', '_blank');
             win.document.write(`<!DOCTYPE html><html><head><title>Sertifikat Tahfidz</title>
                 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-                <style>@media print { body { margin: 0 } .cert-wrap { max-width: 800px; margin: 20px auto } }</style></head>
-                <body class="bg-slate-100 p-4"><div class="cert-wrap">${area.outerHTML}</div>
-                <script>window.onload=function(){window.print();}<\/script></body></html>`);
+                <style>
+                    @page { size: A4 portrait; margin: 0; }
+                    @media print { 
+                        body { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; } 
+                        .cert-wrap { width: 210mm; min-height: 297mm; margin: 0 auto; }
+                    }
+                    body { font-family: 'Times New Roman', serif; }
+                </style></head>
+                <body class="bg-slate-100 p-4">
+                    <div class="cert-wrap">${area.outerHTML}</div>
+                    <script>window.onload=function(){window.print();}<\/script>
+                </body></html>`);
             win.document.close();
         }
 
@@ -2192,9 +2277,31 @@
                                     <input type="text" id="cert-leader" value="${appSettings.certLeaderName}" class="w-full px-4 py-2 border rounded-xl">
                                 </div>
                                 <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Tema Warna Sertifikat</label>
+                                    <select id="cert-theme" class="w-full px-3 py-2 border rounded-xl">
+                                        <option value="rose" ${appSettings.certTheme === 'rose' ? 'selected' : ''}>Rosy (Merah Muda)</option>
+                                        <option value="gold" ${appSettings.certTheme === 'gold' ? 'selected' : ''}>Gold (Emas)</option>
+                                        <option value="emerald" ${appSettings.certTheme === 'emerald' ? 'selected' : ''}>Emerald (Hijau Zamrud)</option>
+                                        <option value="navy" ${appSettings.certTheme === 'navy' ? 'selected' : ''}>Navy (Biru Laut)</option>
+                                        <option value="burgundy" ${appSettings.certTheme === 'burgundy' ? 'selected' : ''}>Burgundy (Merah Tua)</option>
+                                    </select>
+                                </div>
+                                <div>
                                     <label class="block font-bold text-slate-700 mb-1">Logo Sertifikat (Opsional)</label>
                                     <input type="file" id="cert-logo" accept="image/*" onchange="handleCertLogo(this)" class="w-full text-xs">
                                     ${appSettings.certLogo ? `<img src="${appSettings.certLogo}" class="w-24 h-24 object-contain border border-rose-100 rounded-lg mt-1">` : ''}
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Tanda Tangan Pimpinan</label>
+                                    <input type="file" id="cert-signature" accept="image/*" onchange="handleCertSignature(this)" class="w-full text-xs">
+                                    ${appSettings.certSignature ? `<img src="${appSettings.certSignature}" class="w-24 h-16 object-contain border border-rose-100 rounded-lg mt-1 bg-white">` : ''}
+                                    <p class="text-[9px] text-slate-400 mt-1">Upload foto tanda tangan untuk ditampilkan di sertifikat</p>
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Stempel Pondok Pesantren</label>
+                                    <input type="file" id="cert-stamp" accept="image/*" onchange="handleCertStamp(this)" class="w-full text-xs">
+                                    ${appSettings.certStamp ? `<img src="${appSettings.certStamp}" class="w-20 h-20 object-contain border border-rose-100 rounded-lg mt-1">` : ''}
+                                    <p class="text-[9px] text-slate-400 mt-1">Upload stempel pondok (format lingkaran/squre)</p>
                                 </div>
                                 <button onclick="saveCertSettings()" class="px-4 py-2 bg-rose-600 text-white font-bold rounded-xl hover:bg-rose-700">Simpan Pengaturan</button>
                                 <p class="text-[10px] text-slate-400 leading-relaxed">Sertifikat bilingual (Indonesia & Arab). Pilih santri, jenis sertifikat, lalu Cetak.</p>
