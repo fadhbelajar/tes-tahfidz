@@ -1284,43 +1284,78 @@
             const colors = themeColors[certTheme] || themeColors.rose;
 
             openModal(`<i class="fa-solid fa-award text-rose-500"></i> Pratinjau Sertifikat`, `
-                <div id="cert-print-area" class="relative overflow-hidden" style="font-family: 'Times New Roman', serif; background: ${colors.gradient}; aspect-ratio: 210/297; max-height: 85vh; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.15);">
-                    <div class="absolute inset-4 border-4 rounded-lg pointer-events-none" style="border-color: ${colors.primary}; opacity: 0.3;"></div>
-                    <div class="absolute inset-6 border-2 rounded-lg pointer-events-none" style="border-color: ${colors.secondary}; opacity: 0.5;"></div>
-                    <div class="relative z-10 p-8 flex flex-col h-full">
-                        <div class="text-center border-b-2 pb-4 mb-4" style="border-color: ${colors.primary}40;">
-                            ${logo ? `<img src="${logo}" class="w-16 h-16 object-contain mx-auto mb-2">` : `<div class="w-16 h-16 rounded-full flex items-center justify-center text-3xl mx-auto mb-2" style="background: ${colors.light}; color: ${colors.primary};"><i class="fa-solid fa-mosque"></i></div>`}
-                            <h2 class="text-base font-bold leading-tight mb-1" style="color: ${colors.dark};">PESANTREN TAHFIDZ QUR'AN PUTRI ALMAWADDAH</h2>
-                            <p class="text-[9px] tracking-wide" style="color: ${colors.primary};">Kabupaten Sorong, Papua Barat Daya</p>
-                            <div class="mt-3 py-2 px-4 inline-block rounded-full" style="background: ${colors.primary}15;">
-                                <h1 class="text-lg font-extrabold tracking-wider" style="color: ${colors.primary};">SERTIFIKAT TAHFIDZ</h1>
-                            </div>
-                            <p class="text-xs mt-1 italic" style="color: ${colors.primary}99;" dir="rtl">شهادة تحفيظ القرآن الكريم</p>
-                        </div>
-                        <div class="text-center flex-grow">
-                            <p class="text-[11px] mb-2" style="color: ${colors.dark};">Dengan ini menyatakan bahwa / نشهد أن</p>
-                            <div class="py-2 mb-2">
-                                <h3 class="text-xl font-bold mb-1" style="color: ${colors.primary};">${s.name}</h3>
-                            </div>
-                            <p class="text-[11px] mb-2" style="color: ${colors.dark};"><span class="font-semibold">${t.sub}</span> <b class="text-base" style="color: ${colors.accent};">${juz} Juz</b></p>
-                            <div class="py-2 px-4 rounded-lg mb-2" style="background: ${colors.light};">
-                                <p class="text-sm font-bold" style="color: ${colors.primary};">${t.id}</p>
-                            </div>
-                            <p class="text-[10px] italic" style="color: ${colors.primary}99;" dir="rtl">${t.ar}</p>
-                            <p class="text-[9px] mt-2 font-medium" style="color: ${colors.dark}99;">Jenjang: ${s.jenjang || '-'} | Kelas: ${s.class || '-'}</p>
-                        </div>
-                        <div class="flex justify-between items-end mt-4 px-4">
-                            <div class="text-center">
-                                <div class="border-t-2 pt-2 w-32" style="border-color: ${colors.primary}60;">
-                                    <p class="text-[9px] font-medium" style="color: ${colors.dark};">Tanggal: ${new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</p>
+                <div id="cert-print-area" style="font-family: 'Times New Roman', 'Georgia', serif;">
+                    <div style="width: 210mm; min-height: 297mm; margin: 0 auto; background: ${colors.gradient}; position: relative; overflow: hidden; border-radius: 12px; box-shadow: 0 25px 80px rgba(0,0,0,0.18);">
+                        
+                        <!-- Background Islamic Pattern -->
+                        <div style="position: absolute; inset: 0; opacity: 0.04; background-image: radial-gradient(circle at 20% 30%, ${colors.primary} 1px, transparent 1px), radial-gradient(circle at 80% 70%, ${colors.primary} 1px, transparent 1px), radial-gradient(circle at 50% 50%, ${colors.secondary} 1px, transparent 1px); background-size: 40px 40px, 60px 60px, 80px 80px; background-position: 0 0, 20px 20px, 40px 40px;"></div>
+                        
+                        <!-- Decorative Border -->
+                        <div style="position: absolute; inset: 12px; border: 2px solid ${colors.primary}; border-radius: 8px; opacity: 0.25; pointer-events: none;"></div>
+                        <div style="position: absolute; inset: 18px; border: 1px solid ${colors.secondary}; border-radius: 6px; opacity: 0.4; pointer-events: none;"></div>
+                        
+                        <!-- Corner Ornaments -->
+                        <div style="position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; border-top: 3px solid ${colors.primary}; border-left: 3px solid ${colors.primary}; border-radius: 8px 0 0 0; opacity: 0.6;"></div>
+                        <div style="position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-top: 3px solid ${colors.primary}; border-right: 3px solid ${colors.primary}; border-radius: 0 8px 0 0; opacity: 0.6;"></div>
+                        <div style="position: absolute; bottom: 20px; left: 20px; width: 40px; height: 40px; border-bottom: 3px solid ${colors.primary}; border-left: 3px solid ${colors.primary}; border-radius: 0 0 0 8px; opacity: 0.6;"></div>
+                        <div style="position: absolute; bottom: 20px; right: 20px; width: 40px; height: 40px; border-bottom: 3px solid ${colors.primary}; border-right: 3px solid ${colors.primary}; border-radius: 0 0 8px 0; opacity: 0.6;"></div>
+
+                        <!-- Content -->
+                        <div style="position: relative; z-index: 10; padding: 40px 48px 32px; display: flex; flex-direction: column; min-height: 297mm; box-sizing: border-box;">
+                            
+                            <!-- Header -->
+                            <div style="text-align: center; padding-bottom: 20px; border-bottom: 1.5px solid ${colors.primary}30;">
+                                <div style="margin-bottom: 12px;">
+                                    ${logo ? `<img src="${logo}" style="width: 90px; height: 90px; object-fit: contain; margin: 0 auto; display: block;">` : `<div style="width: 90px; height: 90px; border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 42px; background: ${colors.light}; color: ${colors.primary}; border: 2px solid ${colors.primary}30;"><i class="fa-solid fa-mosque"></i></div>`}
                                 </div>
+                                <h2 style="font-family: 'Times New Roman', serif; font-size: 15px; font-weight: bold; color: ${colors.dark}; letter-spacing: 1.5px; margin: 0 0 4px;">PESANTREN TAHFIDZ QUR'AN PUTRI ALMAWADDAH</h2>
+                                <p style="font-size: 10px; color: ${colors.primary}; letter-spacing: 2px; margin: 0 0 16px; font-weight: 600;">KABUPATEN SORONG · PAPUA BARAT DAYA</p>
+                                
+                                <!-- Certificate Title Badge -->
+                                <div style="display: inline-block; padding: 10px 32px; background: linear-gradient(135deg, ${colors.primary} 0%, ${colors.accent} 100%); border-radius: 50px; margin: 4px 0 8px;">
+                                    <h1 style="font-family: 'Times New Roman', serif; font-size: 20px; font-weight: 800; color: #ffffff; letter-spacing: 3px; margin: 0; text-shadow: 0 1px 2px rgba(0,0,0,0.15);">SERTIFIKAT TAHFIDZ</h1>
+                                </div>
+                                <p style="font-size: 11px; color: ${colors.primary}; font-style: italic; margin: 6px 0 0; opacity: 0.9;" dir="rtl">شهادة تحفيظ القرآن الكريم</p>
                             </div>
-                            <div class="text-center">
-                                <div class="border-t-2 pt-3 w-40" style="border-color: ${colors.primary}60;">
-                                    ${stamp ? `<img src="${stamp}" class="w-16 h-16 object-contain mx-auto mb-1 opacity-90">` : `<div class="w-14 h-14 rounded-full mx-auto mb-1 flex items-center justify-center" style="border: 2px dashed ${colors.primary}40; color: ${colors.primary}40;"><i class="fa-solid fa-stamp text-lg"></i></div>`}
-                                    ${signature ? `<img src="${signature}" class="h-8 object-contain mx-auto mb-0.5" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));">` : `<div class="h-6"></div>`}
-                                    <p class="text-[9px] font-bold mt-0.5" style="color: ${colors.dark};">${leader}</p>
-                                    <p class="text-[8px] font-medium" style="color: ${colors.primary};">Pimpinan Pondok</p>
+
+                            <!-- Body -->
+                            <div style="text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; padding: 24px 0;">
+                                <div style="width: 60px; height: 2px; background: linear-gradient(90deg, transparent, ${colors.primary}, transparent); margin: 0 auto 16px; opacity: 0.5;"></div>
+                                <p style="font-size: 11px; color: ${colors.dark}; margin: 0 0 16px; font-style: italic;">Dengan ini menyatakan bahwa / نشهد أن</p>
+                                
+                                <div style="margin: 8px 0 16px;">
+                                    <h3 style="font-family: 'Times New Roman', serif; font-size: 26px; font-weight: bold; color: ${colors.primary}; margin: 0; letter-spacing: 0.5px; text-shadow: 0 1px 1px rgba(0,0,0,0.05);">${s.name}</h3>
+                                </div>
+                                
+                                <p style="font-size: 11px; color: ${colors.dark}; margin: 0 0 14px; line-height: 1.6;">
+                                    <span style="font-weight: 600;">${t.sub}</span> 
+                                    <span style="display: inline-block; margin: 0 8px; width: 6px; height: 6px; background: ${colors.accent}; border-radius: 50%; vertical-align: middle;"></span>
+                                    <span style="font-weight: 800; font-size: 14px; color: ${colors.accent};">${juz} Juz</span>
+                                </p>
+                                
+                                <div style="display: inline-block; padding: 10px 28px; background: ${colors.light}; border: 1px solid ${colors.secondary}60; border-radius: 8px; margin: 6px 0 10px;">
+                                    <p style="font-size: 12px; font-weight: bold; color: ${colors.primary}; margin: 0; letter-spacing: 1px;">${t.id}</p>
+                                </div>
+                                
+                                <p style="font-size: 10px; color: ${colors.primary}; font-style: italic; margin: 8px 0 0; opacity: 0.85;" dir="rtl">${t.ar}</p>
+                                
+                                <p style="font-size: 9px; color: ${colors.dark}; margin: 10px 0 0; font-weight: 500; opacity: 0.8;">Jenjang: ${s.jenjang || '-'} &nbsp;|&nbsp; Kelas: ${s.class || '-'}</p>
+                            </div>
+
+                            <!-- Footer -->
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 20px; padding-top: 16px; border-top: 1px solid ${colors.primary}25;">
+                                <div style="text-align: center; flex: 1;">
+                                    <div style="width: 180px; border-top: 1.5px solid ${colors.primary}50; padding-top: 8px; margin: 0 auto;">
+                                        <p style="font-size: 9px; color: ${colors.dark}; margin: 0; font-weight: 500;">Tanggal: ${new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</p>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; flex: 1;">
+                                    <div style="width: 200px; border-top: 1.5px solid ${colors.primary}50; padding-top: 10px; margin: 0 auto; position: relative;">
+                                        ${stamp ? `<div style="position: absolute; bottom: 55px; left: 50%; transform: translateX(-50%); width: 70px; height: 70px; opacity: 0.85;"><img src="${stamp}" style="width: 100%; height: 100%; object-fit: contain;"></div>` : `<div style="width: 60px; height: 60px; border: 2px dashed ${colors.primary}35; border-radius: 50%; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; color: ${colors.primary}35; font-size: 20px;"><i class="fa-solid fa-stamp"></i></div>`}
+                                        ${signature ? `<div style="width: 140px; height: 45px; margin: 0 auto 4px; display: flex; align-items: center; justify-content: center;"><img src="${signature}" style="max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.08));"></div>` : `<div style="height: 40px; margin: 0 auto 4px;"></div>`}
+                                        <p style="font-size: 9px; font-weight: bold; color: ${colors.dark}; margin: 0;">${leader}</p>
+                                        <p style="font-size: 8px; color: ${colors.primary}; margin: 2px 0 0; font-weight: 600; letter-spacing: 1px;">PIMPINAN PONDOK</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1336,20 +1371,17 @@
         function printCertificate() {
             const area = document.getElementById('cert-print-area');
             if (!area) return;
-            const html = document.documentElement.outerHTML;
             const win = window.open('', '_blank');
             win.document.write(`<!DOCTYPE html><html><head><title>Sertifikat Tahfidz</title>
                 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
                 <style>
                     @page { size: A4 portrait; margin: 0; }
-                    @media print { 
-                        body { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; } 
-                        .cert-wrap { width: 210mm; min-height: 297mm; margin: 0 auto; }
-                    }
-                    body { font-family: 'Times New Roman', serif; }
+                    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                    body { margin: 0; padding: 0; font-family: 'Times New Roman', serif; }
+                    .cert-page { width: 210mm; min-height: 297mm; margin: 0 auto; }
                 </style></head>
-                <body class="bg-slate-100 p-4">
-                    <div class="cert-wrap">${area.outerHTML}</div>
+                <body class="bg-white">
+                    <div class="cert-page">${area.outerHTML}</div>
                     <script>window.onload=function(){window.print();}<\/script>
                 </body></html>`);
             win.document.close();
