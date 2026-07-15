@@ -1230,9 +1230,10 @@
                         </div>
                         <div class="text-center">
                             <div class="border-t border-slate-400 w-40 pt-1">
-                        </div>
-                            <p class="text-[9px] text-slate-600 mt-1 font-bold">${leader}</p>
-                            <p class="text-[8px] text-slate-400">Pimpinan Pondok</p>
+                                <div class="h-10"></div>
+                                <p class="text-[9px] text-slate-600 mt-1 font-bold">${leader}</p>
+                                <p class="text-[8px] text-slate-400">Pimpinan Pondok</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1744,6 +1745,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm">
+                        <h3 class="text-base font-bold font-serif text-rose-plum mb-4"><i class="fa-solid fa-print text-rose-500 mr-1.5"></i> Cetak Laporan</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="openAdminReport('santri')" class="px-3 py-2 bg-rose-600 text-white rounded-xl text-[11px] font-bold hover:bg-rose-700 flex items-center gap-1.5 shadow"><i class="fa-solid fa-graduation-cap"></i> Data Santriwati</button>
+                            <button onclick="openAdminReport('hafalan')" class="px-3 py-2 bg-amber-600 text-white rounded-xl text-[11px] font-bold hover:bg-amber-700 flex items-center gap-1.5 shadow"><i class="fa-solid fa-book-open"></i> Data Hafalan</button>
+                            <button onclick="openAdminReport('ustadzah')" class="px-3 py-2 bg-emerald-600 text-white rounded-xl text-[11px] font-bold hover:bg-emerald-700 flex items-center gap-1.5 shadow"><i class="fa-solid fa-chalkboard-user"></i> Data Ustadzah</button>
+                            <button onclick="openAdminReport('ringkasan')" class="px-3 py-2 bg-purple-600 text-white rounded-xl text-[11px] font-bold hover:bg-purple-700 flex items-center gap-1.5 shadow"><i class="fa-solid fa-chart-pie"></i> Ringkasan</button>
+                            <button onclick="openAdminReport('global')" class="px-3 py-2 bg-slate-700 text-white rounded-xl text-[11px] font-bold hover:bg-slate-800 flex items-center gap-1.5 shadow"><i class="fa-solid fa-globe"></i> Laporan Global</button>
+                        </div>
+                    </div>
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm lg:col-span-2">
                             <h3 class="text-base font-bold font-serif text-rose-plum mb-3"><i class="fa-solid fa-chart-line text-rose-500"></i> Capaian Target Juz</h3>
@@ -1786,14 +1797,28 @@
                                 <h3 class="text-lg font-bold font-serif text-rose-plum"><i class="fa-solid fa-address-book text-rose-500"></i> Direktori Santriwati</h3>
                                 <p class="text-xs text-rose-500">Daftar lengkap siswi pondok Al Mawaddah dengan klasifikasi jenjang & program.</p>
                             </div>
-                            <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+                            <div class="flex flex-wrap gap-2 w-full sm:w-auto items-center">
+                                <select id="filter-jenjang" onchange="applyStudentFilters()" class="px-3 py-2 text-xs bg-rose-50 border border-rose-200 rounded-xl">
+                                    <option value="">Semua Jenjang</option>
+                                    ${masterJenjangs.map(j => `<option value="${j}">${j}</option>`).join('')}
+                                </select>
+                                <select id="filter-halaqah" onchange="applyStudentFilters()" class="px-3 py-2 text-xs bg-rose-50 border border-rose-200 rounded-xl">
+                                    <option value="">Semua Halaqah</option>
+                                    ${masterHalaqahs.map(h => `<option value="${h}">${h}</option>`).join('')}
+                                </select>
+                                <select id="filter-program" onchange="applyStudentFilters()" class="px-3 py-2 text-xs bg-rose-50 border border-rose-200 rounded-xl">
+                                    <option value="">Semua Program</option>
+                                    <option value="Reguler">Reguler</option>
+                                    <option value="Tahassus">Tahassus</option>
+                                </select>
+                                <button onclick="resetStudentFilters()" class="px-3 py-2 bg-slate-200 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-300"><i class="fa-solid fa-rotate-left"></i></button>
                                 <button onclick="downloadStudentCSV()" class="px-3 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 flex items-center gap-1.5 shadow">
                                     <i class="fa-solid fa-file-excel"></i> CSV
                                 </button>
                                 <button onclick="printAdminStudentReport()" class="px-3 py-2 bg-rose-950 text-white rounded-xl text-xs font-bold hover:bg-rose-900 flex items-center gap-1.5 shadow">
                                     <i class="fa-solid fa-file-pdf"></i> Cetak PDF
                                 </button>
-                                <input type="text" id="student-search" oninput="filterStudents(this.value)" placeholder="Cari nama atau NIS..." class="px-4 py-2 text-xs bg-rose-50 border border-rose-200 rounded-xl">
+                                <input type="text" id="student-search" oninput="applyStudentFilters()" placeholder="Cari nama atau NIS..." class="px-4 py-2 text-xs bg-rose-50 border border-rose-200 rounded-xl">
                                 <button onclick="openAddStudentModal()" class="px-3 py-2 bg-rose-500 text-white rounded-xl text-xs font-bold hover:bg-rose-600">
                                     <i class="fa-solid fa-plus"></i> Tambah
                                 </button>
@@ -1822,14 +1847,16 @@
             else if (adminActiveTab === 'teachers') {
                 container.innerHTML = `
                     <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm">
-                        <div class="flex justify-between items-center mb-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                             <div>
                                 <h3 class="text-lg font-bold font-serif text-rose-plum"><i class="fa-solid fa-chalkboard-user text-rose-500"></i> Pembimbing Halaqah</h3>
                                 <p class="text-xs text-rose-500">Manajemen ustadzah pembina halaqah asrama putri.</p>
                             </div>
-                            <button onclick="openAddTeacherModal()" class="px-3 py-2 bg-rose-500 text-white rounded-xl text-xs font-bold">
-                                <i class="fa-solid fa-plus mr-1"></i> Tambah Ustadzah
-                            </button>
+                            <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+                                <button onclick="downloadTeacherCSV()" class="px-3 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 flex items-center gap-1.5 shadow"><i class="fa-solid fa-file-excel"></i> CSV</button>
+                                <button onclick="printTeacherReport()" class="px-3 py-2 bg-rose-950 text-white rounded-xl text-xs font-bold hover:bg-rose-900 flex items-center gap-1.5 shadow"><i class="fa-solid fa-file-pdf"></i> Cetak PDF</button>
+                                <button onclick="openAddTeacherModal()" class="px-3 py-2 bg-rose-500 text-white rounded-xl text-xs font-bold hover:bg-rose-600"><i class="fa-solid fa-plus"></i> Tambah</button>
+                            </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="admin-teacher-list"></div>
                     </div>
@@ -2396,6 +2423,158 @@
             `);
         }
 
+        /* ==================== ADMIN REPORT GENERATORS ==================== */
+        function openAdminReport(type) {
+            let title = '';
+            let htmlContent = '';
+            const now = new Date();
+
+            if (type === 'santri') {
+                title = 'Laporan Data Santriwati';
+                htmlContent = generateSantriReportContent();
+            } else if (type === 'hafalan') {
+                title = 'Laporan Data Hafalan';
+                htmlContent = generateHafalanReportContent();
+            } else if (type === 'ustadzah') {
+                title = 'Laporan Data Ustadzah';
+                htmlContent = generateUstadzahReportContent();
+            } else if (type === 'ringkasan') {
+                title = 'Laporan Ringkasan';
+                htmlContent = generateRingkasanReportContent();
+            } else if (type === 'global') {
+                title = 'Laporan Global';
+                htmlContent = generateGlobalReportContent();
+            }
+
+            openModal(`<i class="fa-solid fa-file-pdf text-rose-500"></i> ${title}`, `
+                <div id="admin-report-area" class="text-xs">
+                    <div class="text-center mb-4">
+                        <h4 class="text-base font-bold font-serif text-rose-plum uppercase">${appSettings.name}</h4>
+                        <p class="text-[9px] text-rose-500 font-medium">Kabupaten Sorong, Papua Barat Daya</p>
+                        <p class="text-[10px] font-bold text-rose-gold mt-1">${title.toUpperCase()}</p>
+                        <p class="text-[9px] text-slate-400">Dicetak: ${now.toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})} ${now.toLocaleTimeString('id-ID')}</p>
+                    </div>
+                    ${htmlContent}
+                </div>
+                <div class="mt-6 flex justify-end gap-3 pt-4 border-t no-print">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Tutup</button>
+                    <button type="button" onclick="printCertificateArea('admin-report-area')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold"><i class="fa-solid fa-print mr-1"></i> Cetak Laporan</button>
+                </div>
+            `, true);
+        }
+
+        function generateSantriReportContent() {
+            return `<table class="min-w-full divide-y divide-gray-200 text-left border mb-4 text-[10px]">
+                <thead><tr class="bg-gray-50"><th class="py-2 px-3 border font-bold">NIS</th><th class="py-2 px-3 border font-bold">Nama</th><th class="py-2 px-3 border font-bold">Jenjang</th><th class="py-2 px-3 border font-bold">Program</th><th class="py-2 px-3 border font-bold">Halaqah</th><th class="py-2 px-3 border font-bold">Hafalan</th><th class="py-2 px-3 border font-bold">Target</th><th class="py-2 px-3 border font-bold">Wali</th></tr></thead>
+                <tbody>${students.map(s => `<tr><td class="py-1.5 px-2 border">${s.nis}</td><td class="py-1.5 px-2 border font-bold">${s.name}</td><td class="py-1.5 px-2 border">${s.jenjang}</td><td class="py-1.5 px-2 border">${s.program}</td><td class="py-1.5 px-2 border">${s.class}</td><td class="py-1.5 px-2 border">${s.totalJuz} Juz</td><td class="py-1.5 px-2 border">${s.targetJuz} Juz</td><td class="py-1.5 px-2 border">${s.parentName}</td></tr>`).join('')}</tbody>
+            </table>
+            <p class="text-[9px] text-slate-500">Total Santriwati: ${students.length} | Total Hafalan: ${students.reduce((a,s)=>a+s.totalJuz,0)} Juz</p>`;
+        }
+
+        function generateHafalanReportContent() {
+            const sortedDeposits = [...deposits].sort((a,b) => new Date(b.date) - new Date(a.date));
+            return `<table class="min-w-full divide-y divide-gray-200 text-left border mb-4 text-[10px]">
+                <thead><tr class="bg-gray-50"><th class="py-2 px-3 border font-bold">Tanggal</th><th class="py-2 px-3 border font-bold">Santriwati</th><th class="py-2 px-3 border font-bold">Juz</th><th class="py-2 px-3 border font-bold">Surah</th><th class="py-2 px-3 border font-bold">Ayat</th><th class="py-2 px-3 border font-bold">Tipe</th><th class="py-2 px-3 border font-bold">Predikat</th><th class="py-2 px-3 border font-bold">Ustadzah</th></tr></thead>
+                <tbody>${sortedDeposits.map(d => { const s = students.find(x => x.id === d.studentId); return `<tr><td class="py-1.5 px-2 border">${d.date}</td><td class="py-1.5 px-2 border font-bold">${s?s.name:'-'}</td><td class="py-1.5 px-2 border">${d.juz}</td><td class="py-1.5 px-2 border">${d.surah}</td><td class="py-1.5 px-2 border">${d.startAyat}-${d.endAyat}</td><td class="py-1.5 px-2 border">${d.type}</td><td class="py-1.5 px-2 border font-bold">${d.grade}</td><td class="py-1.5 px-2 border">${d.ustadzahName}</td></tr>`; }).join('')}</tbody>
+            </table>
+            <p class="text-[9px] text-slate-500">Total Setoran: ${deposits.length} | Total Santri Berprestasi: ${new Set(deposits.map(d=>d.studentId)).size}</p>`;
+        }
+
+        function generateUstadzahReportContent() {
+            return `<table class="min-w-full divide-y divide-gray-200 text-left border mb-4 text-[10px]">
+                <thead><tr class="bg-gray-50"><th class="py-2 px-3 border font-bold">ID</th><th class="py-2 px-3 border font-bold">Nama</th><th class="py-2 px-3 border font-bold">NIP</th><th class="py-2 px-3 border font-bold">Halaqah</th><th class="py-2 px-3 border font-bold">WhatsApp</th></tr></thead>
+                <tbody>${teachers.map(t => `<tr><td class="py-1.5 px-2 border">${t.id}</td><td class="py-1.5 px-2 border font-bold">${t.name}</td><td class="py-1.5 px-2 border">${t.nip||'-'}</td><td class="py-1.5 px-2 border">${t.halaqah}</td><td class="py-1.5 px-2 border">${t.phone}</td></tr>`).join('')}</tbody>
+            </table>
+            <p class="text-[9px] text-slate-500">Total Ustadzah: ${teachers.length} | Total Halaqah: ${new Set(teachers.map(t=>t.halaqah)).size}</p>`;
+        }
+
+        function generateRingkasanReportContent() {
+            const totalStudents = students.length;
+            const totalJuz = students.reduce((a,s)=>a+s.totalJuz,0);
+            const avgJuz = totalStudents > 0 ? (totalJuz/totalStudents).toFixed(1) : 0;
+            const totalTeachers = teachers.length;
+            const totalDeposits = deposits.length;
+            const totalAccounts = accounts.length;
+            const totalHalaqah = new Set(teachers.map(t=>t.halaqah)).size;
+            return `<div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="p-3 border rounded-xl bg-rose-50"><span class="block text-[9px] uppercase font-bold text-rose-600">Total Santriwati</span><span class="text-lg font-bold text-rose-950">${totalStudents}</span></div>
+                <div class="p-3 border rounded-xl bg-amber-50"><span class="block text-[9px] uppercase font-bold text-amber-600">Total Hafalan</span><span class="text-lg font-bold text-amber-700">${totalJuz} Juz</span></div>
+                <div class="p-3 border rounded-xl bg-emerald-50"><span class="block text-[9px] uppercase font-bold text-emerald-600">Rerata Hafalan</span><span class="text-lg font-bold text-emerald-700">${avgJuz} Juz</span></div>
+                <div class="p-3 border rounded-xl bg-purple-50"><span class="block text-[9px] uppercase font-bold text-purple-600">Total Ustadzah</span><span class="text-lg font-bold text-purple-700">${totalTeachers}</span></div>
+                <div class="p-3 border rounded-xl bg-blue-50"><span class="block text-[9px] uppercase font-bold text-blue-600">Total Setoran</span><span class="text-lg font-bold text-blue-700">${totalDeposits}</span></div>
+                <div class="p-3 border rounded-xl bg-slate-100"><span class="block text-[9px] uppercase font-bold text-slate-600">Total Akun</span><span class="text-lg font-bold text-slate-700">${totalAccounts}</span></div>
+            </div>
+            <p class="text-[9px] text-slate-500">Total Halaqah Aktif: ${totalHalaqah} | Santri Khatam: ${students.filter(s=>s.totalJuz>=30).length}</p>`;
+        }
+
+        function generateGlobalReportContent() {
+            const totalStudents = students.length;
+            const totalJuz = students.reduce((a,s)=>a+s.totalJuz,0);
+            const totalTeachers = teachers.length;
+            const totalDeposits = deposits.length;
+            const totalAccounts = accounts.length;
+            const avgJuz = totalStudents > 0 ? (totalJuz/totalStudents).toFixed(1) : 0;
+            const jenjangCounts = {};
+            students.forEach(s => { jenjangCounts[s.jenjang] = (jenjangCounts[s.jenjang]||0)+1; });
+            const programCounts = {};
+            students.forEach(s => { programCounts[s.program] = (programCounts[s.program]||0)+1; });
+            const halaqahCounts = {};
+            students.forEach(s => { halaqahCounts[s.class] = (halaqahCounts[s.class]||0)+1; });
+            return `<div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="p-3 border rounded-xl"><span class="block text-[9px] uppercase font-bold text-slate-500">Total Santriwati</span><span class="text-lg font-bold">${totalStudents}</span></div>
+                <div class="p-3 border rounded-xl"><span class="block text-[9px] uppercase font-bold text-slate-500">Total Ustadzah</span><span class="text-lg font-bold">${totalTeachers}</span></div>
+                <div class="p-3 border rounded-xl"><span class="block text-[9px] uppercase font-bold text-slate-500">Total Hafalan</span><span class="text-lg font-bold">${totalJuz} Juz</span></div>
+                <div class="p-3 border rounded-xl"><span class="block text-[9px] uppercase font-bold text-slate-500">Rerata</span><span class="text-lg font-bold">${avgJuz} Juz</span></div>
+                <div class="p-3 border rounded-xl"><span class="block text-[9px] uppercase font-bold text-slate-500">Total Setoran</span><span class="text-lg font-bold">${totalDeposits}</span></div>
+                <div class="p-3 border rounded-xl"><span class="block text-[9px] uppercase font-bold text-slate-500">Total Akun Sistem</span><span class="text-lg font-bold">${totalAccounts}</span></div>
+            </div>
+            <h5 class="font-bold text-[11px] mt-3 mb-1">Distribusi per Jenjang</h5>
+            <table class="w-full text-left border mb-3 text-[10px]"><thead><tr class="bg-gray-50"><th class="py-1 px-2 border">Jenjang</th><th class="py-1 px-2 border">Jumlah</th></tr></thead><tbody>${Object.entries(jenjangCounts).map(([k,v])=>`<tr><td class="py-1 px-2 border">${k}</td><td class="py-1 px-2 border">${v}</td></tr>`).join('')}</tbody></table>
+            <h5 class="font-bold text-[11px] mt-3 mb-1">Distribusi per Program</h5>
+            <table class="w-full text-left border mb-3 text-[10px]"><thead><tr class="bg-gray-50"><th class="py-1 px-2 border">Program</th><th class="py-1 px-2 border">Jumlah</th></tr></thead><tbody>${Object.entries(programCounts).map(([k,v])=>`<tr><td class="py-1 px-2 border">${k}</td><td class="py-1 px-2 border">${v}</td></tr>`).join('')}</tbody></table>
+            <h5 class="font-bold text-[11px] mt-3 mb-1">Distribusi per Halaqah</h5>
+            <table class="w-full text-left border mb-3 text-[10px]"><thead><tr class="bg-gray-50"><th class="py-1 px-2 border">Halaqah</th><th class="py-1 px-2 border">Jumlah Santri</th></tr></thead><tbody>${Object.entries(halaqahCounts).map(([k,v])=>`<tr><td class="py-1 px-2 border">${k}</td><td class="py-1 px-2 border">${v}</td></tr>`).join('')}</tbody></table>`;
+        }
+
+        function downloadTeacherCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+            csvContent += "ID,Nama,NIP,Halaqah,WhatsApp\n";
+            teachers.forEach(t => {
+                let row = `${t.id},"${t.name}","${t.nip||''}","${t.halaqah}","${t.phone}"`;
+                csvContent += row + "\n";
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Data_Ustadzah_${appSettings.name.replace(/\s+/g, '_')}_Aimas.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('Laporan CSV Ustadzah berhasil diunduh!', 'success');
+        }
+
+        function printTeacherReport() {
+            openModal(`<i class="fa-solid fa-file-pdf text-rose-500"></i> Laporan Data Ustadzah`, `
+                <div id="teacher-report-area" class="text-xs">
+                    <div class="text-center mb-4">
+                        <h4 class="text-base font-bold font-serif text-rose-plum uppercase">${appSettings.name}</h4>
+                        <p class="text-[9px] text-rose-500 font-medium">Kabupaten Sorong, Papua Barat Daya</p>
+                        <p class="text-[10px] font-bold text-rose-gold mt-1">LAPORAN DATA USTADZAH PEMBIMBING</p>
+                        <p class="text-[9px] text-slate-400">Dicetak: ${new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</p>
+                    </div>
+                    ${generateUstadzahReportContent()}
+                    <div class="mt-8 text-right text-[9px] pt-4 border-t">
+                        <p class="text-rose-500">Kab. Sorong, ${new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</p>
+                        <p class="font-bold text-rose-plum mt-10">Mudirah Ma'had Al Mawaddah</p>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-center gap-2 no-print">
+                    <button onclick="window.print()" class="px-4 py-2 bg-rose-plum text-white hover:bg-rose-900 rounded-xl font-semibold flex items-center gap-1.5 shadow"><i class="fa-solid fa-print"></i> Cetak Laporan</button>
+                    <button onclick="closeModal()" class="px-4 py-2 bg-rose-100 text-rose-800 rounded-xl font-semibold">Tutup</button>
+                </div>
+            `, true);
+        }
+
         /* ==================== STREAMING_CHUNK: Save CMS & Brand Functions ==================== */
         function saveCMSBanner() {
             appSettings.bannerWelcome = document.getElementById('cms-welcome-title').value.trim();
@@ -2801,10 +2980,28 @@
             }).join('');
         }
 
-        function filterStudents(val) {
-            const query = val.toLowerCase();
-            const filtered = students.filter(s => s.name.toLowerCase().includes(query) || s.nis.includes(query));
+        function applyStudentFilters() {
+            const query = document.getElementById('student-search').value.toLowerCase();
+            const jenjang = document.getElementById('filter-jenjang').value;
+            const halaqah = document.getElementById('filter-halaqah').value;
+            const program = document.getElementById('filter-program').value;
+
+            const filtered = students.filter(s => {
+                const matchQuery = !query || s.name.toLowerCase().includes(query) || s.nis.includes(query);
+                const matchJenjang = !jenjang || s.jenjang === jenjang;
+                const matchHalaqah = !halaqah || s.class === halaqah;
+                const matchProgram = !program || s.program === program;
+                return matchQuery && matchJenjang && matchHalaqah && matchProgram;
+            });
             renderAdminStudentTable(filtered);
+        }
+
+        function resetStudentFilters() {
+            document.getElementById('student-search').value = '';
+            document.getElementById('filter-jenjang').value = '';
+            document.getElementById('filter-halaqah').value = '';
+            document.getElementById('filter-program').value = '';
+            renderAdminStudentTable(students);
         }
 
         function openAddStudentModal() {
@@ -3005,6 +3202,8 @@
                     <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center text-lg"><i class="fa-solid fa-chalkboard-user"></i></div>
                     <div class="space-y-1 text-xs flex-grow">
                         <h4 class="font-bold text-rose-plum">${u.name}</h4>
+                        <p class="text-[10px] text-slate-500 font-medium">Email: <span class="font-semibold text-rose-700">${u.email || '-'}</span></p>
+                        <p class="text-[10px] text-slate-500 font-medium">Username: <span class="font-mono font-semibold text-rose-700">${u.username || '-'}</span></p>
                         <p class="text-[10px] text-slate-500 font-medium">NIP: <span class="font-semibold text-rose-700">${u.nip || '-'}</span></p>
                         <p class="text-[10px] text-slate-500 font-medium">Halaqah: <span class="font-semibold text-rose-700">${u.halaqah}</span></p>
                         <p class="text-[10px] text-slate-500 font-semibold"><i class="fa-brands fa-whatsapp text-emerald-600"></i> ${u.phone}</p>
@@ -3024,25 +3223,39 @@
                         <label class="block font-bold text-rose-700 mb-1">Nama Lengkap Pembimbing <span class="text-red-500">*</span></label>
                         <input type="text" id="f-u-name" required placeholder="Contoh: Ustadzah Fatimah Al-Hafidzah" class="w-full px-4 py-2 border rounded-xl">
                     </div>
-                    <div>
-                        <label class="block font-bold text-rose-700 mb-1">NIP</label>
-                        <input type="text" id="f-u-nip" placeholder="Contoh: 19870101 001" class="w-full px-4 py-2 border rounded-xl">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Alamat Email <span class="text-red-500">*</span></label>
+                            <input type="email" id="f-u-email" required placeholder="ustadzah@almawaddah.id" class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Nama Pengguna (Username) <span class="text-red-500">*</span></label>
+                            <input type="text" id="f-u-user" required placeholder="ust_fatimah" class="w-full px-4 py-2 border rounded-xl">
+                        </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block font-bold text-rose-700 mb-1">Halaqah Yang Diampu <span class="text-red-500">*</span></label>
-                            <select id="f-u-halaqah" class="w-full px-3 py-2 border rounded-xl">
-                                ${masterHalaqahs.map(h => `<option value="${h}">${h}</option>`).join('')}
-                            </select>
+                            <label class="block font-bold text-rose-700 mb-1">Kata Sandi <span class="text-red-500">*</span></label>
+                            <input type="text" id="f-u-pass" required placeholder="Minimal 6 karakter" class="w-full px-4 py-2 border rounded-xl">
                         </div>
                         <div>
                             <label class="block font-bold text-rose-700 mb-1">No. WhatsApp <span class="text-red-500">*</span></label>
                             <input type="text" id="f-u-phone" required placeholder="Contoh: 0812-..." class="w-full px-4 py-2 border rounded-xl">
                         </div>
                     </div>
+                    <div>
+                        <label class="block font-bold text-rose-700 mb-1">NIP</label>
+                        <input type="text" id="f-u-nip" placeholder="Contoh: 19870101 001" class="w-full px-4 py-2 border rounded-xl">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-rose-700 mb-1">Halaqah Yang Diampu <span class="text-red-500">*</span></label>
+                        <select id="f-u-halaqah" class="w-full px-3 py-2 border rounded-xl">
+                            ${masterHalaqahs.map(h => `<option value="${h}">${h}</option>`).join('')}
+                        </select>
+                    </div>
                     <div class="pt-4 flex justify-end gap-3 border-t">
                         <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
-                        <button type="submit" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold">Simpan</button>
+                        <button type="submit" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold">Simpan & Buat Akun</button>
                     </div>
                 </form>
             `);
@@ -3051,16 +3264,26 @@
         function handleSaveTeacher(e) {
             e.preventDefault();
             const name = document.getElementById('f-u-name').value.trim();
+            const email = document.getElementById('f-u-email').value.trim();
+            const username = document.getElementById('f-u-user').value.trim();
+            const password = document.getElementById('f-u-pass').value.trim();
             const nip = document.getElementById('f-u-nip').value.trim();
             const halaqah = document.getElementById('f-u-halaqah').value;
             const phone = document.getElementById('f-u-phone').value.trim();
 
             const newTeacher = { id: 'U' + Date.now(), name, nip, halaqah, phone };
             teachers.push(newTeacher);
+
+            const existingAcc = accounts.find(a => a.username === username);
+            if (!existingAcc) {
+                accounts.push({ name, email, username, role: 'ustadzah', password });
+            }
+
             saveData();
             closeModal();
-            showToast('Ustadzah baru berhasil terdaftar!', 'success');
+            showToast('Ustadzah berhasil direkrut & akun linked otomatis!', 'success');
             renderAdminTeacherList();
+            renderAdminAccountTable();
             renderLandingStats();
         }
 
@@ -3074,20 +3297,36 @@
                         <label class="block font-bold text-rose-700 mb-1">Nama Lengkap</label>
                         <input type="text" id="f-u-edit-name" value="${u.name}" required class="w-full px-4 py-2 border rounded-xl">
                     </div>
-                    <div>
-                        <label class="block font-bold text-rose-700 mb-1">NIP</label>
-                        <input type="text" id="f-u-edit-nip" value="${u.nip || ''}" class="w-full px-4 py-2 border rounded-xl">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Alamat Email</label>
+                            <input type="email" id="f-u-edit-email" value="${u.email || ''}" class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Nama Pengguna (Username)</label>
+                            <input type="text" id="f-u-edit-user" value="${u.username || ''}" class="w-full px-4 py-2 border rounded-xl">
+                        </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Kata Sandi</label>
+                            <input type="text" id="f-u-edit-pass" value="${u.password || ''}" class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">No. WhatsApp</label>
+                            <input type="text" id="f-u-edit-phone" value="${u.phone}" required class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">NIP</label>
+                            <input type="text" id="f-u-edit-nip" value="${u.nip || ''}" class="w-full px-4 py-2 border rounded-xl">
+                        </div>
                         <div>
                             <label class="block font-bold text-rose-700 mb-1">Halaqah Yang Diampu</label>
                             <select id="f-u-edit-halaqah" class="w-full px-3 py-2 border rounded-xl">
                                 ${masterHalaqahs.map(h => `<option value="${h}" ${u.halaqah === h ? 'selected' : ''}>${h}</option>`).join('')}
                             </select>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-rose-700 mb-1">No. WhatsApp</label>
-                            <input type="text" id="f-u-edit-phone" value="${u.phone}" required class="w-full px-4 py-2 border rounded-xl">
                         </div>
                     </div>
                     <div class="pt-4 flex justify-end gap-3 border-t">
@@ -3101,17 +3340,27 @@
         function handleUpdateTeacher(e, id) {
             e.preventDefault();
             const name = document.getElementById('f-u-edit-name').value.trim();
+            const email = document.getElementById('f-u-edit-email').value.trim();
+            const username = document.getElementById('f-u-edit-user').value.trim();
+            const password = document.getElementById('f-u-edit-pass').value.trim();
             const nip = document.getElementById('f-u-edit-nip').value.trim();
             const halaqah = document.getElementById('f-u-edit-halaqah').value;
             const phone = document.getElementById('f-u-edit-phone').value.trim();
 
             const idx = teachers.findIndex(x => x.id === id);
             if (idx !== -1) {
-                teachers[idx] = { id, name, nip, halaqah, phone };
+                teachers[idx] = { id, name, email, username, password, nip, halaqah, phone };
+                const acc = accounts.find(a => a.username === username);
+                if (acc) {
+                    acc.name = name;
+                    acc.email = email;
+                    if (password) acc.password = password;
+                }
                 saveData();
                 closeModal();
-                showToast('Profil Ustadzah berhasil diperbarui.', 'success');
+                showToast('Profil Ustadzah & akun linked berhasil diperbarui.', 'success');
                 renderAdminTeacherList();
+                renderAdminAccountTable();
             }
         }
 
@@ -3138,6 +3387,7 @@
                     <td class="py-2.5 px-3 font-mono">${acc.password}</td>
                     <td class="py-2.5 px-3 text-center">
                         <div class="flex justify-center gap-1">
+                            <button onclick="editAccount(${i})" class="w-6 h-6 rounded bg-amber-50 hover:bg-amber-100 text-amber-600 flex items-center justify-center"><i class="fa-solid fa-edit text-[10px]"></i></button>
                             <button onclick="resetAccountPassword(${i})" class="px-2 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 text-[10px] rounded-lg"><i class="fa-solid fa-rotate-left"></i> Reset Sandi</button>
                             <button onclick="deleteAccount(${i})" class="w-6 h-6 rounded bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
                         </div>
@@ -3242,6 +3492,76 @@
                 showToast('Akun berhasil dihapus.', 'warning');
                 renderAdminAccountTable();
             }
+        }
+
+        function editAccount(index) {
+            const acc = accounts[index];
+            if (!acc) return;
+
+            openModal(`<i class="fa-solid fa-edit text-rose-500"></i> Edit Akun: ${acc.name}`, `
+                <form onsubmit="handleUpdateAccount(event, ${index})" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-bold text-rose-700 mb-1">Nama Lengkap Pemegang Akun <span class="text-red-500">*</span></label>
+                        <input type="text" id="f-acc-edit-name" value="${acc.name}" required class="w-full px-4 py-2 border rounded-xl">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Alamat Email <span class="text-red-500">*</span></label>
+                            <input type="email" id="f-acc-edit-email" value="${acc.email}" required class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Nama Pengguna (Username) <span class="text-red-500">*</span></label>
+                            <input type="text" id="f-acc-edit-user" value="${acc.username}" required class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Tingkatan Akses (Role)</label>
+                            <select id="f-acc-edit-role" class="w-full px-3 py-2 border rounded-xl">
+                                <option value="parent" ${acc.role === 'parent' ? 'selected' : ''}>Wali Santri (Orang Tua)</option>
+                                <option value="ustadzah" ${acc.role === 'ustadzah' ? 'selected' : ''}>Ustadzah (Pembimbing)</option>
+                                <option value="admin" ${acc.role === 'admin' ? 'selected' : ''}>Administrator Utama</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-rose-700 mb-1">Kata Sandi Baru</label>
+                            <input type="text" id="f-acc-edit-pass" value="${acc.password}" placeholder="Kosongkan jika tidak diubah" class="w-full px-4 py-2 border rounded-xl">
+                        </div>
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3 border-t">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold">Simpan Perubahan</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function handleUpdateAccount(e, index) {
+            e.preventDefault();
+            const name = document.getElementById('f-acc-edit-name').value.trim();
+            const email = document.getElementById('f-acc-edit-email').value.trim();
+            const username = document.getElementById('f-acc-edit-user').value.trim();
+            const role = document.getElementById('f-acc-edit-role').value;
+            const password = document.getElementById('f-acc-edit-pass').value.trim();
+
+            if (!name || !email || !username) {
+                showToast('Nama, email, dan username wajib diisi.', 'warning');
+                return;
+            }
+
+            const acc = accounts[index];
+            if (!acc) return;
+
+            acc.name = name;
+            acc.email = email;
+            acc.username = username;
+            acc.role = role;
+            if (password) acc.password = password;
+
+            saveData();
+            closeModal();
+            showToast('Akun berhasil diperbarui.', 'success');
+            renderAdminAccountTable();
         }
 
         function openChangePasswordModal() {
