@@ -181,7 +181,7 @@
                 <div class="space-y-6">
                     <span class="text-xs text-rose-600 font-bold tracking-widest uppercase block">Mengenal Al Mawaddah</span>
                     <h3 class="font-serif text-2xl sm:text-3xl font-bold text-rose-950 leading-tight">Pendidikan Berkelas Dunia dengan Nilai Keputrian & Qur'ani</h3>
-                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" id="public-profile-desc">
                         Pesantren Tahfidz Putri Al Mawaddah Kabupaten Sorong hadir sebagai oase pendidikan Islam terpadu yang memfokuskan pembinaan pada hafalan Al-Qur'an secara tartil, makhraj yang fasih, serta pemahaman tajwid yang mendalam khusus untuk santriwati.
                     </p>
                     <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -206,7 +206,7 @@
                 </div>
                 <div class="relative">
                     <div class="absolute inset-0 bg-gradient-to-tr from-rose-500 to-amber-500 rounded-3xl rotate-3 opacity-10"></div>
-                    <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800" alt="Islamic Study Group" class="rounded-3xl shadow-xl w-full object-cover h-72 sm:h-96 relative z-10 border border-white" onerror="this.src='https://placehold.co/800x600/fbcfe8/4c0519?text=Pesantren+Putri'">
+                    <img id="public-profile-photo" src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800" alt="Islamic Study Group" class="rounded-3xl shadow-xl w-full object-cover h-72 sm:h-96 relative z-10 border border-white" onerror="this.src='https://placehold.co/800x600/fbcfe8/4c0519?text=Pesantren+Putri'">
                 </div>
             </section>
 
@@ -299,6 +299,12 @@
                     <button onclick="setAdminTab('accounts')" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5" id="tab-btn-accounts">
                         <i class="fa-solid fa-user-lock"></i> Manajemen Akun
                     </button>
+                    <button onclick="setAdminTab('cert')" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5" id="tab-btn-cert">
+                        <i class="fa-solid fa-award"></i> Sertifikat
+                    </button>
+                    <button onclick="setAdminTab('leaves')" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5" id="tab-btn-leaves">
+                        <i class="fa-solid fa-plane-departure"></i> Pengajuan Cuti
+                    </button>
                 </div>
 
                 <!-- Tab Content Area -->
@@ -307,6 +313,19 @@
 
             <!-- Ustadzah Dashboard Panel -->
             <div id="ustadzah-dashboard-view" class="dashboard-role-panel space-y-6 hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-3xl border border-rose-100 shadow-sm">
+                    <div>
+                        <h3 class="text-base font-bold font-serif text-rose-950"><i class="fa-solid fa-chalkboard-user text-rose-500 mr-1.5"></i> Panel Ustadzah Pembimbing</h3>
+                        <p class="text-[11px] text-slate-500">Data otomatis difilter sesuai halaqah yang Anda ampu.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="openReportModal('harian')" class="px-3 py-2 bg-rose-50 text-rose-700 rounded-xl text-[11px] font-bold hover:bg-rose-100"><i class="fa-solid fa-calendar-day mr-1"></i> Laporan Harian</button>
+                        <button onclick="openReportModal('mingguan')" class="px-3 py-2 bg-rose-50 text-rose-700 rounded-xl text-[11px] font-bold hover:bg-rose-100"><i class="fa-solid fa-calendar-week mr-1"></i> Mingguan</button>
+                        <button onclick="openReportModal('bulanan')" class="px-3 py-2 bg-rose-50 text-rose-700 rounded-xl text-[11px] font-bold hover:bg-rose-100"><i class="fa-solid fa-calendar mr-1"></i> Bulanan</button>
+                        <button onclick="openReportModal('rangkuman')" class="px-3 py-2 bg-rose-50 text-rose-700 rounded-xl text-[11px] font-bold hover:bg-rose-100"><i class="fa-solid fa-chart-pie mr-1"></i> Rangkuman</button>
+                        <button onclick="openLeaveModal()" class="px-3 py-2 bg-amber-500 text-white rounded-xl text-[11px] font-bold hover:bg-amber-600"><i class="fa-solid fa-plane-departure mr-1"></i> Ajukan Cuti</button>
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <!-- Left: Input setoran -->
                     <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
@@ -414,6 +433,7 @@
                         <div class="flex items-center gap-2 w-full sm:w-auto">
                             <label class="text-xs font-bold text-slate-700 whitespace-nowrap">Pilih Putri:</label>
                             <select id="parent-student-select" onchange="changeParentStudent(this.value)" class="px-3 py-2 text-xs bg-rose-50/80 border border-rose-200 rounded-xl focus:outline-none w-full sm:w-48 font-semibold"></select>
+                            <button onclick="openParentCertificate()" class="px-3 py-2 bg-rose-600 text-white rounded-xl text-[11px] font-bold hover:bg-rose-700 whitespace-nowrap"><i class="fa-solid fa-award mr-1"></i> Sertifikat</button>
                         </div>
                     </div>
 
@@ -531,12 +551,17 @@
                 <h4 class="font-serif font-bold text-white text-sm">Alamat Kontak</h4>
                 <p class="text-xs text-rose-200/80 leading-relaxed flex items-start gap-2">
                     <i class="fa-solid fa-location-dot mt-0.5 text-rose-400"></i>
-                    Jl. Pesantren Baru, Aimas, Kab. Sorong, Papua Barat Daya, Indonesia
+                    <span id="public-contact-address">Jl. Pesantren Baru, Aimas, Kab. Sorong, Papua Barat Daya, Indonesia</span>
                 </p>
                 <p class="text-xs text-rose-200/80 flex items-center gap-2">
                     <i class="fa-solid fa-phone text-rose-400"></i>
-                    +62 812-4455-8899
+                    <span id="public-contact-phone">+62 812-4455-8899</span>
                 </p>
+                <p class="text-xs text-rose-200/80 flex items-center gap-2">
+                    <i class="fa-solid fa-envelope text-rose-400"></i>
+                    <span id="public-contact-email">info@almawaddah.id</span>
+                </p>
+                <iframe id="public-contact-map" class="w-full h-32 rounded-xl border border-rose-400/20 mt-1" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src=""></iframe>
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-8 border-t border-rose-900/50 text-center text-[11px] text-rose-300/60 flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -571,9 +596,9 @@
         ];
 
         const DEFAULT_TEACHERS = [
-            { id: "U001", name: "Ustadzah Maryam Al-Hafidzah", halaqah: "Halaqah Khodijah (Unggulan)", phone: "0812-4455-8899" },
-            { id: "U002", name: "Ustadzah Asmaul Husna", halaqah: "Halaqah Aisyah", phone: "0852-9900-1122" },
-            { id: "U003", name: "Ustadzah Wardah Syafiqah", halaqah: "Halaqah Ummu Salamah", phone: "0811-2233-4455" }
+            { id: "U001", name: "Ustadzah Maryam Al-Hafidzah", nip: "19870101 001", halaqah: "Halaqah Khodijah (Unggulan)", phone: "0812-4455-8899" },
+            { id: "U002", name: "Ustadzah Asmaul Husna", nip: "19900202 002", halaqah: "Halaqah Aisyah", phone: "0852-9900-1122" },
+            { id: "U003", name: "Ustadzah Wardah Syafiqah", nip: "19920303 003", halaqah: "Halaqah Ummu Salamah", phone: "0811-2233-4455" }
         ];
 
         const DEFAULT_MASTER_CLASSES = ["Kelas VII", "Kelas VIII", "Kelas IX", "Kelas X", "Kelas XI", "Kelas XII"];
@@ -616,9 +641,19 @@
             name: "E-Tahfidz Al Mawaddah",
             tagline: "Pesantren Tahfidz Putri",
             logo: "", 
-            theme: "rose", 
+            theme: "rose",
             bannerWelcome: "Ahlan Wa Sahlan, Admin Utama",
             bannerDesc: "Kelola data santri, ustadzah, halaqah, dan pantau perkembangan tahfidz Al Mawaddah.",
+            certLeaderName: "Kepala Pondok Al Mawaddah",
+            certLogo: "",
+            profile: {
+                description: "Pesantren Tahfidz Putri Al Mawaddah Kabupaten Sorong hadir sebagai oasis pendidikan Islam terpadu yang memfokuskan pembinaan pada hafalan Al-Qur'an secara tartil, makhraj yang fasih, serta pemahaman tajwid yang mendalam khusus untuk santriwati.",
+                photo: "",
+                address: "Jl. Pesantren Baru, Aimas, Kab. Sorong, Papua Barat Daya",
+                phone: "+62 812-4455-8899",
+                email: "info@almawaddah.id",
+                mapUrl: ""
+            },
             announcement: {
                 active: true,
                 title: "Persiapan Imtihan Quarter Pertama",
@@ -643,6 +678,7 @@
         let masterClasses = JSON.parse(localStorage.getItem('m_master_classes')) || DEFAULT_MASTER_CLASSES;
         let masterJenjangs = JSON.parse(localStorage.getItem('m_master_jenjangs')) || DEFAULT_MASTER_JENJANGS;
         let masterHalaqahs = JSON.parse(localStorage.getItem('m_master_halaqahs')) || DEFAULT_MASTER_HALAQAHS;
+        let leaves = JSON.parse(localStorage.getItem('m_leaves')) || [];
         let webAppUrl = localStorage.getItem('m_webapp_url') || '';
 
         // Backend mode: 'local' (browser only) | 'sheets' (Google Apps Script) | 'd1' (Cloudflare D1)
@@ -660,6 +696,7 @@
             localStorage.setItem('m_master_classes', JSON.stringify(masterClasses));
             localStorage.setItem('m_master_jenjangs', JSON.stringify(masterJenjangs));
             localStorage.setItem('m_master_halaqahs', JSON.stringify(masterHalaqahs));
+            localStorage.setItem('m_leaves', JSON.stringify(leaves));
             
             // Sync ke backend aktif di background
             syncToCloudSilent();
@@ -681,7 +718,15 @@
                     { key: "announcement_active", value: appSettings.announcement.active.toString() },
                     { key: "announcement_title", value: appSettings.announcement.title },
                     { key: "announcement_body", value: appSettings.announcement.body },
-                    { key: "announcement_date", value: appSettings.announcement.date }
+                    { key: "announcement_date", value: appSettings.announcement.date },
+                    { key: "certLeaderName", value: appSettings.certLeaderName },
+                    { key: "certLogo", value: appSettings.certLogo },
+                    { key: "profile_description", value: appSettings.profile.description },
+                    { key: "profile_photo", value: appSettings.profile.photo },
+                    { key: "profile_address", value: appSettings.profile.address },
+                    { key: "profile_phone", value: appSettings.profile.phone },
+                    { key: "profile_email", value: appSettings.profile.email },
+                    { key: "profile_mapUrl", value: appSettings.profile.mapUrl }
                 ],
                 Accounts: accounts,
                 MasterClasses: masterClasses.map(c => ({ name: c })),
@@ -788,7 +833,13 @@
             };
         }
 
-        /* ==================== SYSTEM ONLOAD / SETUP ==================== */
+        function setTheme(themeKey) {
+            appSettings.theme = themeKey;
+            applyTheme(themeKey);
+            saveData();
+            if (typeof setAdminTab === 'function') setAdminTab('branding');
+            showToast('Skema warna ' + themeKey + ' diterapkan.', 'success');
+        }
         window.onload = function () {
             applyTheme(appSettings.theme);
             syncBrandingAndSettings();
@@ -838,6 +889,19 @@
                     annBlock.classList.add('hidden');
                 }
             }
+
+            const profDesc = document.getElementById('public-profile-desc');
+            if (profDesc) profDesc.textContent = appSettings.profile.description;
+            const profPhoto = document.getElementById('public-profile-photo');
+            if (profPhoto) profPhoto.src = appSettings.profile.photo || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800';
+            const cAddress = document.getElementById('public-contact-address');
+            if (cAddress) cAddress.textContent = appSettings.profile.address;
+            const cPhone = document.getElementById('public-contact-phone');
+            if (cPhone) cPhone.textContent = appSettings.profile.phone;
+            const cEmail = document.getElementById('public-contact-email');
+            if (cEmail) cEmail.textContent = appSettings.profile.email;
+            const cMap = document.getElementById('public-contact-map');
+            if (cMap && appSettings.profile.mapUrl) cMap.src = appSettings.profile.mapUrl;
         }
 
         /* ==================== SPREADSHEET BACKEND HANDLERS ==================== */
@@ -1031,6 +1095,14 @@
                     if (s.key === "announcement_title") appSettings.announcement.title = s.value;
                     if (s.key === "announcement_body") appSettings.announcement.body = s.value;
                     if (s.key === "announcement_date") appSettings.announcement.date = s.value;
+                    if (s.key === "certLeaderName") appSettings.certLeaderName = s.value;
+                    if (s.key === "certLogo") appSettings.certLogo = s.value;
+                    if (s.key === "profile_description") appSettings.profile.description = s.value;
+                    if (s.key === "profile_photo") appSettings.profile.photo = s.value;
+                    if (s.key === "profile_address") appSettings.profile.address = s.value;
+                    if (s.key === "profile_phone") appSettings.profile.phone = s.value;
+                    if (s.key === "profile_email") appSettings.profile.email = s.value;
+                    if (s.key === "profile_mapUrl") appSettings.profile.mapUrl = s.value;
                 });
             }
 
@@ -1049,6 +1121,250 @@
             renderLandingStats();
             renderLandingNews();
             renderNewsPage();
+        }
+
+        /* ==================== CERTIFICATE & LEAVE MANAGEMENT ==================== */
+        let pendingCertLogo = '';
+        function handleCertLogo(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => { pendingCertLogo = e.target.result; showToast('Logo sertifikat siap disimpan!', 'success'); };
+            reader.readAsDataURL(file);
+        }
+
+        function saveCertSettings() {
+            if (pendingCertLogo) appSettings.certLogo = pendingCertLogo;
+            appSettings.certLeaderName = document.getElementById('cert-leader').value.trim();
+            saveData();
+            showToast('Pengaturan sertifikat disimpan!', 'success');
+            setAdminTab('cert');
+        }
+
+        function renderCertStudentTable() {
+            const tbody = document.getElementById('cert-student-list');
+            if (!tbody) return;
+            tbody.innerHTML = students.map(s => `
+                <tr class="hover:bg-rose-50/40 text-slate-700">
+                    <td class="py-2.5 px-3 font-bold text-rose-950">${s.name}</td>
+                    <td class="py-2.5 px-3">${s.jenjang || '-'}</td>
+                    <td class="py-2.5 px-3 font-semibold">${s.totalJuz} Juz</td>
+                    <td class="py-2.5 px-3">
+                        <select id="cert-type-${s.id}" class="px-2 py-1 border rounded-lg text-[11px]">
+                            <option value="bulanan">Capaian Bulanan</option>
+                            <option value="semester">Capaian Semester</option>
+                            <option value="tahunan">Capaian Tahunan</option>
+                            <option value="kelulusan">Kelulusan Jenjang</option>
+                        </select>
+                    </td>
+                    <td class="py-2.5 px-3 text-center">
+                        <button onclick="openCertificateModal('${s.id}', document.getElementById('cert-type-${s.id}').value)" class="px-3 py-1.5 bg-rose-600 text-white rounded-lg text-[10px] font-bold hover:bg-rose-700"><i class="fa-solid fa-print mr-1"></i> Cetak</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function getCertText(type) {
+            const now = new Date();
+            const bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+            const bln = bulan[now.getMonth()];
+            const thn = now.getFullYear();
+            const semester = now.getMonth() < 6 ? 'Ganjil' : 'Genap';
+            const map = {
+                bulanan: {
+                    id: `Capaian Hafalan Bulan ${bln} ${thn}`,
+                    ar: `إنجاز الحفظ لشهر ${bln} ${thn}`,
+                    sub: 'telah mencapai hafalan Al-Qur\'an'
+                },
+                semester: {
+                    id: `Capaian Hafalan Semester ${semester} ${thn}`,
+                    ar: `إنجاز الحفظ للفصل الدراسي ${semester} ${thn}`,
+                    sub: 'telah mencapai hafalan Al-Qur\'an'
+                },
+                tahunan: {
+                    id: `Capaian Hafalan Tahunan ${thn}`,
+                    ar: `إنجاز الحفظ السنوي ${thn}`,
+                    sub: 'telah mencapai hafalan Al-Qur\'an'
+                },
+                kelulusan: {
+                    id: `Kelulusan Tahfidz Jenjang`,
+                    ar: `إتمام حفظ القرآن الكريم لمرحلة`,
+                    sub: 'telah menyelesaikan hafalan Al-Qur\'an'
+                }
+            };
+            return map[type] || map.bulanan;
+        }
+
+        function openCertificateModal(studentId, type) {
+            const s = students.find(x => x.id === studentId);
+            if (!s) return;
+            const t = getCertText(type);
+            const juz = s.totalJuz || 0;
+            const leader = appSettings.certLeaderName || 'Kepala Pondok';
+            const logo = appSettings.certLogo || '';
+
+            openModal(`<i class="fa-solid fa-award text-rose-500"></i> Pratinjau Sertifikat`, `
+                <div id="cert-print-area" class="bg-white p-6 border-2 border-rose-200 rounded-xl" style="font-family: 'Times New Roman', serif;">
+                    <div class="text-center border-b-4 border-double border-rose-300 pb-4 mb-4">
+                        ${logo ? `<img src="${logo}" class="w-16 h-16 object-contain mx-auto mb-2">` : `<div class="w-16 h-16 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-2xl mx-auto mb-2"><i class="fa-solid fa-mosque"></i></div>`}
+                        <h2 class="text-lg font-bold text-rose-900 leading-tight">PESANTREN TAHFIDZ PUTRI AL MAWADDAH</h2>
+                        <p class="text-[10px] text-slate-500">Kabupaten Sorong, Papua Barat Daya</p>
+                        <h1 class="text-xl font-extrabold text-rose-700 mt-2 tracking-wide">SERTIFIKAT TAHFIDZ</h1>
+                        <p class="text-sm text-slate-600" dir="rtl">شهادة تحفيظ القرآن الكريم</p>
+                    </div>
+                    <p class="text-center text-xs text-slate-600 mb-1">Dengan ini menyatakan bahwa / نشهد أن</p>
+                    <h3 class="text-center text-2xl font-bold text-rose-900 my-2">${s.name}</h3>
+                    <p class="text-center text-xs text-slate-700 mb-1">${t.sub} <b>${juz} Juz</b></p>
+                    <p class="text-center text-sm font-bold text-rose-800">${t.id}</p>
+                    <p class="text-center text-xs text-slate-600" dir="rtl">${t.ar}</p>
+                    <p class="text-center text-[10px] text-slate-500 mt-1">Jenjang: ${s.jenjang || '-'} | Kelas: ${s.class || '-'}</p>
+                    <div class="flex justify-between items-end mt-8 px-4">
+                        <div class="text-center">
+                            <div class="border-t border-slate-400 w-32 pt-1"></div>
+                            <p class="text-[10px] text-slate-600 mt-1">Tanggal: ${new Date().toLocaleDateString('id-ID')}</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="border-t border-slate-400 w-40 pt-1"></div>
+                            <p class="text-[10px] text-slate-600 mt-1 font-bold">${leader}</p>
+                            <p class="text-[9px] text-slate-400">Pimpinan Pondok</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t mt-4">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Tutup</button>
+                    <button type="button" onclick="printCertificate()" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold"><i class="fa-solid fa-print mr-1"></i> Cetak / Unduh PDF</button>
+                </div>
+            `, true);
+        }
+
+        function printCertificate() {
+            const area = document.getElementById('cert-print-area');
+            if (!area) return;
+            const html = document.documentElement.outerHTML;
+            const win = window.open('', '_blank');
+            win.document.write(`<!DOCTYPE html><html><head><title>Sertifikat Tahfidz</title>
+                <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+                <style>@media print { body { margin: 0 } .cert-wrap { max-width: 800px; margin: 20px auto } }</style></head>
+                <body class="bg-slate-100 p-4"><div class="cert-wrap">${area.outerHTML}</div>
+                <script>window.onload=function(){window.print();}<\/script></body></html>`);
+            win.document.close();
+        }
+
+        function renderLeaveTable() {
+            const tbody = document.getElementById('leave-list');
+            if (!tbody) return;
+            if (leaves.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400">Belum ada pengajuan cuti.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = leaves.map(l => `
+                <tr class="hover:bg-rose-50/40 text-slate-700">
+                    <td class="py-2.5 px-3 font-bold text-rose-950">${l.teacherName}</td>
+                    <td class="py-2.5 px-3">${l.halaqah}</td>
+                    <td class="py-2.5 px-3 font-semibold">${l.startDate} s.d ${l.endDate}</td>
+                    <td class="py-2.5 px-3 text-[10px] max-w-xs">${l.reason}</td>
+                    <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${l.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : l.status === 'rejected' ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-700'}">${l.status}</span></td>
+                    <td class="py-2.5 px-3 text-center flex justify-center gap-1.5">
+                        ${l.status === 'pending' ? `
+                            <button onclick="approveLeave('${l.id}')" class="w-7 h-7 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fa-solid fa-check text-xs"></i></button>
+                            <button onclick="rejectLeave('${l.id}')" class="w-7 h-7 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center"><i class="fa-solid fa-xmark text-xs"></i></button>
+                        ` : '<span class="text-slate-300 text-xs">-</span>'}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function approveLeave(id) {
+            const l = leaves.find(x => x.id === id);
+            if (l) { l.status = 'approved'; saveData(); renderLeaveTable(); showToast('Cuti disetujui.', 'success'); }
+        }
+        function rejectLeave(id) {
+            const l = leaves.find(x => x.id === id);
+            if (l) { l.status = 'rejected'; saveData(); renderLeaveTable(); showToast('Cuti ditolak.', 'warning'); }
+        }
+
+        function openLeaveModal() {
+            const teach = teachers.find(t => t.email === loggedInUser.email) || teachers[0];
+            openModal('<i class="fa-solid fa-plane-departure text-rose-500"></i> Ajukan Cuti', `
+                <form onsubmit="handleSubmitLeave(event)" class="space-y-4 text-xs">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div><label class="block font-bold text-slate-700 mb-1">Tanggal Mulai</label><input type="date" id="leave-start" required class="w-full px-4 py-2 border rounded-xl"></div>
+                        <div><label class="block font-bold text-slate-700 mb-1">Tanggal Selesai</label><input type="date" id="leave-end" required class="w-full px-4 py-2 border rounded-xl"></div>
+                    </div>
+                    <div><label class="block font-bold text-slate-700 mb-1">Alasan Cuti</label><textarea id="leave-reason" rows="3" required class="w-full px-4 py-2 border rounded-xl" placeholder="Contoh: Keperluan keluarga / kesehatan"></textarea></div>
+                    <div class="pt-4 flex justify-end gap-3 border-t">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold">Ajukan</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function handleSubmitLeave(e) {
+            e.preventDefault();
+            const teach = teachers.find(t => t.email === loggedInUser.email) || teachers[0];
+            const start = document.getElementById('leave-start').value;
+            const end = document.getElementById('leave-end').value;
+            const reason = document.getElementById('leave-reason').value.trim();
+            leaves.push({ id: 'L' + Date.now(), teacherId: teach ? teach.id : '', teacherName: teach ? teach.name : 'Ustadzah', halaqah: teach ? teach.halaqah : '-', startDate: start, endDate: end, reason, status: 'pending' });
+            saveData();
+            closeModal();
+            showToast('Pengajuan cuti terkirim, menunggu persetujuan admin.', 'success');
+        }
+
+        function openReportModal(type) {
+            const teach = teachers.find(t => t.email === loggedInUser.email) || teachers[0];
+            const halaqahName = teach ? teach.halaqah : masterHalaqahs[0];
+            const matchingStudentIds = students.filter(s => s.class === halaqahName).map(s => s.id);
+            const halaqahDeposits = deposits.filter(d => matchingStudentIds.includes(d.studentId));
+            const now = new Date();
+            let filtered = halaqahDeposits;
+            let title = 'Rangkuman Keseluruhan';
+            if (type === 'harian') {
+                const d = now.toISOString().split('T')[0];
+                filtered = halaqahDeposits.filter(x => x.date === d);
+                title = 'Laporan Harian ' + d;
+            } else if (type === 'mingguan') {
+                const wk = new Date(now); wk.setDate(wk.getDate() - 7);
+                filtered = halaqahDeposits.filter(x => new Date(x.date) >= wk);
+                title = 'Laporan Mingguan';
+            } else if (type === 'bulanan') {
+                const ym = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+                filtered = halaqahDeposits.filter(x => x.date && x.date.startsWith(ym));
+                title = 'Laporan Bulanan ' + ym;
+            }
+            const rows = filtered.slice().reverse().map(d => {
+                const s = students.find(x => x.id === d.studentId);
+                return `<tr><td class="py-1.5 px-2 border-b">${d.date}</td><td class="py-1.5 px-2 border-b">${s ? s.name : '-'}</td><td class="py-1.5 px-2 border-b">Juz ${d.juz} (${d.surah}: ${d.startAyat}-${d.endAyat})</td><td class="py-1.5 px-2 border-b">${d.grade}</td></tr>`;
+            }).join('') || `<tr><td colspan="4" class="py-3 text-center text-slate-400">Tidak ada data.</td></tr>`;
+
+            openModal(`<i class="fa-solid fa-file-pdf text-rose-500"></i> ${title}`, `
+                <div id="report-print-area" class="text-xs">
+                    <div class="text-center mb-3">
+                        <h2 class="font-bold text-rose-900">PESANTREN TAHFIDZ PUTRI AL MAWADDAH</h2>
+                        <p class="text-[10px] text-slate-500">${title} - Halaqah: ${halaqahName}</p>
+                        <p class="text-[10px] text-slate-500">Ustadzah: ${teach ? teach.name : '-'} | Dicetak: ${now.toLocaleDateString('id-ID')}</p>
+                    </div>
+                    <table class="w-full text-left border"><thead><tr class="bg-rose-50 font-bold"><th class="py-1.5 px-2 border">Tanggal</th><th class="py-1.5 px-2 border">Santriwati</th><th class="py-1.5 px-2 border">Setoran</th><th class="py-1.5 px-2 border">Predikat</th></tr></thead><tbody>${rows}</tbody></table>
+                    <p class="text-[10px] text-slate-500 mt-2">Total setoran pada periode: ${filtered.length}</p>
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t mt-4">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Tutup</button>
+                    <button type="button" onclick="printCertificateArea('report-print-area')" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold"><i class="fa-solid fa-print mr-1"></i> Cetak</button>
+                </div>
+            `, true);
+        }
+
+        function printCertificateArea(id) {
+            const area = document.getElementById(id);
+            if (!area) return;
+            const win = window.open('', '_blank');
+            win.document.write(`<!DOCTYPE html><html><head><title>Laporan</title>
+                <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+                <style>body{font-family:'Times New Roman',serif;padding:20px}@media print{body{margin:0}}</style></head>
+                <body>${area.outerHTML}
+                <script>window.onload=function(){window.print();}<\/script></body></html>`);
+            win.document.close();
         }
 
         /* ==================== CLOUDFLARE D1 BACKEND HANDLERS ==================== */
@@ -1214,9 +1530,10 @@
             const container = document.getElementById('landing-news-grid');
             if (!container) return;
             
-            const sorted = [...news].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0,3);
+            const sorted = [...news].filter(n => n.status !== 'draft').sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0,3);
             container.innerHTML = sorted.map(item => `
                 <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-rose-100 hover:shadow-md transition-all flex flex-col h-full">
+                    ${item.photo ? `<img src="${item.photo}" class="w-full h-40 object-cover">` : ''}
                     <div class="p-6 space-y-3 flex-grow">
                         <div class="flex justify-between items-center text-[10px] font-bold text-rose-600 uppercase tracking-wider">
                             <span><i class="fa-solid fa-tag"></i> ${item.tag}</span>
@@ -1238,9 +1555,10 @@
             const container = document.getElementById('news-page-list');
             if (!container) return;
 
-            const sorted = [...news].sort((a,b) => new Date(b.date) - new Date(a.date));
+            const sorted = [...news].filter(n => n.status !== 'draft').sort((a,b) => new Date(b.date) - new Date(a.date));
             container.innerHTML = sorted.map(item => `
                 <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-rose-100 flex flex-col h-full">
+                    ${item.photo ? `<img src="${item.photo}" class="w-full h-44 object-cover">` : ''}
                     <div class="p-6 space-y-3 flex-grow">
                         <div class="flex justify-between items-center text-[10px] font-bold text-rose-600 uppercase tracking-wider">
                             <span><i class="fa-solid fa-tag"></i> ${item.tag}</span>
@@ -1268,6 +1586,7 @@
                         <span><i class="fa-solid fa-tag"></i> ${item.tag}</span>
                         <span><i class="fa-solid fa-calendar"></i> ${item.date}</span>
                     </div>
+                    ${item.photo ? `<img src="${item.photo}" class="w-full max-h-64 object-cover rounded-xl border border-rose-100">` : ''}
                     <p class="text-sm text-slate-800 font-medium whitespace-pre-line">${item.content}</p>
                     <div class="pt-4 border-t flex justify-end">
                         <button onclick="closeModal()" class="px-5 py-2 bg-rose-50 text-rose-900 font-bold rounded-xl text-xs hover:bg-rose-100 transition-colors">Tutup</button>
@@ -1426,10 +1745,30 @@
                         </div>
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm">
                             <h3 class="text-base font-bold font-serif text-rose-plum mb-3"><i class="fa-solid fa-circle-info text-amber-500"></i> Proporsi Jenjang</h3>
-                            <div class="w-full h-64 flex items-center justify-center"><canvas id="jenjangDistChart"></canvas></div>
+                                <div class="w-full h-64 flex items-center justify-center"><canvas id="jenjangDistChart"></canvas></div>
+                            </div>
                         </div>
-                    </div>
-                `;
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm lg:col-span-3">
+                                <h3 class="text-base font-bold font-serif text-rose-plum mb-4"><i class="fa-solid fa-chart-line text-rose-500"></i> Aktivitas Setoran Hafalan (Harian / Mingguan / Bulanan)</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div><h4 class="text-xs font-bold text-rose-700 mb-2 text-center">Harian (14 Hari Terakhir)</h4><div class="h-56"><canvas id="depositDailyChart"></canvas></div></div>
+                                    <div><h4 class="text-xs font-bold text-rose-700 mb-2 text-center">Mingguan (8 Minggu Terakhir)</h4><div class="h-56"><canvas id="depositWeeklyChart"></canvas></div></div>
+                                    <div><h4 class="text-xs font-bold text-rose-700 mb-2 text-center">Bulanan (6 Bulan Terakhir)</h4><div class="h-56"><canvas id="depositMonthlyChart"></canvas></div></div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm lg:col-span-1">
+                                <h3 class="text-base font-bold font-serif text-rose-plum mb-3"><i class="fa-solid fa-medal text-amber-500"></i> Distribusi Predikat</h3>
+                                <div class="w-full h-64 flex items-center justify-center"><canvas id="predikatDistChart"></canvas></div>
+                            </div>
+                            <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm lg:col-span-2 grid grid-cols-2 gap-4 content-center">
+                                <div class="rounded-2xl bg-rose-50 p-4 text-center"><span class="block text-2xl font-bold font-serif text-rose-950" id="stat-total-deposits">0</span><span class="text-[10px] uppercase font-bold text-rose-600">Total Setoran</span></div>
+                                <div class="rounded-2xl bg-emerald-50 p-4 text-center"><span class="block text-2xl font-bold font-serif text-emerald-700" id="stat-deposits-week">0</span><span class="text-[10px] uppercase font-bold text-emerald-600">Setoran 7 Hari</span></div>
+                                <div class="rounded-2xl bg-amber-50 p-4 text-center"><span class="block text-2xl font-bold font-serif text-amber-700" id="stat-deposits-month">0</span><span class="text-[10px] uppercase font-bold text-amber-600">Setoran 30 Hari</span></div>
+                                <div class="rounded-2xl bg-purple-50 p-4 text-center"><span class="block text-2xl font-bold font-serif text-purple-700" id="stat-avg-grade">-</span><span class="text-[10px] uppercase font-bold text-purple-600">Predikat Terbanyak</span></div>
+                            </div>
+                        </div>
+                    `;
                 initDistCharts();
             }
 
@@ -1545,6 +1884,8 @@
                                         <th class="py-2.5 px-3 rounded-l-xl">Tanggal</th>
                                         <th class="py-2.5 px-3">Kategori</th>
                                         <th class="py-2.5 px-3">Judul Berita</th>
+                                        <th class="py-2.5 px-3 text-center">Foto</th>
+                                        <th class="py-2.5 px-3 text-center">Status</th>
                                         <th class="py-2.5 px-3 rounded-r-xl text-center">Aksi</th>
                                     </tr>
                                 </thead>
@@ -1597,6 +1938,43 @@
                                 </div>
                                 <button onclick="saveCMSAnnouncement()" class="px-4 py-2 bg-rose-600 text-white font-bold rounded-xl hover:bg-rose-700">Simpan Pengumuman</button>
                             </div>
+                        </div>
+
+                        <!-- Profil & Kontak Pesantren -->
+                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4 md:col-span-2">
+                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-mosque text-rose-500 mr-1.5"></i> Profil & Kontak Pesantren</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                                <div class="md:col-span-2">
+                                    <label class="block font-bold text-slate-700 mb-1">Deskripsi Profil Pesantren</label>
+                                    <textarea id="cms-profile-desc" rows="3" class="w-full px-4 py-2 border rounded-xl">${appSettings.profile.description}</textarea>
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Foto/ Gedung Pesantren</label>
+                                    <input type="file" id="cms-profile-photo" accept="image/*" onchange="handleProfilePhoto(this)" class="w-full text-xs">
+                                    ${appSettings.profile.photo ? `<img src="${appSettings.profile.photo}" class="w-24 h-24 object-cover rounded-lg border border-rose-100 mt-1">` : ''}
+                                </div>
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="block font-bold text-slate-700 mb-1">Alamat Lengkap</label>
+                                        <input type="text" id="cms-profile-address" value="${appSettings.profile.address}" class="w-full px-4 py-2 border rounded-xl">
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div>
+                                            <label class="block font-bold text-slate-700 mb-1">No. Telepon</label>
+                                            <input type="text" id="cms-profile-phone" value="${appSettings.profile.phone}" class="w-full px-4 py-2 border rounded-xl">
+                                        </div>
+                                        <div>
+                                            <label class="block font-bold text-slate-700 mb-1">Email</label>
+                                            <input type="text" id="cms-profile-email" value="${appSettings.profile.email}" class="w-full px-4 py-2 border rounded-xl">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-700 mb-1">URL Google Maps (Embed)</label>
+                                        <input type="text" id="cms-profile-map" value="${appSettings.profile.mapUrl}" placeholder="https://maps.google.com/..." class="w-full px-4 py-2 border rounded-xl">
+                                    </div>
+                                </div>
+                            </div>
+                            <button onclick="saveCMSProfile()" class="px-4 py-2 bg-rose-600 text-white font-bold rounded-xl hover:bg-rose-700">Simpan Profil & Kontak</button>
                         </div>
                     </div>
                 `;
@@ -1684,19 +2062,19 @@
                             <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-palette text-rose-500 mr-1.5"></i> Skema Warna Feminin & Syar'i</h3>
                             <p class="text-xs text-slate-500">Pilih palet warna estetis yang secara serentak mendandani interior portal E-Tahfidz.</p>
                             <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                                <button onclick="applyTheme('rose')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'rose' ? 'border-rose-500 bg-rose-50' : 'bg-white'}">
+                                <button onclick="setTheme('rose')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'rose' ? 'border-rose-500 bg-rose-50' : 'bg-white'}">
                                     <span class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-rose-500"></span> Rosy</span>
                                 </button>
-                                <button onclick="applyTheme('orchid')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'orchid' ? 'border-purple-500 bg-purple-50' : 'bg-white'}">
+                                <button onclick="setTheme('orchid')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'orchid' ? 'border-purple-500 bg-purple-50' : 'bg-white'}">
                                     <span class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-purple-500"></span> Orchid</span>
                                 </button>
-                                <button onclick="applyTheme('teal')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'teal' ? 'border-teal-500 bg-teal-50' : 'bg-white'}">
+                                <button onclick="setTheme('teal')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'teal' ? 'border-teal-500 bg-teal-50' : 'bg-white'}">
                                     <span class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-teal-500"></span> Teal</span>
                                 </button>
-                                <button onclick="applyTheme('peach')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'peach' ? 'border-amber-500 bg-amber-50' : 'bg-white'}">
+                                <button onclick="setTheme('peach')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'peach' ? 'border-amber-500 bg-amber-50' : 'bg-white'}">
                                     <span class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-amber-500"></span> Peach</span>
                                 </button>
-                                <button onclick="applyTheme('ruby')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'ruby' ? 'border-red-500 bg-red-50' : 'bg-white'}">
+                                <button onclick="setTheme('ruby')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'ruby' ? 'border-red-500 bg-red-50' : 'bg-white'}">
                                     <span class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-red-500"></span> Ruby</span>
                                 </button>
                             </div>
@@ -1732,6 +2110,72 @@
                     </div>
                 `;
                 renderAdminAccountTable();
+            }
+
+            else if (adminActiveTab === 'cert') {
+                container.innerHTML = `
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4 lg:col-span-1">
+                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-award text-rose-500 mr-1.5"></i> Pengaturan Sertifikat</h3>
+                            <div class="space-y-3 text-xs">
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Nama Pimpinan Pondok</label>
+                                    <input type="text" id="cert-leader" value="${appSettings.certLeaderName}" class="w-full px-4 py-2 border rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">Logo Sertifikat (Opsional)</label>
+                                    <input type="file" id="cert-logo" accept="image/*" onchange="handleCertLogo(this)" class="w-full text-xs">
+                                    ${appSettings.certLogo ? `<img src="${appSettings.certLogo}" class="w-24 h-24 object-contain border border-rose-100 rounded-lg mt-1">` : ''}
+                                </div>
+                                <button onclick="saveCertSettings()" class="px-4 py-2 bg-rose-600 text-white font-bold rounded-xl hover:bg-rose-700">Simpan Pengaturan</button>
+                                <p class="text-[10px] text-slate-400 leading-relaxed">Sertifikat bilingual (Indonesia & Arab). Pilih santri, jenis sertifikat, lalu Cetak.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm lg:col-span-2 space-y-4">
+                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-graduation-cap text-rose-500 mr-1.5"></i> Cetak Sertifikat Santriwati</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-rose-100 text-left text-xs">
+                                    <thead><tr class="text-rose-700 bg-rose-50/50">
+                                        <th class="py-2.5 px-3 rounded-l-xl">Santriwati</th>
+                                        <th class="py-2.5 px-3">Jenjang</th>
+                                        <th class="py-2.5 px-3">Juz</th>
+                                        <th class="py-2.5 px-3">Jenis Sertifikat</th>
+                                        <th class="py-2.5 px-3 rounded-r-xl text-center">Aksi</th>
+                                    </tr></thead>
+                                    <tbody class="divide-y divide-rose-50" id="cert-student-list"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                renderCertStudentTable();
+            }
+
+            else if (adminActiveTab === 'leaves') {
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <div>
+                                <h3 class="font-serif font-bold text-sm text-rose-plum"><i class="fa-solid fa-plane-departure text-rose-500 mr-1.5"></i> Pengajuan Cuti Ustadzah</h3>
+                                <p class="text-[10px] text-slate-500">Persetujuan permohonan cuti pembimbing halaqah.</p>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-rose-100 text-left text-xs">
+                                <thead><tr class="text-rose-700 bg-rose-50/50">
+                                    <th class="py-2.5 px-3 rounded-l-xl">Ustadzah</th>
+                                    <th class="py-2.5 px-3">Halaqah</th>
+                                    <th class="py-2.5 px-3">Periode</th>
+                                    <th class="py-2.5 px-3">Alasan</th>
+                                    <th class="py-2.5 px-3">Status</th>
+                                    <th class="py-2.5 px-3 rounded-r-xl text-center">Aksi</th>
+                                </tr></thead>
+                                <tbody class="divide-y divide-rose-50" id="leave-list"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                renderLeaveTable();
             }
         }
 
@@ -1965,6 +2409,27 @@
             syncBrandingAndSettings();
         }
 
+        let pendingProfilePhoto = '';
+        function handleProfilePhoto(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => { pendingProfilePhoto = e.target.result; showToast('Foto profil siap diunggah!', 'success'); };
+            reader.readAsDataURL(file);
+        }
+
+        function saveCMSProfile() {
+            if (pendingProfilePhoto) appSettings.profile.photo = pendingProfilePhoto;
+            appSettings.profile.description = document.getElementById('cms-profile-desc').value.trim();
+            appSettings.profile.address = document.getElementById('cms-profile-address').value.trim();
+            appSettings.profile.phone = document.getElementById('cms-profile-phone').value.trim();
+            appSettings.profile.email = document.getElementById('cms-profile-email').value.trim();
+            appSettings.profile.mapUrl = document.getElementById('cms-profile-map').value.trim();
+            saveData();
+            showToast('Profil & kontak pesantren berhasil disimpan!', 'success');
+            syncBrandingAndSettings();
+        }
+
         function saveBrandingBranding() {
             appSettings.name = document.getElementById('brand-name-input').value.trim();
             appSettings.tagline = document.getElementById('brand-tagline-input').value.trim();
@@ -2050,9 +2515,90 @@
                     }
                 }
             });
+
+            // === Aktivitas setoran: harian / mingguan / bulanan ===
+            const today = new Date();
+            const fmt = (d) => d.toISOString().split('T')[0];
+
+            // Harian (14 hari)
+            const dailyLabels = [], dailyData = [];
+            for (let i = 13; i >= 0; i--) {
+                const d = new Date(today); d.setDate(d.getDate() - i);
+                const key = fmt(d);
+                dailyLabels.push(`${d.getDate()}/${d.getMonth() + 1}`);
+                dailyData.push(deposits.filter(x => x.date === key).length);
+            }
+            // Mingguan (8 minggu ISO)
+            const weeklyLabels = [], weeklyData = [];
+            for (let i = 7; i >= 0; i--) {
+                const d = new Date(today); d.setDate(d.getDate() - i * 7);
+                const oneYear = d.getFullYear();
+                const week = getISOWeek(d);
+                weeklyLabels.push(`M${week}`);
+                const start = new Date(d); start.setDate(start.getDate() - 6);
+                weeklyData.push(deposits.filter(x => {
+                    const dt = new Date(x.date);
+                    return dt >= start && dt <= d;
+                }).length);
+            }
+            // Bulanan (6 bulan)
+            const monthlyLabels = [], monthlyData = [];
+            for (let i = 5; i >= 0; i--) {
+                const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+                const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                monthlyLabels.push(ym);
+                monthlyData.push(deposits.filter(x => x.date && x.date.startsWith(ym)).length);
+            }
+
+            const ctxD = document.getElementById('depositDailyChart');
+            const ctxW = document.getElementById('depositWeeklyChart');
+            const ctxM = document.getElementById('depositMonthlyChart');
+            if (ctxD) new Chart(ctxD, { type: 'line', data: { labels: dailyLabels, datasets: [{ label: 'Setoran', data: dailyData, borderColor: themeColor, backgroundColor: themeColor + '33', fill: true, tension: 0.3, pointRadius: 2 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } } });
+            if (ctxW) new Chart(ctxW, { type: 'bar', data: { labels: weeklyLabels, datasets: [{ label: 'Setoran', data: weeklyData, backgroundColor: themeColor, borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } } });
+            if (ctxM) new Chart(ctxM, { type: 'bar', data: { labels: monthlyLabels, datasets: [{ label: 'Setoran', data: monthlyData, backgroundColor: themeColor, borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } } });
+
+            // Distribusi predikat (overall)
+            const gradeCounts = {};
+            deposits.forEach(d => { gradeCounts[d.grade] = (gradeCounts[d.grade] || 0) + 1; });
+            const ctxG = document.getElementById('predikatDistChart');
+            if (ctxG) new Chart(ctxG, {
+                type: 'doughnut',
+                data: { labels: Object.keys(gradeCounts), datasets: [{ data: Object.values(gradeCounts), backgroundColor: ['#16a34a', '#0d9488', '#e11d48', '#ca8a04', '#7c3aed'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+
+            // Ringkasan statistik
+            const total = deposits.length;
+            const weekAgo = new Date(today); weekAgo.setDate(weekAgo.getDate() - 7);
+            const monthAgo = new Date(today); monthAgo.setDate(monthAgo.getDate() - 30);
+            const inWeek = deposits.filter(x => new Date(x.date) >= weekAgo).length;
+            const inMonth = deposits.filter(x => new Date(x.date) >= monthAgo).length;
+            const topGrade = Object.entries(gradeCounts).sort((a, b) => b[1] - a[1])[0];
+            const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+            setTxt('stat-total-deposits', total);
+            setTxt('stat-deposits-week', inWeek);
+            setTxt('stat-deposits-month', inMonth);
+            setTxt('stat-avg-grade', topGrade ? topGrade[0] : '-');
+        }
+
+        function getISOWeek(date) {
+            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+            const dayNum = (d.getUTCDay() + 6) % 7;
+            d.setUTCDate(d.getUTCDate() - dayNum + 3);
+            const firstThursday = new Date(Date.UTC(d.getUTCFullYear(), 0, 4));
+            return 1 + Math.round(((d - firstThursday) / 86400000 - 3 + ((firstThursday.getUTCDay() + 6) % 7)) / 7);
         }
 
         /* ==================== STREAMING_CHUNK: Admin News CRUD ==================== */
+        let pendingNewsPhoto = '';
+        function handleNewsPhoto(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => { pendingNewsPhoto = e.target.result; showToast('Foto berita siap diunggah!', 'success'); };
+            reader.readAsDataURL(file);
+        }
+
         function renderAdminNewsTable() {
             const tbody = document.getElementById('admin-news-list');
             if (!tbody) return;
@@ -2062,6 +2608,8 @@
                     <td class="py-3 px-3 font-semibold">${item.date}</td>
                     <td class="py-3 px-3"><span class="px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full text-[10px] font-bold">${item.tag}</span></td>
                     <td class="py-3 px-3 font-bold text-rose-950">${item.title}</td>
+                    <td class="py-3 px-3 text-center">${item.photo ? `<img src="${item.photo}" class="w-10 h-10 object-cover rounded-lg inline-block border border-rose-100">` : '<span class="text-slate-300 text-xs">-</span>'}</td>
+                    <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${item.status === 'draft' ? 'bg-slate-100 text-slate-500' : 'bg-emerald-100 text-emerald-700'}">${item.status || 'published'}</span></td>
                     <td class="py-3 px-3 text-center flex justify-center gap-1.5">
                         <button onclick="openEditNewsModal('${item.id}')" class="w-7 h-7 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 flex items-center justify-center"><i class="fa-solid fa-pen text-xs"></i></button>
                         <button onclick="deleteNews('${item.id}')" class="w-7 h-7 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center"><i class="fa-solid fa-trash text-xs"></i></button>
@@ -2071,6 +2619,7 @@
         }
 
         function openAddNewsModal() {
+            pendingNewsPhoto = '';
             openModal('<i class="fa-solid fa-plus-circle text-rose-500"></i> Publikasikan Kabar Baru', `
                 <form onsubmit="handleSaveNews(event)" class="space-y-4 text-xs">
                     <div>
@@ -2091,6 +2640,17 @@
                         <label class="block font-bold text-slate-700 mb-1">Konten / Isi Artikel</label>
                         <textarea id="f-news-content" required rows="5" placeholder="Tuliskan berita lengkap..." class="w-full px-4 py-2 border rounded-xl"></textarea>
                     </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Foto Berita (Opsional)</label>
+                        <input type="file" id="f-news-photo" accept="image/*" onchange="handleNewsPhoto(this)" class="w-full text-xs">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Status Publikasi</label>
+                        <select id="f-news-status" class="w-full px-3 py-2 border rounded-xl">
+                            <option value="published">Publikasikan (Tampil di web)</option>
+                            <option value="draft">Draft (Simpan sebagai konsep)</option>
+                        </select>
+                    </div>
                     <div class="pt-4 flex justify-end gap-3 border-t">
                         <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
                         <button type="submit" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold">Terbitkan</button>
@@ -2105,10 +2665,11 @@
             const tag = document.getElementById('f-news-tag').value.trim();
             const date = document.getElementById('f-news-date').value;
             const content = document.getElementById('f-news-content').value.trim();
+            const status = document.getElementById('f-news-status').value;
 
             const newItem = {
                 id: 'N' + Date.now(),
-                title, tag, date, content
+                title, tag, date, content, photo: pendingNewsPhoto, status
             };
 
             news.push(newItem);
@@ -2122,6 +2683,7 @@
         function openEditNewsModal(id) {
             const item = news.find(n => n.id === id);
             if (!item) return;
+            pendingNewsPhoto = item.photo || '';
 
             openModal('<i class="fa-solid fa-edit text-rose-500"></i> Sunting Artikel Berita', `
                 <form onsubmit="handleUpdateNews(event, '${id}')" class="space-y-4 text-xs">
@@ -2143,6 +2705,18 @@
                         <label class="block font-bold text-slate-700 mb-1">Konten / Isi Artikel</label>
                         <textarea id="f-news-edit-content" required rows="5" class="w-full px-4 py-2 border rounded-xl">${item.content}</textarea>
                     </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Foto Berita (Opsional)</label>
+                        <input type="file" id="f-news-edit-photo" accept="image/*" onchange="handleNewsPhoto(this)" class="w-full text-xs">
+                        ${item.photo ? `<img src="${item.photo}" class="w-20 h-20 object-cover rounded-lg border border-rose-100 mt-1">` : ''}
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Status Publikasi</label>
+                        <select id="f-news-edit-status" class="w-full px-3 py-2 border rounded-xl">
+                            <option value="published" ${item.status !== 'draft' ? 'selected' : ''}>Publikasikan (Tampil di web)</option>
+                            <option value="draft" ${item.status === 'draft' ? 'selected' : ''}>Draft (Simpan sebagai konsep)</option>
+                        </select>
+                    </div>
                     <div class="pt-4 flex justify-end gap-3 border-t">
                         <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
                         <button type="submit" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold">Perbarui</button>
@@ -2157,10 +2731,11 @@
             const tag = document.getElementById('f-news-edit-tag').value.trim();
             const date = document.getElementById('f-news-edit-date').value;
             const content = document.getElementById('f-news-edit-content').value.trim();
+            const status = document.getElementById('f-news-edit-status').value;
 
             const idx = news.findIndex(n => n.id === id);
             if (idx !== -1) {
-                news[idx] = { id, title, tag, date, content };
+                news[idx] = { id, title, tag, date, content, photo: pendingNewsPhoto, status };
                 saveData();
                 closeModal();
                 showToast('Kabar berita berhasil diperbarui.', 'success');
@@ -2424,6 +2999,7 @@
                     <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center text-lg"><i class="fa-solid fa-chalkboard-user"></i></div>
                     <div class="space-y-1 text-xs flex-grow">
                         <h4 class="font-bold text-rose-plum">${u.name}</h4>
+                        <p class="text-[10px] text-slate-500 font-medium">NIP: <span class="font-semibold text-rose-700">${u.nip || '-'}</span></p>
                         <p class="text-[10px] text-slate-500 font-medium">Halaqah: <span class="font-semibold text-rose-700">${u.halaqah}</span></p>
                         <p class="text-[10px] text-slate-500 font-semibold"><i class="fa-brands fa-whatsapp text-emerald-600"></i> ${u.phone}</p>
                         <div class="pt-2 flex gap-1 justify-end">
@@ -2441,6 +3017,10 @@
                     <div>
                         <label class="block font-bold text-rose-700 mb-1">Nama Lengkap Pembimbing <span class="text-red-500">*</span></label>
                         <input type="text" id="f-u-name" required placeholder="Contoh: Ustadzah Fatimah Al-Hafidzah" class="w-full px-4 py-2 border rounded-xl">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-rose-700 mb-1">NIP</label>
+                        <input type="text" id="f-u-nip" placeholder="Contoh: 19870101 001" class="w-full px-4 py-2 border rounded-xl">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
@@ -2465,10 +3045,11 @@
         function handleSaveTeacher(e) {
             e.preventDefault();
             const name = document.getElementById('f-u-name').value.trim();
+            const nip = document.getElementById('f-u-nip').value.trim();
             const halaqah = document.getElementById('f-u-halaqah').value;
             const phone = document.getElementById('f-u-phone').value.trim();
 
-            const newTeacher = { id: 'U' + Date.now(), name, halaqah, phone };
+            const newTeacher = { id: 'U' + Date.now(), name, nip, halaqah, phone };
             teachers.push(newTeacher);
             saveData();
             closeModal();
@@ -2486,6 +3067,10 @@
                     <div>
                         <label class="block font-bold text-rose-700 mb-1">Nama Lengkap</label>
                         <input type="text" id="f-u-edit-name" value="${u.name}" required class="w-full px-4 py-2 border rounded-xl">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-rose-700 mb-1">NIP</label>
+                        <input type="text" id="f-u-edit-nip" value="${u.nip || ''}" class="w-full px-4 py-2 border rounded-xl">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
@@ -2510,12 +3095,13 @@
         function handleUpdateTeacher(e, id) {
             e.preventDefault();
             const name = document.getElementById('f-u-edit-name').value.trim();
+            const nip = document.getElementById('f-u-edit-nip').value.trim();
             const halaqah = document.getElementById('f-u-edit-halaqah').value;
             const phone = document.getElementById('f-u-edit-phone').value.trim();
 
             const idx = teachers.findIndex(x => x.id === id);
             if (idx !== -1) {
-                teachers[idx] = { id, name, halaqah, phone };
+                teachers[idx] = { id, name, nip, halaqah, phone };
                 saveData();
                 closeModal();
                 showToast('Profil Ustadzah berhasil diperbarui.', 'success');
@@ -2810,9 +3396,9 @@
             students.forEach(s => {
                 select.innerHTML += `<option value="${s.id}">${s.name}</option>`;
             });
-
             if (students.length > 0) {
                 selectedStudentForParent = students[0].id;
+                select.value = students[0].id;
                 renderParentStudentDetails(students[0].id);
             }
         }
@@ -2820,6 +3406,13 @@
         function changeParentStudent(studentId) {
             selectedStudentForParent = studentId;
             renderParentStudentDetails(studentId);
+        }
+
+        function openParentCertificate() {
+            const sel = document.getElementById('parent-student-select');
+            const id = selectedStudentForParent || (sel ? sel.value : '');
+            if (id) openCertificateModal(id, 'bulanan');
+            else showToast('Pilih santri terlebih dahulu.', 'warning');
         }
 
         function renderParentStudentDetails(id) {
