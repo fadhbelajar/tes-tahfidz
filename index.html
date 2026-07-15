@@ -590,17 +590,17 @@
     <script>
         /* ==================== DATABASE & INITIAL STATE ==================== */
         const DEFAULT_STUDENTS = [
-            { id: "S001", name: "Aisyah Humaira Salsabila", nis: "260901", class: "Halaqah Khodijah (Unggulan)", jenjang: "MA", program: "Tahassus", totalJuz: 12, lastSurah: "Yusuf", parentName: "Ahmad Suhardi", parentPhone: "0812-3456-7890", targetJuz: 30, progressPercent: 40, history: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
-            { id: "S002", name: "Fathimah Az-Zahra", nis: "260902", class: "Halaqah Khodijah (Unggulan)", jenjang: "MTs", program: "Tahassus", totalJuz: 8, lastSurah: "Al-Anfal", parentName: "Lukman Hakim", parentPhone: "0813-8822-9900", targetJuz: 30, progressPercent: 26, history: [1, 2, 3, 4, 5, 6, 29, 30] },
-            { id: "S003", name: "Khadijah Al-Kubro", nis: "260903", class: "Halaqah Aisyah", jenjang: "MI", program: "Reguler", totalJuz: 5, lastSurah: "An-Nisa", parentName: "M. Yusuf Sorong", parentPhone: "0821-9988-1122", targetJuz: 15, progressPercent: 33, history: [1, 2, 3, 29, 30] },
-            { id: "S004", name: "Safiyyah Al-Muthmainnah", nis: "260904", class: "Halaqah Aisyah", jenjang: "MA", program: "Tahassus", totalJuz: 30, lastSurah: "An-Nas (Khatam)", parentName: "Rahmat Hidayat", parentPhone: "0811-4455-6677", targetJuz: 30, progressPercent: 100, history: Array.from({length: 30}, (_, i) => i + 1) },
-            { id: "S005", name: "Zainab Az-Zahra", nis: "260905", class: "Halaqah Ummu Salamah", jenjang: "TK", program: "Reguler", totalJuz: 3, lastSurah: "Ali 'Imran", parentName: "Hasanuddin", parentPhone: "0852-7777-1122", targetJuz: 10, progressPercent: 30, history: [1, 2, 30] }
+            { id: "S001", name: "Aisyah Humaira Salsabila", nis: "260901", class: "Halaqah Khodijah (Unggulan)", jenjang: "MA", program: "Tahassus", totalJuz: 12, lastSurah: "Yusuf", parentName: "Ahmad Suhardi", parentPhone: "0812-3456-7890", targetJuz: 30, progressPercent: 40, history: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], waliUsername: "wali" },
+            { id: "S002", name: "Fathimah Az-Zahra", nis: "260902", class: "Halaqah Khodijah (Unggulan)", jenjang: "MTs", program: "Tahassus", totalJuz: 8, lastSurah: "Al-Anfal", parentName: "Lukman Hakim", parentPhone: "0813-8822-9900", targetJuz: 30, progressPercent: 26, history: [1, 2, 3, 4, 5, 6, 29, 30], waliUsername: "wali" },
+            { id: "S003", name: "Khadijah Al-Kubro", nis: "260903", class: "Halaqah Aisyah", jenjang: "MI", program: "Reguler", totalJuz: 5, lastSurah: "An-Nisa", parentName: "M. Yusuf Sorong", parentPhone: "0821-9988-1122", targetJuz: 15, progressPercent: 33, history: [1, 2, 3, 29, 30], waliUsername: "wali" },
+            { id: "S004", name: "Safiyyah Al-Muthmainnah", nis: "260904", class: "Halaqah Aisyah", jenjang: "MA", program: "Tahassus", totalJuz: 30, lastSurah: "An-Nas (Khatam)", parentName: "Rahmat Hidayat", parentPhone: "0811-4455-6677", targetJuz: 30, progressPercent: 100, history: Array.from({length: 30}, (_, i) => i + 1), waliUsername: "wali" },
+            { id: "S005", name: "Zainab Az-Zahra", nis: "260905", class: "Halaqah Ummu Salamah", jenjang: "TK", program: "Reguler", totalJuz: 3, lastSurah: "Ali 'Imran", parentName: "Hasanuddin", parentPhone: "0852-7777-1122", targetJuz: 10, progressPercent: 30, history: [1, 2, 30], waliUsername: "wali" }
         ];
 
         const DEFAULT_TEACHERS = [
-            { id: "U001", name: "Ustadzah Maryam Al-Hafidzah", nip: "19870101 001", halaqah: "Halaqah Khodijah (Unggulan)", phone: "0812-4455-8899" },
-            { id: "U002", name: "Ustadzah Asmaul Husna", nip: "19900202 002", halaqah: "Halaqah Aisyah", phone: "0852-9900-1122" },
-            { id: "U003", name: "Ustadzah Wardah Syafiqah", nip: "19920303 003", halaqah: "Halaqah Ummu Salamah", phone: "0811-2233-4455" }
+            { id: "U001", name: "Ustadzah Maryam Al-Hafidzah", email: "maryam@almawaddah.id", username: "maryam", nip: "19870101 001", halaqah: "Halaqah Khodijah (Unggulan)", phone: "0812-4455-8899" },
+            { id: "U002", name: "Ustadzah Asmaul Husna", email: "asmaul@almawaddah.id", username: "asmaul", nip: "19900202 002", halaqah: "Halaqah Aisyah", phone: "0852-9900-1122" },
+            { id: "U003", name: "Ustadzah Wardah Syafiqah", email: "wardah@almawaddah.id", username: "wardah", nip: "19920303 003", halaqah: "Halaqah Ummu Salamah", phone: "0811-2233-4455" }
         ];
 
         const DEFAULT_MASTER_CLASSES = ["Kelas VII", "Kelas VIII", "Kelas IX", "Kelas X", "Kelas XI", "Kelas XII"];
@@ -855,6 +855,39 @@
             if (typeof setAdminTab === 'function') setAdminTab('branding');
             showToast('Skema warna ' + themeKey + ' diterapkan.', 'success');
         }
+
+        function isAdmin() { return currentRole === 'admin'; }
+        function isUstadzah() { return currentRole === 'ustadzah'; }
+        function isParent() { return currentRole === 'parent'; }
+
+        function getCurrentUserHalaqah() {
+            if (!isUstadzah() || !loggedInUser) return null;
+            const teach = teachers.find(t => t.email === loggedInUser.email || t.username === loggedInUser.username || t.name === loggedInUser.name);
+            return teach ? teach.halaqah : null;
+        }
+
+        function getAccessibleStudentIds() {
+            if (isAdmin()) return students.map(s => s.id);
+            if (isUstadzah()) {
+                const halaqah = getCurrentUserHalaqah();
+                if (!halaqah) return [];
+                return students.filter(s => s.class === halaqah).map(s => s.id);
+            }
+            if (isParent() && loggedInUser) {
+                return students.filter(s => (s.waliUsername && s.waliUsername === loggedInUser.username) || s.parentName === loggedInUser.name).map(s => s.id);
+            }
+            return [];
+        }
+
+        function enforceRoleAccess(allowedRoles) {
+            if (!loggedInUser || !allowedRoles.includes(currentRole)) {
+                showToast('Akses ditolak. Anda tidak memiliki hak untuk melihat halaman ini.', 'danger');
+                showPublicView('landing');
+                return false;
+            }
+            return true;
+        }
+
         window.onload = function () {
             applyTheme(appSettings.theme);
             syncBrandingAndSettings();
@@ -1199,6 +1232,7 @@
         }
 
         function saveCertSettings() {
+            if (!enforceRoleAccess(['admin'])) return;
             if (pendingCertLogo) appSettings.certLogo = pendingCertLogo;
             if (pendingCertSignature) appSettings.certSignature = pendingCertSignature;
             if (pendingCertStamp) appSettings.certStamp = pendingCertStamp;
@@ -1412,10 +1446,12 @@
         }
 
         function approveLeave(id) {
+            if (!enforceRoleAccess(['admin'])) return;
             const l = leaves.find(x => x.id === id);
             if (l) { l.status = 'approved'; saveData(); renderLeaveTable(); showToast('Cuti disetujui.', 'success'); }
         }
         function rejectLeave(id) {
+            if (!enforceRoleAccess(['admin'])) return;
             const l = leaves.find(x => x.id === id);
             if (l) { l.status = 'rejected'; saveData(); renderLeaveTable(); showToast('Cuti ditolak.', 'warning'); }
         }
@@ -1591,6 +1627,7 @@
         }
 
         function setBackendMode(mode) {
+            if (!enforceRoleAccess(['admin'])) return;
             backendMode = mode;
             localStorage.setItem('m_backend_mode', mode);
             const cloudBadge = document.getElementById('sync-cloud-status');
@@ -1621,6 +1658,8 @@
         }
 
         function showPrivateDashboard() {
+            if (!enforceRoleAccess(['admin', 'ustadzah', 'parent'])) return;
+            
             document.querySelectorAll('.view-section').forEach(view => view.classList.add('hidden'));
             document.getElementById('view-dashboard').classList.remove('hidden');
             document.querySelectorAll('.dashboard-role-panel').forEach(panel => panel.classList.add('hidden'));
@@ -1820,6 +1859,7 @@
 
         /* ==================== ADMIN TAB SWITCHING ==================== */
         function setAdminTab(tab) {
+            if (!enforceRoleAccess(['admin'])) return;
             adminActiveTab = tab;
             document.querySelectorAll('.admin-tab-btn').forEach(btn => {
                 btn.className = `admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
@@ -1833,6 +1873,7 @@
 
         /* ==================== STREAMING_CHUNK: Render Tab Admin ==================== */
         function renderAdminTab() {
+            if (!enforceRoleAccess(['admin'])) return;
             const container = document.getElementById('admin-tab-content');
             if (!container) return;
 
@@ -3386,6 +3427,14 @@
                             <input type="text" id="form-phone" required placeholder="Contoh: 0812-..." class="w-full px-4 py-2 border border-rose-200 rounded-xl">
                         </div>
                     </div>
+                    <div>
+                        <label class="block text-xs font-bold text-rose-700 mb-1">Akun Wali Santri (Opsional)</label>
+                        <select id="form-parent-account" class="w-full px-3 py-2 border border-rose-200 rounded-xl">
+                            <option value="">-- Tidak ada / Belum daftar --</option>
+                            ${accounts.filter(a => a.role === 'parent').map(a => `<option value="${a.username}">${a.name} (${a.username})</option>`).join('')}
+                        </select>
+                        <p class="text-[9px] text-slate-400 mt-1">Pilih akun wali santri agar hanya orang tua tersebut yang dapat melihat data ananda.</p>
+                    </div>
 
                     <div class="pt-4 flex justify-end gap-3 border-t border-rose-100">
                         <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
@@ -3406,12 +3455,14 @@
             const totalJuz = parseInt(document.getElementById('form-current').value) || 0;
             const parentName = document.getElementById('form-parent').value.trim();
             const parentPhone = document.getElementById('form-phone').value.trim();
+            const parentAccount = document.getElementById('form-parent-account').value.trim();
 
             const newStudent = {
                 id: 'S' + Date.now(),
                 name, nis, class: cl, jenjang, program, targetJuz, totalJuz,
                 parentName, parentPhone, lastSurah: totalJuz > 0 ? "Fatihah" : "Mulai",
-                history: Array.from({length: totalJuz}, (_, i) => i + 1)
+                history: Array.from({length: totalJuz}, (_, i) => i + 1),
+                waliUsername: parentAccount || ''
             };
 
             students.push(newStudent);
@@ -3459,24 +3510,31 @@
                             </select>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-rose-700 mb-1">Target Hafalan (Juz)</label>
-                            <input type="number" id="form-edit-target" value="${student.targetJuz}" min="1" max="30" class="w-full px-4 py-2 border border-rose-200 rounded-xl">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-rose-700 mb-1">Wali / Orang Tua</label>
-                            <input type="text" id="form-edit-parent" value="${student.parentName}" required class="w-full px-4 py-2 border border-rose-200 rounded-xl">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-rose-700 mb-1">No. WhatsApp Wali</label>
-                        <input type="text" id="form-edit-phone" value="${student.parentPhone}" required class="w-full px-4 py-2 border border-rose-200 rounded-xl">
-                    </div>
-                    <div class="pt-4 flex justify-end gap-3 border-t border-rose-100">
-                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
-                        <button type="submit" class="px-5 py-2 bg-gradient-to-r from-rose-500 to-rose-700 text-white rounded-xl font-bold">Perbarui Data</button>
-                    </div>
+                    <div class="grid grid-cols-2 gap-4"> 
+                        <div> 
+                            <label class="block text-xs font-bold text-rose-700 mb-1">Target Hafalan (Juz)</label> 
+                            <input type="number" id="form-edit-target" value="${student.targetJuz}" min="1" max="30" class="w-full px-4 py-2 border border-rose-200 rounded-xl"> 
+                        </div> 
+                        <div> 
+                            <label class="block text-xs font-bold text-rose-700 mb-1">Wali / Orang Tua</label> 
+                            <input type="text" id="form-edit-parent" value="${student.parentName}" required class="w-full px-4 py-2 border border-rose-200 rounded-xl"> 
+                        </div> 
+                    </div> 
+                    <div> 
+                        <label class="block text-xs font-bold text-rose-700 mb-1">No. WhatsApp Wali</label> 
+                        <input type="text" id="form-edit-phone" value="${student.parentPhone}" required class="w-full px-4 py-2 border border-rose-200 rounded-xl"> 
+                    </div> 
+                    <div> 
+                        <label class="block text-xs font-bold text-rose-700 mb-1">Akun Wali Santri (Opsional)</label> 
+                        <select id="form-edit-parent-account" class="w-full px-3 py-2 border border-rose-200 rounded-xl"> 
+                            <option value="">-- Tidak ada / Belum daftar --</option> 
+                            ${accounts.filter(a => a.role === 'parent').map(a => `<option value="${a.username}" ${student.waliUsername === a.username ? 'selected' : ''}>${a.name} (${a.username})</option>`).join('')} 
+                        </select> 
+                    </div> 
+                    <div class="pt-4 flex justify-end gap-3 border-t border-rose-100"> 
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button> 
+                        <button type="submit" class="px-5 py-2 bg-gradient-to-r from-rose-500 to-rose-700 text-white rounded-xl font-bold">Perbarui Data</button> 
+                    </div> 
                 </form>
             `);
         }
@@ -3491,12 +3549,14 @@
             const targetJuz = parseInt(document.getElementById('form-edit-target').value) || 30;
             const parentName = document.getElementById('form-edit-parent').value.trim();
             const parentPhone = document.getElementById('form-edit-phone').value.trim();
+            const parentAccount = document.getElementById('form-edit-parent-account').value.trim();
 
             const idx = students.findIndex(s => s.id === id);
             if (idx !== -1) {
                 students[idx] = {
                     ...students[idx],
-                    name, nis, class: cl, jenjang, program, targetJuz, parentName, parentPhone
+                    name, nis, class: cl, jenjang, program, targetJuz, parentName, parentPhone,
+                    waliUsername: parentAccount || ''
                 };
                 saveData();
                 closeModal();
@@ -3933,7 +3993,7 @@
 
         /* ==================== STREAMING_CHUNK: Ustadzah Halaqah View Management ==================== */
         function setupUstadzahView() {
-            const teach = teachers.find(t => t.email === loggedInUser.email) || teachers[0];
+            const teach = teachers.find(t => t.email === loggedInUser.email || t.username === loggedInUser.username || t.name === loggedInUser.name) || teachers[0];
             const halaqahName = teach ? teach.halaqah : masterHalaqahs[0];
             
             document.getElementById('ustadzah-halaqah-subtitle').textContent = `Halaqah Pengasuhan: ${halaqahName} (Pembina: ${teach ? teach.name : "Ustadzah"})`;
@@ -4076,17 +4136,28 @@
             if (!select) return;
 
             select.innerHTML = '';
-            students.forEach(s => {
+            const accessibleIds = getAccessibleStudentIds();
+            const accessibleStudents = students.filter(s => accessibleIds.includes(s.id));
+            
+            accessibleStudents.forEach(s => {
                 select.innerHTML += `<option value="${s.id}">${s.name}</option>`;
             });
-            if (students.length > 0) {
-                selectedStudentForParent = students[0].id;
-                select.value = students[0].id;
-                renderParentStudentDetails(students[0].id);
+            if (accessibleStudents.length > 0) {
+                selectedStudentForParent = accessibleStudents[0].id;
+                select.value = accessibleStudents[0].id;
+                renderParentStudentDetails(accessibleStudents[0].id);
+            } else {
+                selectedStudentForParent = null;
+                renderParentStudentDetails(null);
             }
         }
 
         function changeParentStudent(studentId) {
+            const accessibleIds = getAccessibleStudentIds();
+            if (!accessibleIds.includes(studentId)) {
+                showToast('Akses ditolak. Anda tidak memiliki hak untuk melihat data santri ini.', 'danger');
+                return;
+            }
             selectedStudentForParent = studentId;
             renderParentStudentDetails(studentId);
         }
@@ -4094,11 +4165,41 @@
         function openParentCertificate() {
             const sel = document.getElementById('parent-student-select');
             const id = selectedStudentForParent || (sel ? sel.value : '');
-            if (id) openCertificateModal(id, 'bulanan');
-            else showToast('Pilih santri terlebih dahulu.', 'warning');
+            if (!id) {
+                showToast('Pilih santri terlebih dahulu.', 'warning');
+                return;
+            }
+            const accessibleIds = getAccessibleStudentIds();
+            if (!accessibleIds.includes(id)) {
+                showToast('Akses ditolak. Anda tidak memiliki hak untuk mencetak sertifikat santri ini.', 'danger');
+                return;
+            }
+            openCertificateModal(id, 'bulanan');
         }
 
         function renderParentStudentDetails(id) {
+            if (!id) {
+                document.getElementById('p-stud-name').textContent = '-';
+                document.getElementById('p-stud-nis').textContent = '-';
+                document.getElementById('p-stud-program').textContent = '-';
+                document.getElementById('p-stud-class').textContent = '-';
+                document.getElementById('p-stud-parent').textContent = '-';
+                document.getElementById('p-stud-percent').textContent = '0%';
+                document.getElementById('p-stud-progress-bar').style.width = '0%';
+                document.getElementById('p-stud-current-juz').textContent = '0 Juz';
+                document.getElementById('p-stud-target-juz').textContent = '0 Juz';
+                document.getElementById('p-stud-last-surah').textContent = '-';
+                const table = document.getElementById('parent-deposit-table');
+                if (table) table.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-400 italic">Tidak ada data santri yang dapat diakses.</td></tr>`;
+                return;
+            }
+
+            const accessibleIds = getAccessibleStudentIds();
+            if (!accessibleIds.includes(id)) {
+                showToast('Akses ditolak. Anda tidak memiliki hak untuk melihat data santri ini.', 'danger');
+                return;
+            }
+
             const s = students.find(x => x.id === id);
             if (!s) return;
 
