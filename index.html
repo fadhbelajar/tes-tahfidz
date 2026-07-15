@@ -94,6 +94,16 @@
                 display: none !important;
             }
         }
+
+        .modal-certificate-preview #modal-container {
+            max-width: 1100px !important;
+            width: 95vw !important;
+            max-height: 95vh !important;
+        }
+        .modal-certificate-preview #modal-content {
+            padding: 12px !important;
+            max-height: 93vh !important;
+        }
     </style>
 </head>
 <body class="islamic-pattern text-slate-800 min-h-screen flex flex-col antialiased">
@@ -1321,6 +1331,11 @@
                 burgundy: { primary: '#881337', secondary: '#fda4af', accent: '#be123c', light: '#fff1f2', dark: '#4c0519', gradient: 'linear-gradient(135deg, #fff1f2 0%, #fce7f3 50%, #fbcfe8 100%)' }
             };
             const colors = themeColors[certTheme] || themeColors.rose;
+
+            const backdrop = document.getElementById('modal-backdrop');
+            const container = document.getElementById('modal-container');
+            backdrop.classList.add('modal-certificate-preview');
+            container.classList.add('modal-certificate-preview');
 
             openModal(`<i class="fa-solid fa-award text-rose-500"></i> Pratinjau Sertifikat`, `
                 <div id="cert-print-area" style="font-family: 'Times New Roman', 'Georgia', serif;">
@@ -4285,6 +4300,8 @@
             container.classList.add('scale-95');
             setTimeout(() => {
                 backdrop.classList.add('hidden');
+                backdrop.classList.remove('modal-certificate-preview');
+                container.classList.remove('modal-certificate-preview');
             }, 300);
         }
 
