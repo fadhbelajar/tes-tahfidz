@@ -359,7 +359,6 @@
                                     <label class="block font-bold text-slate-700 mb-1">Pilih Surah</label>
                                     <select id="f-dep-surah" onchange="autoFillSurahInfo()" required class="w-full px-3 py-2 bg-rose-50/50 border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-500">
                                         <option value="">-- Pilih Surah --</option>
-                                        ${masterSurahList.sort((a,b)=>a.id-b.id).map(s => `<option value="${s.name}" data-juz="${s.juz}" data-verses="${s.verses}">${s.id}. ${s.name} (Juz ${s.juz}, ${s.verses} ayat)</option>`).join('')}
                                     </select>
                                 </div>
                                 <div>
@@ -1819,33 +1818,33 @@
                             <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center text-xl"><i class="fa-solid fa-graduation-cap"></i></div>
                             <div>
                                 <span class="text-xs text-rose-500 block font-medium">Total Santriwati</span>
-                                <span class="text-2xl font-bold font-serif text-rose-plum">${totalStudents}</span>
+                                <span class="text-2xl font-bold font-serif text-mawaddah-plum">${totalStudents}</span>
                             </div>
                         </div>
                         <div class="bg-white p-5 rounded-3xl border border-rose-100 shadow-sm flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-rose-gold flex items-center justify-center text-xl"><i class="fa-solid fa-book-open-reader"></i></div>
+                            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-mawaddah-gold flex items-center justify-center text-xl"><i class="fa-solid fa-book-open-reader"></i></div>
                             <div>
                                 <span class="text-xs text-rose-500 block font-medium">Juz Dihafal</span>
-                                <span class="text-2xl font-bold font-serif text-rose-plum">${totalJuzMemorized}</span>
+                                <span class="text-2xl font-bold font-serif text-mawaddah-plum">${totalJuzMemorized}</span>
                             </div>
                         </div>
                         <div class="bg-white p-5 rounded-3xl border border-rose-100 shadow-sm flex items-center gap-4">
                             <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl"><i class="fa-solid fa-chart-line"></i></div>
                             <div>
                                 <span class="text-xs text-rose-500 block font-medium">Rerata Per Santri</span>
-                                <span class="text-2xl font-bold font-serif text-rose-plum">${avgJuz} Juz</span>
+                                <span class="text-2xl font-bold font-serif text-mawaddah-plum">${avgJuz} Juz</span>
                             </div>
                         </div>
                         <div class="bg-white p-5 rounded-3xl border border-rose-100 shadow-sm flex items-center gap-4">
                             <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl"><i class="fa-solid fa-users"></i></div>
                             <div>
                                 <span class="text-xs text-rose-500 block font-medium">Total Halaqah</span>
-                                <span class="text-2xl font-bold font-serif text-rose-plum">${totalUstadzah} Halaqah</span>
+                                <span class="text-2xl font-bold font-serif text-mawaddah-plum">${totalUstadzah} Halaqah</span>
                             </div>
                         </div>
                     </div>
                     <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm">
-                        <h3 class="text-base font-bold font-serif text-rose-plum mb-4"><i class="fa-solid fa-print text-rose-500 mr-1.5"></i> Cetak Laporan</h3>
+                        <h3 class="text-base font-bold font-serif text-mawaddah-plum mb-4"><i class="fa-solid fa-print text-rose-500 mr-1.5"></i> Cetak Laporan</h3>
                         <div class="flex flex-wrap gap-2">
                             <button onclick="openAdminReport('santri')" class="px-3 py-2 bg-rose-600 text-white rounded-xl text-[11px] font-bold hover:bg-rose-700 flex items-center gap-1.5 shadow"><i class="fa-solid fa-graduation-cap"></i> Data Santriwati</button>
                             <button onclick="openAdminReport('hafalan')" class="px-3 py-2 bg-amber-600 text-white rounded-xl text-[11px] font-bold hover:bg-amber-700 flex items-center gap-1.5 shadow"><i class="fa-solid fa-book-open"></i> Data Hafalan</button>
@@ -1856,17 +1855,17 @@
                     </div>
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm lg:col-span-2">
-                            <h3 class="text-base font-bold font-serif text-rose-plum mb-3"><i class="fa-solid fa-chart-line text-rose-500"></i> Capaian Target Juz</h3>
+                            <h3 class="text-base font-bold font-serif text-mawaddah-plum mb-3"><i class="fa-solid fa-chart-line text-rose-500"></i> Capaian Target Juz</h3>
                             <div class="w-full h-64"><canvas id="targetDistChart"></canvas></div>
                         </div>
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm">
-                            <h3 class="text-base font-bold font-serif text-rose-plum mb-3"><i class="fa-solid fa-circle-info text-amber-500"></i> Proporsi Jenjang</h3>
+                            <h3 class="text-base font-bold font-serif text-mawaddah-plum mb-3"><i class="fa-solid fa-circle-info text-amber-500"></i> Proporsi Jenjang</h3>
                                 <div class="w-full h-64 flex items-center justify-center"><canvas id="jenjangDistChart"></canvas></div>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm lg:col-span-3">
-                                <h3 class="text-base font-bold font-serif text-rose-plum mb-4"><i class="fa-solid fa-chart-line text-rose-500"></i> Aktivitas Setoran Hafalan (Harian / Mingguan / Bulanan)</h3>
+                                <h3 class="text-base font-bold font-serif text-mawaddah-plum mb-4"><i class="fa-solid fa-chart-line text-rose-500"></i> Aktivitas Setoran Hafalan (Harian / Mingguan / Bulanan)</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div><h4 class="text-xs font-bold text-rose-700 mb-2 text-center">Harian (14 Hari Terakhir)</h4><div class="h-56"><canvas id="depositDailyChart"></canvas></div></div>
                                     <div><h4 class="text-xs font-bold text-rose-700 mb-2 text-center">Mingguan (8 Minggu Terakhir)</h4><div class="h-56"><canvas id="depositWeeklyChart"></canvas></div></div>
@@ -1874,7 +1873,7 @@
                                 </div>
                             </div>
                             <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm lg:col-span-1">
-                                <h3 class="text-base font-bold font-serif text-rose-plum mb-3"><i class="fa-solid fa-medal text-amber-500"></i> Distribusi Predikat</h3>
+                                <h3 class="text-base font-bold font-serif text-mawaddah-plum mb-3"><i class="fa-solid fa-medal text-amber-500"></i> Distribusi Predikat</h3>
                                 <div class="w-full h-64 flex items-center justify-center"><canvas id="predikatDistChart"></canvas></div>
                             </div>
                             <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm lg:col-span-2 grid grid-cols-2 gap-4 content-center">
@@ -1893,7 +1892,7 @@
                     <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                             <div>
-                                <h3 class="text-lg font-bold font-serif text-rose-plum"><i class="fa-solid fa-address-book text-rose-500"></i> Direktori Santriwati</h3>
+                                <h3 class="text-lg font-bold font-serif text-mawaddah-plum"><i class="fa-solid fa-address-book text-rose-500"></i> Direktori Santriwati</h3>
                                 <p class="text-xs text-rose-500">Daftar lengkap siswi pondok Al Mawaddah dengan klasifikasi jenjang & program.</p>
                             </div>
                             <div class="flex flex-wrap gap-2 w-full sm:w-auto items-center">
@@ -1948,7 +1947,7 @@
                     <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                             <div>
-                                <h3 class="text-lg font-bold font-serif text-rose-plum"><i class="fa-solid fa-chalkboard-user text-rose-500"></i> Pembimbing Halaqah</h3>
+                                <h3 class="text-lg font-bold font-serif text-mawaddah-plum"><i class="fa-solid fa-chalkboard-user text-rose-500"></i> Pembimbing Halaqah</h3>
                                 <p class="text-xs text-rose-500">Manajemen ustadzah pembina halaqah asrama putri.</p>
                             </div>
                             <div class="flex flex-wrap gap-2 w-full sm:w-auto">
@@ -1969,7 +1968,7 @@
                         <!-- Card Manajemen Kelas -->
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
                             <div class="flex justify-between items-center pb-2 border-b">
-                                <h3 class="font-serif font-bold text-sm text-rose-plum"><i class="fa-solid fa-door-open text-rose-500 mr-1.5"></i> Master Kelas</h3>
+                                <h3 class="font-serif font-bold text-sm text-mawaddah-plum"><i class="fa-solid fa-door-open text-rose-500 mr-1.5"></i> Master Kelas</h3>
                                 <button onclick="openAddMasterItemModal('class')" class="text-xs text-rose-600 font-bold hover:underline"><i class="fa-solid fa-plus-circle"></i> Tambah</button>
                             </div>
                             <div class="space-y-2 max-h-[300px] overflow-y-auto pr-1" id="master-class-list"></div>
@@ -1978,7 +1977,7 @@
                         <!-- Card Manajemen Jenjang -->
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
                             <div class="flex justify-between items-center pb-2 border-b">
-                                <h3 class="font-serif font-bold text-sm text-rose-plum"><i class="fa-solid fa-graduation-cap text-teal-500 mr-1.5"></i> Master Jenjang</h3>
+                                <h3 class="font-serif font-bold text-sm text-mawaddah-plum"><i class="fa-solid fa-graduation-cap text-teal-500 mr-1.5"></i> Master Jenjang</h3>
                                 <button onclick="openAddMasterItemModal('jenjang')" class="text-xs text-teal-600 font-bold hover:underline"><i class="fa-solid fa-plus-circle"></i> Tambah</button>
                             </div>
                             <div class="space-y-2 max-h-[300px] overflow-y-auto pr-1" id="master-jenjang-list"></div>
@@ -1987,7 +1986,7 @@
                         <!-- Card Manajemen Halaqah -->
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
                             <div class="flex justify-between items-center pb-2 border-b">
-                                <h3 class="font-serif font-bold text-sm text-rose-plum"><i class="fa-solid fa-users-viewfinder text-amber-500 mr-1.5"></i> Master Halaqah</h3>
+                                <h3 class="font-serif font-bold text-sm text-mawaddah-plum"><i class="fa-solid fa-users-viewfinder text-amber-500 mr-1.5"></i> Master Halaqah</h3>
                                 <button onclick="openAddMasterItemModal('halaqah')" class="text-xs text-amber-600 font-bold hover:underline"><i class="fa-solid fa-plus-circle"></i> Tambah</button>
                             </div>
                             <div class="space-y-2 max-h-[300px] overflow-y-auto pr-1" id="master-halaqah-list"></div>
@@ -1996,7 +1995,7 @@
                         <!-- Card Master Data Surah Al-Quran -->
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4 lg:col-span-3">
                             <div class="flex justify-between items-center pb-2 border-b">
-                                <h3 class="font-serif font-bold text-sm text-rose-plum"><i class="fa-solid fa-book-quran text-emerald-500 mr-1.5"></i> Master Data Surah Al-Quran</h3>
+                                <h3 class="font-serif font-bold text-sm text-mawaddah-plum"><i class="fa-solid fa-book-quran text-emerald-500 mr-1.5"></i> Master Data Surah Al-Quran</h3>
                                 <button onclick="openAddSurahModal()" class="text-xs text-emerald-600 font-bold hover:underline"><i class="fa-solid fa-plus-circle"></i> Tambah Surah</button>
                             </div>
                             <div class="overflow-x-auto max-h-[400px] overflow-y-auto">
@@ -2024,7 +2023,7 @@
                     <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
                         <div class="flex justify-between items-center">
                             <div>
-                                <h3 class="text-lg font-bold font-serif text-rose-plum"><i class="fa-solid fa-newspaper text-rose-500"></i> Kelola Berita Pesantren</h3>
+                                <h3 class="text-lg font-bold font-serif text-mawaddah-plum"><i class="fa-solid fa-newspaper text-rose-500"></i> Kelola Berita Pesantren</h3>
                                 <p class="text-xs text-rose-500">Tambah, sunting, atau hapus artikel berita yang dipublikasikan di Landing Page publik.</p>
                             </div>
                             <button onclick="openAddNewsModal()" class="px-3 py-2 bg-rose-500 text-white rounded-xl text-xs font-bold">
@@ -2056,7 +2055,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Welcome Banner CMS -->
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
-                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-rectangle-ad text-rose-500 mr-1.5"></i> Banner Sambutan Dashboard</h3>
+                            <h3 class="font-serif font-bold text-sm text-mawaddah-plum border-b pb-2"><i class="fa-solid fa-rectangle-ad text-rose-500 mr-1.5"></i> Banner Sambutan Dashboard</h3>
                             <div class="space-y-3 text-xs">
                                 <div>
                                     <label class="block font-bold text-slate-700 mb-1">Judul Sambutan</label>
@@ -2072,7 +2071,7 @@
 
                         <!-- Announcement / Sticky Notice CMS -->
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
-                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-bullhorn text-rose-500 mr-1.5"></i> Pengumuman Berjalan (Sticky Notice)</h3>
+                            <h3 class="font-serif font-bold text-sm text-mawaddah-plum border-b pb-2"><i class="fa-solid fa-bullhorn text-rose-500 mr-1.5"></i> Pengumuman Berjalan (Sticky Notice)</h3>
                             <div class="space-y-3 text-xs">
                                 <div class="flex items-center gap-2">
                                     <input type="checkbox" id="cms-ann-active" ${appSettings.announcement.active ? 'checked' : ''} class="w-4 h-4 text-rose-600 rounded">
@@ -2096,7 +2095,7 @@
 
                         <!-- Profil & Kontak Pesantren -->
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4 md:col-span-2">
-                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-mosque text-rose-500 mr-1.5"></i> Profil & Kontak Pesantren</h3>
+                            <h3 class="font-serif font-bold text-sm text-mawaddah-plum border-b pb-2"><i class="fa-solid fa-mosque text-rose-500 mr-1.5"></i> Profil & Kontak Pesantren</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                                 <div class="md:col-span-2">
                                     <label class="block font-bold text-slate-700 mb-1">Deskripsi Profil Pesantren</label>
@@ -2139,7 +2138,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Backend mode selector -->
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4 md:col-span-2">
-                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-database text-rose-500 mr-1.5"></i> Mode Penyimpanan Backend</h3>
+                            <h3 class="font-serif font-bold text-sm text-mawaddah-plum border-b pb-2"><i class="fa-solid fa-database text-rose-500 mr-1.5"></i> Mode Penyimpanan Backend</h3>
                             <p class="text-xs text-slate-500">Pilih di mana data mutabaah, santri, ustadzah & master disimpan secara permanen.</p>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 <button onclick="setBackendMode('local')" class="py-3 rounded-2xl border text-xs font-bold transition-all ${backendMode === 'local' ? 'border-rose-500 bg-rose-50 text-rose-700' : 'bg-white text-slate-500 hover:bg-rose-50'}"><i class="fa-solid fa-laptop mr-1"></i> Lokal (Browser)</button>
@@ -2151,7 +2150,7 @@
 
                         <!-- Branding & Logo -->
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
-                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-id-card text-rose-500 mr-1.5"></i> Identitas & Branding</h3>
+                            <h3 class="font-serif font-bold text-sm text-mawaddah-plum border-b pb-2"><i class="fa-solid fa-id-card text-rose-500 mr-1.5"></i> Identitas & Branding</h3>
                             <div class="space-y-3 text-xs">
                                 <div>
                                     <label class="block font-bold text-slate-700 mb-1">Nama Aplikasi / Portal</label>
@@ -2171,7 +2170,7 @@
 
                         <!-- Spreadsheet Connection settings -->
                         <div id="sheet-config-card" class="${backendMode === 'sheets' ? '' : 'hidden'} bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
-                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-file-excel text-emerald-600 mr-1.5"></i> Google Sheets Integrasi Backend</h3>
+                            <h3 class="font-serif font-bold text-sm text-mawaddah-plum border-b pb-2"><i class="fa-solid fa-file-excel text-emerald-600 mr-1.5"></i> Google Sheets Integrasi Backend</h3>
                             <div class="space-y-3 text-xs">
                                 <div>
                                     <label class="block font-bold text-slate-700 mb-1">URL Web App Google Apps Script</label>
@@ -2190,7 +2189,7 @@
 
                         <!-- Cloudflare D1 Connection settings -->
                         <div id="d1-config-card" class="${backendMode === 'd1' ? '' : 'hidden'} bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
-                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-cloud text-sky-600 mr-1.5"></i> Cloudflare D1 Integrasi Backend</h3>
+                            <h3 class="font-serif font-bold text-sm text-mawaddah-plum border-b pb-2"><i class="fa-solid fa-cloud text-sky-600 mr-1.5"></i> Cloudflare D1 Integrasi Backend</h3>
                             <div class="space-y-3 text-xs">
                                 <div>
                                     <label class="block font-bold text-slate-700 mb-1">URL Endpoint D1 (Pages Function)</label>
@@ -2213,7 +2212,7 @@
 
                         <!-- Color Themes -->
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4 md:col-span-2">
-                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-palette text-rose-500 mr-1.5"></i> Skema Warna Feminin & Syar'i</h3>
+                            <h3 class="font-serif font-bold text-sm text-mawaddah-plum border-b pb-2"><i class="fa-solid fa-palette text-rose-500 mr-1.5"></i> Skema Warna Feminin & Syar'i</h3>
                             <p class="text-xs text-slate-500">Pilih palet warna estetis yang secara serentak mendandani interior portal E-Tahfidz.</p>
                             <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
                                 <button onclick="setTheme('rose')" class="p-3 rounded-2xl border text-xs font-bold text-left flex items-center justify-between hover:scale-[1.02] transition-all ${appSettings.theme === 'rose' ? 'border-rose-500 bg-rose-50' : 'bg-white'}">
@@ -2242,7 +2241,7 @@
                     <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
                         <div class="flex justify-between items-center pb-2 border-b">
                             <div>
-                                <h3 class="font-serif font-bold text-sm text-rose-plum"><i class="fa-solid fa-users text-rose-500 mr-1.5"></i> Portal Kredensial Akun</h3>
+                                <h3 class="font-serif font-bold text-sm text-mawaddah-plum"><i class="fa-solid fa-users text-rose-500 mr-1.5"></i> Portal Kredensial Akun</h3>
                                 <p class="text-[10px] text-slate-500">Konfigurasi hak akses masuk bagi pembimbing dan walisantri.</p>
                             </div>
                             <button onclick="openAddAccountModal()" class="px-3 py-1.5 bg-rose-500 text-white rounded-xl text-xs font-bold hover:bg-rose-600"><i class="fa-solid fa-user-plus mr-1"></i> Akun Baru</button>
@@ -2270,7 +2269,7 @@
                 container.innerHTML = `
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4 lg:col-span-1">
-                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-award text-rose-500 mr-1.5"></i> Pengaturan Sertifikat</h3>
+                            <h3 class="font-serif font-bold text-sm text-mawaddah-plum border-b pb-2"><i class="fa-solid fa-award text-rose-500 mr-1.5"></i> Pengaturan Sertifikat</h3>
                             <div class="space-y-3 text-xs">
                                 <div>
                                     <label class="block font-bold text-slate-700 mb-1">Nama Pimpinan Pondok</label>
@@ -2308,7 +2307,7 @@
                             </div>
                         </div>
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm lg:col-span-2 space-y-4">
-                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-graduation-cap text-rose-500 mr-1.5"></i> Cetak Sertifikat Santriwati</h3>
+                            <h3 class="font-serif font-bold text-sm text-mawaddah-plum border-b pb-2"><i class="fa-solid fa-graduation-cap text-rose-500 mr-1.5"></i> Cetak Sertifikat Santriwati</h3>
                             <div class="overflow-x-auto">
                                 <table class="min-w-full divide-y divide-rose-100 text-left text-xs">
                                     <thead><tr class="text-rose-700 bg-rose-50/50">
@@ -2332,7 +2331,7 @@
                     <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
                         <div class="flex justify-between items-center border-b pb-2">
                             <div>
-                                <h3 class="font-serif font-bold text-sm text-rose-plum"><i class="fa-solid fa-plane-departure text-rose-500 mr-1.5"></i> Pengajuan Cuti Ustadzah</h3>
+                                <h3 class="font-serif font-bold text-sm text-mawaddah-plum"><i class="fa-solid fa-plane-departure text-rose-500 mr-1.5"></i> Pengajuan Cuti Ustadzah</h3>
                                 <p class="text-[10px] text-slate-500">Persetujuan permohonan cuti pembimbing halaqah.</p>
                             </div>
                         </div>
@@ -2669,9 +2668,9 @@
             openModal(`Laporan Data Santriwati Al Mawaddah`, `
                 <div class="p-6 bg-white border border-rose-200 rounded-2xl text-xs text-rose-900" id="print-area">
                     <div class="text-center border-b pb-4 mb-4">
-                        <h4 class="text-base font-bold font-serif text-rose-plum uppercase">${appSettings.name}</h4>
+                        <h4 class="text-base font-bold font-serif text-mawaddah-plum uppercase">${appSettings.name}</h4>
                         <p class="text-[9px] text-rose-500 font-medium">Kabupaten Sorong, Papua Barat Daya</p>
-                        <p class="text-[10px] font-bold text-rose-gold mt-1">LAPORAN REKAPITULASI CAPAIAN HAFALAN SANTRIWATI</p>
+                        <p class="text-[10px] font-bold text-mawaddah-gold mt-1">LAPORAN REKAPITULASI CAPAIAN HAFALAN SANTRIWATI</p>
                     </div>
 
                     <table class="min-w-full divide-y divide-gray-200 text-left border mb-6 text-[10px]">
@@ -2701,11 +2700,11 @@
 
                     <div class="mt-8 text-right text-[9px] pt-4 border-t">
                         <p class="text-rose-500">Kab. Sorong, ${new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</p>
-                        <p class="font-bold text-rose-plum mt-10">Mudirah Ma'had Al Mawaddah</p>
+                        <p class="font-bold text-mawaddah-plum mt-10">Mudirah Ma'had Al Mawaddah</p>
                     </div>
 
                     <div class="mt-6 flex justify-center gap-2 no-print">
-                        <button onclick="window.print()" class="px-4 py-2 bg-rose-plum text-white hover:bg-rose-900 rounded-xl font-semibold flex items-center gap-1.5 shadow">
+                        <button onclick="window.print()" class="px-4 py-2 bg-mawaddah-plum text-white hover:bg-rose-900 rounded-xl font-semibold flex items-center gap-1.5 shadow">
                             <i class="fa-solid fa-print"></i> Cetak Laporan
                         </button>
                         <button onclick="closeModal()" class="px-4 py-2 bg-rose-100 text-rose-800 rounded-xl font-semibold">
@@ -2742,9 +2741,9 @@
             openModal(`<i class="fa-solid fa-file-pdf text-rose-500"></i> ${title}`, `
                 <div id="admin-report-area" class="text-xs">
                     <div class="text-center mb-4">
-                        <h4 class="text-base font-bold font-serif text-rose-plum uppercase">${appSettings.name}</h4>
+                        <h4 class="text-base font-bold font-serif text-mawaddah-plum uppercase">${appSettings.name}</h4>
                         <p class="text-[9px] text-rose-500 font-medium">Kabupaten Sorong, Papua Barat Daya</p>
-                        <p class="text-[10px] font-bold text-rose-gold mt-1">${title.toUpperCase()}</p>
+                        <p class="text-[10px] font-bold text-mawaddah-gold mt-1">${title.toUpperCase()}</p>
                         <p class="text-[9px] text-slate-400">Dicetak: ${now.toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})} ${now.toLocaleTimeString('id-ID')}</p>
                     </div>
                     ${htmlContent}
@@ -2850,19 +2849,19 @@
             openModal(`<i class="fa-solid fa-file-pdf text-rose-500"></i> Laporan Data Ustadzah`, `
                 <div id="teacher-report-area" class="text-xs">
                     <div class="text-center mb-4">
-                        <h4 class="text-base font-bold font-serif text-rose-plum uppercase">${appSettings.name}</h4>
+                        <h4 class="text-base font-bold font-serif text-mawaddah-plum uppercase">${appSettings.name}</h4>
                         <p class="text-[9px] text-rose-500 font-medium">Kabupaten Sorong, Papua Barat Daya</p>
-                        <p class="text-[10px] font-bold text-rose-gold mt-1">LAPORAN DATA USTADZAH PEMBIMBING</p>
+                        <p class="text-[10px] font-bold text-mawaddah-gold mt-1">LAPORAN DATA USTADZAH PEMBIMBING</p>
                         <p class="text-[9px] text-slate-400">Dicetak: ${new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</p>
                     </div>
                     ${generateUstadzahReportContent()}
                     <div class="mt-8 text-right text-[9px] pt-4 border-t">
                         <p class="text-rose-500">Kab. Sorong, ${new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</p>
-                        <p class="font-bold text-rose-plum mt-10">Mudirah Ma'had Al Mawaddah</p>
+                        <p class="font-bold text-mawaddah-plum mt-10">Mudirah Ma'had Al Mawaddah</p>
                     </div>
                 </div>
                 <div class="mt-6 flex justify-center gap-2 no-print">
-                    <button onclick="window.print()" class="px-4 py-2 bg-rose-plum text-white hover:bg-rose-900 rounded-xl font-semibold flex items-center gap-1.5 shadow"><i class="fa-solid fa-print"></i> Cetak Laporan</button>
+                    <button onclick="window.print()" class="px-4 py-2 bg-mawaddah-plum text-white hover:bg-rose-900 rounded-xl font-semibold flex items-center gap-1.5 shadow"><i class="fa-solid fa-print"></i> Cetak Laporan</button>
                     <button onclick="closeModal()" class="px-4 py-2 bg-rose-100 text-rose-800 rounded-xl font-semibold">Tutup</button>
                 </div>
             `, true);
@@ -3395,7 +3394,7 @@
             const student = students.find(s => s.id === id);
             if (!student) return;
 
-            openModal(`<i class="fa-solid fa-edit text-rose-plum"></i> Edit Santriwati: ${student.name}`, `
+            openModal(`<i class="fa-solid fa-edit text-mawaddah-plum"></i> Edit Santriwati: ${student.name}`, `
                 <form onsubmit="handleUpdateStudent(event, '${id}')" class="space-y-4 text-xs">
                     <div>
                         <label class="block text-xs font-bold text-rose-700 mb-1">Nama Lengkap Santriwati</label>
@@ -3494,7 +3493,7 @@
                 <div class="bg-gradient-to-tr from-rose-50/50 to-white p-5 rounded-2xl border border-rose-100 shadow-sm flex items-start gap-4 hover:shadow-md transition-all">
                     <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center text-lg"><i class="fa-solid fa-chalkboard-user"></i></div>
                     <div class="space-y-1 text-xs flex-grow">
-                        <h4 class="font-bold text-rose-plum">${u.name}</h4>
+                        <h4 class="font-bold text-mawaddah-plum">${u.name}</h4>
                         <p class="text-[10px] text-slate-500 font-medium">Email: <span class="font-semibold text-rose-700">${u.email || '-'}</span></p>
                         <p class="text-[10px] text-slate-500 font-medium">Username: <span class="font-mono font-semibold text-rose-700">${u.username || '-'}</span></p>
                         <p class="text-[10px] text-slate-500 font-medium">NIP: <span class="font-semibold text-rose-700">${u.nip || '-'}</span></p>
@@ -3564,7 +3563,7 @@
             const halaqah = document.getElementById('f-u-halaqah').value;
             const phone = document.getElementById('f-u-phone').value.trim();
 
-            const newTeacher = { id: 'U' + Date.now(), name, nip, halaqah, phone };
+            const newTeacher = { id: 'U' + Date.now(), name, email, username, password, nip, halaqah, phone };
             teachers.push(newTeacher);
 
             const existingAcc = accounts.find(a => a.username === username);
@@ -3918,6 +3917,8 @@
 
             document.getElementById('f-dep-date').value = new Date().toISOString().split('T')[0];
 
+            populateSurahDropdown();
+
             renderUstadzahDepositHistory(halaqahName);
         }
 
@@ -4010,6 +4011,21 @@
                 document.getElementById('f-dep-start').value = '1';
                 document.getElementById('f-dep-end').value = verses;
             }
+        }
+
+        function populateSurahDropdown() {
+            const surahEl = document.getElementById('f-dep-surah');
+            if (!surahEl) return;
+            surahEl.innerHTML = '<option value="">-- Pilih Surah --</option>';
+            const sorted = masterSurahList.slice().sort((a,b) => a.id - b.id);
+            sorted.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.name;
+                opt.setAttribute('data-juz', s.juz);
+                opt.setAttribute('data-verses', s.verses);
+                opt.textContent = `${s.id}. ${s.name} (Juz ${s.juz}, ${s.verses} ayat)`;
+                surahEl.appendChild(opt);
+            });
         }
 
         function deleteDeposit(id) {
