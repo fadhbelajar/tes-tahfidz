@@ -628,9 +628,9 @@
         };
 
         const DEFAULT_ACCOUNTS = [
-            { email: "admin@example.com", username: "admin", role: "admin", password: "123456", name: "Ustadzah Mudirah" },
-            { email: "ustadzah@example.com", username: "ustadzah", role: "ustadzah", password: "123456", name: "Ustadzah Maryam Al-Hafidzah" },
-            { email: "walisantri@example.com", username: "walisantri", role: "parent", password: "123456", name: "Wali Aisyah Humaira" }
+            { email: "admin@almawaddah.id", username: "admin", role: "admin", password: "123456", name: "Admin Al Mawaddah" },
+            { email: "ustadzah@almawaddah.id", username: "ustadzah", role: "ustadzah", password: "123456", name: "Ustadzah Pembina" },
+            { email: "wali@almawaddah.id", username: "wali", role: "parent", password: "123456", name: "Wali Santri" }
         ];
 
         /* ==================== LOCAL STORAGE & CLOUD CONFIG ==================== */
@@ -645,6 +645,11 @@
         let masterHalaqahs = JSON.parse(localStorage.getItem('m_master_halaqahs')) || DEFAULT_MASTER_HALAQAHS;
         let webAppUrl = localStorage.getItem('m_webapp_url') || '';
 
+        // Backend mode: 'local' (browser only) | 'sheets' (Google Apps Script) | 'd1' (Cloudflare D1)
+        let backendMode = localStorage.getItem('m_backend_mode') || 'local';
+        let d1Url = localStorage.getItem('m_d1_url') || '/api/db';
+        let d1ApiKey = localStorage.getItem('m_d1_key') || '';
+
         function saveData() {
             localStorage.setItem('m_students', JSON.stringify(students));
             localStorage.setItem('m_teachers', JSON.stringify(teachers));
@@ -656,10 +661,62 @@
             localStorage.setItem('m_master_jenjangs', JSON.stringify(masterJenjangs));
             localStorage.setItem('m_master_halaqahs', JSON.stringify(masterHalaqahs));
             
-            // Sync with Google Sheets in background if URL is present
-            if (webAppUrl) {
-                pushDataToGoogleSheetsSilent();
+            // Sync ke backend aktif di background
+            syncToCloudSilent();
+        }
+
+        // Rakitan payload seluruh aplikasi (dipakai oleh backend Sheets & D1)
+        function buildAppPayload() {
+            return {
+                Students: students,
+                Teachers: teachers,
+                Deposits: deposits,
+                News: news,
+                Settings: [
+                    { key: "name", value: appSettings.name },
+                    { key: "tagline", value: appSettings.tagline },
+                    { key: "theme", value: appSettings.theme },
+                    { key: "bannerWelcome", value: appSettings.bannerWelcome },
+                    { key: "bannerDesc", value: appSettings.bannerDesc },
+                    { key: "announcement_active", value: appSettings.announcement.active.toString() },
+                    { key: "announcement_title", value: appSettings.announcement.title },
+                    { key: "announcement_body", value: appSettings.announcement.body },
+                    { key: "announcement_date", value: appSettings.announcement.date }
+                ],
+                Accounts: accounts,
+                MasterClasses: masterClasses.map(c => ({ name: c })),
+                MasterJenjangs: masterJenjangs.map(j => ({ name: j })),
+                MasterHalaqahs: masterHalaqahs.map(h => ({ name: h }))
+            };
+        }
+
+        let _cloudSyncInFlight = false;
+        async function syncToCloudSilent() {
+            if (_cloudSyncInFlight) return;
+            _cloudSyncInFlight = true;
+            try {
+                if (backendMode === 'sheets' && webAppUrl) {
+                    await pushDataToGoogleSheetsSilent();
+                } else if (backendMode === 'd1' && d1ApiKey) {
+                    await pushToD1Silent();
+                }
+            } catch (e) {
+                console.log('Silent cloud sync failed, changes saved locally.', e);
+            } finally {
+                _cloudSyncInFlight = false;
             }
+        }
+
+        // Push/Pull terpusat berdasarkan mode backend (dipakai tombol UI)
+        async function pushToCloud() {
+            if (backendMode === 'sheets') await pushDataToGoogleSheets();
+            else if (backendMode === 'd1') await pushToD1(true);
+            else showToast('Pilih mode backend terlebih dahulu.', 'warning');
+        }
+        async function pullFromCloud() {
+            if (backendMode === 'sheets') await pullDataFromGoogleSheets();
+            else if (backendMode === 'd1') await pullFromD1(true);
+            else showToast('Pilih mode backend terlebih dahulu.', 'warning');
         }
 
         let currentRole = 'admin'; 
@@ -740,10 +797,16 @@
             renderNewsPage();
             showPublicView('landing');
             
-            // If Web App URL configured, update sync status and attempt load
-            if (webAppUrl) {
-                document.getElementById('sync-cloud-status').classList.remove('hidden');
+            // Pull data dari backend aktif saat load
+            const cloudBadge = document.getElementById('sync-cloud-status');
+            if (backendMode === 'sheets' && webAppUrl) {
+                cloudBadge.classList.remove('hidden');
                 pullDataFromGoogleSheetsSilent();
+            } else if (backendMode === 'd1' && d1ApiKey) {
+                cloudBadge.classList.remove('hidden');
+                pullFromD1Silent();
+            } else {
+                cloudBadge.classList.add('hidden');
             }
         };
 
@@ -988,6 +1051,108 @@
             renderNewsPage();
         }
 
+        /* ==================== CLOUDFLARE D1 BACKEND HANDLERS ==================== */
+        async function pushToD1(showToastFlag = false) {
+            if (!d1ApiKey) {
+                if (showToastFlag) showToast('Backend D1 belum dikonfigurasi (API Key).', 'warning');
+                return;
+            }
+            if (showToastFlag) showToast('Mengunggah ke Cloudflare D1...', 'info');
+            try {
+                const res = await fetch(d1Url, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'x-api-key': d1ApiKey },
+                    body: JSON.stringify(buildAppPayload())
+                });
+                const r = await res.json();
+                if (r.status === 'success') {
+                    if (showToastFlag) showToast('Data tersimpan di Cloudflare D1!', 'success');
+                    document.getElementById('sync-cloud-status').classList.remove('hidden');
+                } else {
+                    if (showToastFlag) showToast('Gagal simpan D1: ' + (r.message || ''), 'danger');
+                }
+            } catch (error) {
+                if (showToastFlag) showToast('Koneksi D1 gagal. Periksa URL & API Key.', 'danger');
+                console.error(error);
+            }
+        }
+
+        async function pushToD1Silent() {
+            await pushToD1(false);
+        }
+
+        async function pullFromD1(showToastFlag = false) {
+            if (!d1ApiKey) {
+                if (showToastFlag) showToast('Backend D1 belum dikonfigurasi (API Key).', 'warning');
+                return;
+            }
+            if (showToastFlag) showToast('Mengambil data dari Cloudflare D1...', 'info');
+            try {
+                const res = await fetch(d1Url, { headers: { 'x-api-key': d1ApiKey } });
+                const r = await res.json();
+                if (r.status === 'success' && r.data) {
+                    importCloudData(r.data);
+                    if (showToastFlag) showToast('Data Cloudflare D1 disinkronkan!', 'success');
+                } else {
+                    if (showToastFlag) showToast('Gagal ambil D1: ' + (r.message || ''), 'danger');
+                }
+            } catch (error) {
+                if (showToastFlag) showToast('Koneksi D1 gagal. Periksa URL & API Key.', 'danger');
+                console.error(error);
+            }
+        }
+
+        async function pullFromD1Silent() {
+            await pullFromD1(false);
+        }
+
+        async function testD1Connection() {
+            const urlInput = document.getElementById('d1-url');
+            const keyInput = document.getElementById('d1-apikey');
+            if (!urlInput || !keyInput) return;
+            const url = urlInput.value.trim() || '/api/db';
+            const key = keyInput.value.trim();
+            if (!key) {
+                showToast('Isi API Key D1 terlebih dahulu.', 'warning');
+                return;
+            }
+            showToast('Menghubungkan ke Cloudflare D1...', 'info');
+            try {
+                const sep = url.includes('?') ? '&' : '?';
+                const res = await fetch(url + sep + 'action=ping', { headers: { 'x-api-key': key } });
+                const r = await res.json();
+                if (r.status === 'success') {
+                    localStorage.setItem('m_d1_url', url);
+                    localStorage.setItem('m_d1_key', key);
+                    d1Url = url;
+                    d1ApiKey = key;
+                    document.getElementById('sync-cloud-status').classList.remove('hidden');
+                    showToast(r.message || 'Terhubung ke Cloudflare D1', 'success');
+                } else {
+                    showToast('Gagal terhubung: ' + (r.message || ''), 'danger');
+                }
+            } catch (error) {
+                showToast('Koneksi D1 Gagal! Periksa URL dan API Key.', 'danger');
+                console.error(error);
+            }
+        }
+
+        function setBackendMode(mode) {
+            backendMode = mode;
+            localStorage.setItem('m_backend_mode', mode);
+            const cloudBadge = document.getElementById('sync-cloud-status');
+            if (mode === 'local') {
+                cloudBadge.classList.add('hidden');
+            } else if (mode === 'sheets') {
+                if (webAppUrl) { cloudBadge.classList.remove('hidden'); pullDataFromGoogleSheetsSilent(); }
+            } else if (mode === 'd1') {
+                if (d1ApiKey) { cloudBadge.classList.remove('hidden'); pullFromD1Silent(); }
+            }
+            if (typeof setAdminTab === 'function') setAdminTab('branding');
+            const label = mode === 'local' ? 'Lokal (Browser)' : (mode === 'sheets' ? 'Google Sheets' : 'Cloudflare D1');
+            showToast('Mode backend: ' + label, 'info');
+        }
+
         /* ==================== NAVIGATION CONTROLLERS ==================== */
         function showPublicView(viewName) {
             document.querySelectorAll('.view-section').forEach(view => view.classList.add('hidden'));
@@ -1129,15 +1294,18 @@
                     <form onsubmit="handleLogin(event)" class="space-y-3">
                         <div>
                             <label class="block font-bold text-slate-700 mb-1">Alamat Email / Username</label>
-                            <input type="text" id="login-email" required placeholder="admin@example.com" class="w-full px-4 py-2 bg-rose-50/50 border border-rose-200 rounded-xl focus:outline-none">
+                            <input type="text" id="login-email" required placeholder="admin@almawaddah.id" class="w-full px-4 py-2 bg-rose-50/50 border border-rose-200 rounded-xl focus:outline-none">
                         </div>
                         <div>
                             <label class="block font-bold text-slate-700 mb-1">Kata Sandi</label>
                             <input type="password" id="login-password" required placeholder="******" class="w-full px-4 py-2 bg-rose-50/50 border border-rose-200 rounded-xl focus:outline-none">
                         </div>
-                        <div class="flex justify-between items-center pt-1 text-[11px]">
+                        <div class="flex justify-end items-center pt-1 text-[11px]">
                             <button type="button" onclick="simulateForgotPassword()" class="text-rose-600 font-bold hover:underline">Lupa password?</button>
-                            <span class="text-slate-400">Default sandi: 123456</span>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 text-[10px] space-y-1.5">
+                            <div class="font-bold text-slate-500 uppercase text-center mb-0.5">Akun Standar Login</div>
+                            ${accounts.filter(a => ['admin','ustadzah','parent'].includes(a.role)).map(a => `<div class="flex justify-between items-center gap-2"><span class="font-semibold text-slate-700">${a.role === 'parent' ? 'Wali Santri' : (a.role === 'ustadzah' ? 'Ustadzah' : 'Admin')}</span><span class="font-mono text-rose-600">${a.username} / ${a.password}</span></div>`).join('')}
                         </div>
                         <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-rose-500 to-rose-700 text-white rounded-xl font-bold mt-2 shadow-md">
                             Masuk Ke Portal
@@ -1148,14 +1316,14 @@
         }
 
         function quickLogin(role) {
-            let email = "";
-            if (role === 'admin') email = "admin@example.com";
-            if (role === 'ustadzah') email = "ustadzah@example.com";
-            if (role === 'parent') email = "walisantri@example.com";
-
-            document.getElementById('login-email').value = email;
-            document.getElementById('login-password').value = "123456";
-            showToast(`Mengisi kredensial ${role}...`, 'info');
+            const acc = accounts.find(a => a.role === role);
+            if (!acc) {
+                showToast('Akun standar tidak ditemukan.', 'warning');
+                return;
+            }
+            document.getElementById('login-email').value = acc.email;
+            document.getElementById('login-password').value = acc.password;
+            showToast(`Mengisi kredensial ${acc.name}...`, 'info');
         }
 
         function handleLogin(e) {
@@ -1437,6 +1605,18 @@
             else if (adminActiveTab === 'branding') {
                 container.innerHTML = `
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Backend mode selector -->
+                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4 md:col-span-2">
+                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-database text-rose-500 mr-1.5"></i> Mode Penyimpanan Backend</h3>
+                            <p class="text-xs text-slate-500">Pilih di mana data mutabaah, santri, ustadzah & master disimpan secara permanen.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <button onclick="setBackendMode('local')" class="py-3 rounded-2xl border text-xs font-bold transition-all ${backendMode === 'local' ? 'border-rose-500 bg-rose-50 text-rose-700' : 'bg-white text-slate-500 hover:bg-rose-50'}"><i class="fa-solid fa-laptop mr-1"></i> Lokal (Browser)</button>
+                                <button onclick="setBackendMode('sheets')" class="py-3 rounded-2xl border text-xs font-bold transition-all ${backendMode === 'sheets' ? 'border-emerald-500 bg-emerald-50 text-emerald-700' : 'bg-white text-slate-500 hover:bg-emerald-50'}"><i class="fa-solid fa-file-excel mr-1"></i> Google Sheets</button>
+                                <button onclick="setBackendMode('d1')" class="py-3 rounded-2xl border text-xs font-bold transition-all ${backendMode === 'd1' ? 'border-sky-500 bg-sky-50 text-sky-700' : 'bg-white text-slate-500 hover:bg-sky-50'}"><i class="fa-solid fa-cloud mr-1"></i> Cloudflare D1</button>
+                            </div>
+                            <p class="text-[10px] text-slate-400 leading-relaxed">Mode <b>Lokal</b> menyimpan di browser masing-masing (tidak terpusat). <b>Google Sheets</b> & <b>Cloudflare D1</b> menyimpan terpusat & real-time antar perangkat.</p>
+                        </div>
+
                         <!-- Branding & Logo -->
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
                             <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-id-card text-rose-500 mr-1.5"></i> Identitas & Branding</h3>
@@ -1458,7 +1638,7 @@
                         </div>
 
                         <!-- Spreadsheet Connection settings -->
-                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
+                        <div id="sheet-config-card" class="${backendMode === 'sheets' ? '' : 'hidden'} bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
                             <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-file-excel text-emerald-600 mr-1.5"></i> Google Sheets Integrasi Backend</h3>
                             <div class="space-y-3 text-xs">
                                 <div>
@@ -1467,11 +1647,34 @@
                                 </div>
                                 <div class="grid grid-cols-2 gap-2">
                                     <button onclick="testSheetConnection()" class="py-2.5 bg-rose-950 text-white font-bold rounded-xl hover:bg-rose-900"><i class="fa-solid fa-link"></i> Tes Koneksi</button>
-                                    <button onclick="pushDataToGoogleSheets()" class="py-2.5 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700"><i class="fa-solid fa-cloud-arrow-up"></i> Push ke Cloud</button>
+                                    <button onclick="pushToCloud()" class="py-2.5 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700"><i class="fa-solid fa-cloud-arrow-up"></i> Push ke Cloud</button>
                                 </div>
-                                <button onclick="pullDataFromGoogleSheets()" class="w-full py-2 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-600"><i class="fa-solid fa-cloud-arrow-down"></i> Ambil Data Cloud (Pull)</button>
+                                <button onclick="pullFromCloud()" class="w-full py-2 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-600"><i class="fa-solid fa-cloud-arrow-down"></i> Ambil Data Cloud (Pull)</button>
                                 <p class="text-[10px] text-slate-400 leading-relaxed mt-1">
                                     * Hubungkan backend Google Sheet untuk menyimpan data setoran hafalan & master secara permanen dan real-time.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Cloudflare D1 Connection settings -->
+                        <div id="d1-config-card" class="${backendMode === 'd1' ? '' : 'hidden'} bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
+                            <h3 class="font-serif font-bold text-sm text-rose-plum border-b pb-2"><i class="fa-solid fa-cloud text-sky-600 mr-1.5"></i> Cloudflare D1 Integrasi Backend</h3>
+                            <div class="space-y-3 text-xs">
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">URL Endpoint D1 (Pages Function)</label>
+                                    <input type="text" id="d1-url" value="${d1Url}" placeholder="/api/db" class="w-full px-4 py-2 border rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-700 mb-1">API Key D1</label>
+                                    <input type="password" id="d1-apikey" value="${d1ApiKey}" placeholder="Isi API Key yang sama dengan secret Cloudflare" class="w-full px-4 py-2 border rounded-xl">
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="testD1Connection()" class="py-2.5 bg-rose-950 text-white font-bold rounded-xl hover:bg-rose-900"><i class="fa-solid fa-link"></i> Tes Koneksi</button>
+                                    <button onclick="pushToCloud()" class="py-2.5 bg-sky-600 text-white font-bold rounded-xl hover:bg-sky-700"><i class="fa-solid fa-cloud-arrow-up"></i> Push ke D1</button>
+                                </div>
+                                <button onclick="pullFromCloud()" class="w-full py-2 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-600"><i class="fa-solid fa-cloud-arrow-down"></i> Ambil Data D1 (Pull)</button>
+                                <p class="text-[10px] text-slate-400 leading-relaxed mt-1">
+                                    * Simpan data terpusat di database Cloudflare D1. API Key harus sama dengan secret <code>API_KEY</code> di Cloudflare (dashboard / wrangler secret).
                                 </p>
                             </div>
                         </div>

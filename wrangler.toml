@@ -3,3 +3,15 @@ compatibility_date = "2026-07-01"
 
 # Cloudflare Pages: output statis di root repo (file index.html)
 pages_build_output_dir = "."
+
+# Backend Cloudflare D1 (alternatif Google Sheets)
+[[d1_databases]]
+binding = "dbtahfidz"
+database_name = "dbtahfidz"
+database_id = "ace5eff9-9695-4950-bdc6-cc1a0f3e3218"
+
+# API key untuk Pages Function /api/db. Harus sama dengan yang diisi di UI aplikasi
+# (menu Pengaturan -> Cloudflare D1 -> API Key). Untuk produksi lebih aman, ganti via
+# Cloudflare secret: `wrangler pages secret put API_KEY --project-name=tahfidzku`.
+[vars]
+API_KEY = "tahfidz-almawaddah-d1-2026"
