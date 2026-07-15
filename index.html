@@ -590,11 +590,11 @@
     <script>
         /* ==================== DATABASE & INITIAL STATE ==================== */
         const DEFAULT_STUDENTS = [
-            { id: "S001", name: "Aisyah Humaira Salsabila", nis: "260901", class: "Halaqah Khodijah (Unggulan)", jenjang: "MA", program: "Tahassus", totalJuz: 12, lastSurah: "Yusuf", parentName: "Ahmad Suhardi", parentPhone: "0812-3456-7890", targetJuz: 30, progressPercent: 40, history: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], waliUsername: "wali" },
-            { id: "S002", name: "Fathimah Az-Zahra", nis: "260902", class: "Halaqah Khodijah (Unggulan)", jenjang: "MTs", program: "Tahassus", totalJuz: 8, lastSurah: "Al-Anfal", parentName: "Lukman Hakim", parentPhone: "0813-8822-9900", targetJuz: 30, progressPercent: 26, history: [1, 2, 3, 4, 5, 6, 29, 30], waliUsername: "wali" },
-            { id: "S003", name: "Khadijah Al-Kubro", nis: "260903", class: "Halaqah Aisyah", jenjang: "MI", program: "Reguler", totalJuz: 5, lastSurah: "An-Nisa", parentName: "M. Yusuf Sorong", parentPhone: "0821-9988-1122", targetJuz: 15, progressPercent: 33, history: [1, 2, 3, 29, 30], waliUsername: "wali" },
-            { id: "S004", name: "Safiyyah Al-Muthmainnah", nis: "260904", class: "Halaqah Aisyah", jenjang: "MA", program: "Tahassus", totalJuz: 30, lastSurah: "An-Nas (Khatam)", parentName: "Rahmat Hidayat", parentPhone: "0811-4455-6677", targetJuz: 30, progressPercent: 100, history: Array.from({length: 30}, (_, i) => i + 1), waliUsername: "wali" },
-            { id: "S005", name: "Zainab Az-Zahra", nis: "260905", class: "Halaqah Ummu Salamah", jenjang: "TK", program: "Reguler", totalJuz: 3, lastSurah: "Ali 'Imran", parentName: "Hasanuddin", parentPhone: "0852-7777-1122", targetJuz: 10, progressPercent: 30, history: [1, 2, 30], waliUsername: "wali" }
+            { id: "S001", name: "Aisyah Humaira Salsabila", nis: "260901", class: "Halaqah Khodijah (Unggulan)", jenjang: "MA", program: "Tahassus", totalJuz: 12, lastSurah: "Yusuf", parentName: "Ahmad Suhardi", parentPhone: "0812-3456-7890", targetJuz: 30, progressPercent: 40, history: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], waliId: "WS0001", waliUsername: "wali" },
+            { id: "S002", name: "Fathimah Az-Zahra", nis: "260902", class: "Halaqah Khodijah (Unggulan)", jenjang: "MTs", program: "Tahassus", totalJuz: 8, lastSurah: "Al-Anfal", parentName: "Lukman Hakim", parentPhone: "0813-8822-9900", targetJuz: 30, progressPercent: 26, history: [1, 2, 3, 4, 5, 6, 29, 30], waliId: "WS0002", waliUsername: "wali" },
+            { id: "S003", name: "Khadijah Al-Kubro", nis: "260903", class: "Halaqah Aisyah", jenjang: "MI", program: "Reguler", totalJuz: 5, lastSurah: "An-Nisa", parentName: "M. Yusuf Sorong", parentPhone: "0821-9988-1122", targetJuz: 15, progressPercent: 33, history: [1, 2, 3, 29, 30], waliId: "WS0003", waliUsername: "wali" },
+            { id: "S004", name: "Safiyyah Al-Muthmainnah", nis: "260904", class: "Halaqah Aisyah", jenjang: "MA", program: "Tahassus", totalJuz: 30, lastSurah: "An-Nas (Khatam)", parentName: "Rahmat Hidayat", parentPhone: "0811-4455-6677", targetJuz: 30, progressPercent: 100, history: Array.from({length: 30}, (_, i) => i + 1), waliId: "WS0004", waliUsername: "wali" },
+            { id: "S005", name: "Zainab Az-Zahra", nis: "260905", class: "Halaqah Ummu Salamah", jenjang: "TK", program: "Reguler", totalJuz: 3, lastSurah: "Ali 'Imran", parentName: "Hasanuddin", parentPhone: "0852-7777-1122", targetJuz: 10, progressPercent: 30, history: [1, 2, 30], waliId: "WS0005", waliUsername: "wali" }
         ];
 
         const DEFAULT_TEACHERS = [
@@ -673,7 +673,7 @@
         const DEFAULT_ACCOUNTS = [
             { email: "admin@almawaddah.id", username: "admin", role: "admin", password: "123456", name: "Admin Al Mawaddah" },
             { email: "ustadzah@almawaddah.id", username: "ustadzah", role: "ustadzah", password: "123456", name: "Ustadzah Pembina" },
-            { email: "wali@almawaddah.id", username: "wali", role: "parent", password: "123456", name: "Wali Santri" }
+            { email: "wali@almawaddah.id", username: "wali", role: "parent", password: "123456", name: "Wali Santri", waliId: "WS0001" }
         ];
 
         /* ==================== LOCAL STORAGE & CLOUD CONFIG ==================== */
@@ -866,6 +866,14 @@
             return teach ? teach.halaqah : null;
         }
 
+        function generateNextWaliId() {
+            const maxNum = students.reduce((max, s) => {
+                const num = parseInt((s.waliId || '').replace('WS', ''), 10);
+                return isNaN(num) ? max : Math.max(max, num);
+            }, 0);
+            return 'WS' + String(maxNum + 1).padStart(4, '0');
+        }
+
         function getAccessibleStudentIds() {
             if (isAdmin()) return students.map(s => s.id);
             if (isUstadzah()) {
@@ -874,7 +882,14 @@
                 return students.filter(s => s.class === halaqah).map(s => s.id);
             }
             if (isParent() && loggedInUser) {
-                return students.filter(s => (s.waliUsername && s.waliUsername === loggedInUser.username) || s.parentName === loggedInUser.name).map(s => s.id);
+                const acc = accounts.find(a => a.email === loggedInUser.email || a.username === loggedInUser.username);
+                const myWaliId = acc && acc.waliId ? acc.waliId : null;
+                return students.filter(s => {
+                    const matchWaliId = myWaliId && s.waliId && s.waliId === myWaliId;
+                    const matchUsername = s.waliUsername && s.waliUsername === loggedInUser.username;
+                    const matchName = s.parentName === loggedInUser.name;
+                    return matchWaliId || matchUsername || matchName;
+                }).map(s => s.id);
             }
             return [];
         }
@@ -2002,6 +2017,7 @@
                                         <th class="py-3 px-4 rounded-l-xl">Santriwati</th>
                                         <th class="py-3 px-4">Jenjang & Program</th>
                                         <th class="py-3 px-4">Halaqah</th>
+                                        <th class="py-3 px-4">ID Wali</th>
                                         <th class="py-3 px-4">Progres Hafalan</th>
                                         <th class="py-3 px-4">Wali & WhatsApp</th>
                                         <th class="py-3 px-4 rounded-r-xl text-center">Aksi</th>
@@ -3322,6 +3338,7 @@
                             <span class="px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full text-[10px] font-bold uppercase ml-1">${s.program}</span>
                         </td>
                         <td class="py-3 px-4 text-slate-600 font-semibold text-xs">${s.class}</td>
+                        <td class="py-3 px-4 text-slate-700 font-semibold text-xs">${s.waliId || '-'}</td>
                         <td class="py-3 px-4">
                             <div class="flex items-center gap-2">
                                 <div class="w-16 bg-slate-100 rounded-full h-2 overflow-hidden border">
@@ -3435,6 +3452,11 @@
                         </select>
                         <p class="text-[9px] text-slate-400 mt-1">Pilih akun wali santri agar hanya orang tua tersebut yang dapat melihat data ananda.</p>
                     </div>
+                    <div>
+                        <label class="block text-xs font-bold text-rose-700 mb-1">ID Wali Santri <span class="text-red-500">*</span></label>
+                        <input type="text" id="form-wali-id" value="${generateNextWaliId()}" required class="w-full px-4 py-2 border border-rose-200 rounded-xl">
+                        <p class="text-[9px] text-slate-400 mt-1">Kode unik wali santri (WSxxxx). Bisa diubah manual. Beberapa anak dengan wali yang sama gunakan kode yang sama.</p>
+                    </div>
 
                     <div class="pt-4 flex justify-end gap-3 border-t border-rose-100">
                         <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button>
@@ -3456,12 +3478,14 @@
             const parentName = document.getElementById('form-parent').value.trim();
             const parentPhone = document.getElementById('form-phone').value.trim();
             const parentAccount = document.getElementById('form-parent-account').value.trim();
+            const waliId = document.getElementById('form-wali-id').value.trim();
 
             const newStudent = {
                 id: 'S' + Date.now(),
                 name, nis, class: cl, jenjang, program, targetJuz, totalJuz,
                 parentName, parentPhone, lastSurah: totalJuz > 0 ? "Fatihah" : "Mulai",
                 history: Array.from({length: totalJuz}, (_, i) => i + 1),
+                waliId: waliId || generateNextWaliId(),
                 waliUsername: parentAccount || ''
             };
 
@@ -3531,6 +3555,11 @@
                             ${accounts.filter(a => a.role === 'parent').map(a => `<option value="${a.username}" ${student.waliUsername === a.username ? 'selected' : ''}>${a.name} (${a.username})</option>`).join('')} 
                         </select> 
                     </div> 
+                    <div> 
+                        <label class="block text-xs font-bold text-rose-700 mb-1">ID Wali Santri <span class="text-red-500">*</span></label> 
+                        <input type="text" id="form-edit-wali-id" value="${student.waliId || ''}" required class="w-full px-4 py-2 border border-rose-200 rounded-xl"> 
+                        <p class="text-[9px] text-slate-400 mt-1">Kode unik wali santri (WSxxxx). Ubah menjadi kode yang sama jika anak ini memiliki wali yang sama dengan santri lain.</p> 
+                    </div> 
                     <div class="pt-4 flex justify-end gap-3 border-t border-rose-100"> 
                         <button type="button" onclick="closeModal()" class="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl">Batal</button> 
                         <button type="submit" class="px-5 py-2 bg-gradient-to-r from-rose-500 to-rose-700 text-white rounded-xl font-bold">Perbarui Data</button> 
@@ -3550,12 +3579,14 @@
             const parentName = document.getElementById('form-edit-parent').value.trim();
             const parentPhone = document.getElementById('form-edit-phone').value.trim();
             const parentAccount = document.getElementById('form-edit-parent-account').value.trim();
+            const waliId = document.getElementById('form-edit-wali-id').value.trim();
 
             const idx = students.findIndex(s => s.id === id);
             if (idx !== -1) {
                 students[idx] = {
                     ...students[idx],
                     name, nis, class: cl, jenjang, program, targetJuz, parentName, parentPhone,
+                    waliId: waliId || generateNextWaliId(),
                     waliUsername: parentAccount || ''
                 };
                 saveData();
