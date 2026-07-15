@@ -15,6 +15,7 @@ const COLLECTIONS = {
   Deposits: "deposits",
   News: "news",
   Accounts: "accounts",
+  Leaves: "leaves",
 };
 
 const MASTER_MAP = {
@@ -109,6 +110,7 @@ async function saveAll(db, payload) {
     db.prepare(`DELETE FROM accounts`),
     db.prepare(`DELETE FROM settings`),
     db.prepare(`DELETE FROM masters`),
+    db.prepare(`DELETE FROM leaves`),
   ];
   await db.batch(clears);
 

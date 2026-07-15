@@ -729,6 +729,7 @@
                     { key: "profile_mapUrl", value: appSettings.profile.mapUrl }
                 ],
                 Accounts: accounts,
+                Leaves: leaves,
                 MasterClasses: masterClasses.map(c => ({ name: c })),
                 MasterJenjangs: masterJenjangs.map(j => ({ name: j })),
                 MasterHalaqahs: masterHalaqahs.map(h => ({ name: h }))
@@ -1082,6 +1083,9 @@
             if (cloudDb.MasterHalaqahs && cloudDb.MasterHalaqahs.length > 0) {
                 masterHalaqahs = cloudDb.MasterHalaqahs.map(h => h.name);
             }
+            if (cloudDb.Leaves && Array.isArray(cloudDb.Leaves)) {
+                leaves = cloudDb.Leaves;
+            }
 
             // Sync Settings if mapped
             if (cloudDb.Settings && cloudDb.Settings.length > 0) {
@@ -1116,6 +1120,7 @@
             localStorage.setItem('m_master_classes', JSON.stringify(masterClasses));
             localStorage.setItem('m_master_jenjangs', JSON.stringify(masterJenjangs));
             localStorage.setItem('m_master_halaqahs', JSON.stringify(masterHalaqahs));
+            localStorage.setItem('m_leaves', JSON.stringify(leaves));
 
             syncBrandingAndSettings();
             renderLandingStats();
