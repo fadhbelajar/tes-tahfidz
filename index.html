@@ -580,6 +580,25 @@
 
     <div id="toast-box" class="fixed bottom-5 right-5 z-50 pointer-events-none space-y-2"></div>
 
+    <!-- PWA Install Banner -->
+    <div id="pwa-install-banner" class="hidden fixed bottom-4 left-4 right-4 md:left-auto md:right-5 md:w-96 bg-white rounded-2xl shadow-2xl border border-rose-100 p-4 z-40 items-center gap-3">
+        <div class="flex items-center gap-3 flex-grow">
+            <img src="https://i.ibb.co.com/JW4Th8NK/almawaddah-icon.png" alt="Al Mawaddah" class="w-10 h-10 rounded-xl object-contain">
+            <div>
+                <p class="text-xs font-bold text-slate-800">Aplikasi E-Tahfidz Al Mawaddah</p>
+                <p class="text-[10px] text-slate-500">Instal di perangkat Anda untuk akses lebih cepat</p>
+            </div>
+        </div>
+        <div class="flex gap-2 mt-3">
+            <button onclick="installPWA()" class="flex-1 px-4 py-2 bg-gradient-to-r from-rose-500 to-rose-700 text-white rounded-xl text-xs font-bold shadow-md">
+                INSTALL SEKRANG
+            </button>
+            <button onclick="hideInstallBanner()" class="px-3 py-2 bg-rose-50 text-rose-700 rounded-xl text-xs font-semibold">
+                Nanti
+            </button>
+        </div>
+    </div>
+
     <script>
         /* ==================== DATABASE & INITIAL STATE ==================== */
         const DEFAULT_STUDENTS = [
@@ -913,6 +932,11 @@
                 pullFromD1Silent();
             } else {
                 cloudBadge.classList.add('hidden');
+            }
+            
+            // Show PWA install banner on landing page for 20 seconds
+            if (deferredPrompt && document.getElementById('view-landing')) {
+                showInstallBanner();
             }
         };
 
@@ -1428,7 +1452,14 @@
             const win = window.open('', '_blank');
             win.document.write(`<!DOCTYPE html><html><head><title>Sertifikat Tahfidz</title>
                 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-                <style>
+    <link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co.com/JW4Th8NK/almawaddah-icon.png">
+    <link rel="apple-touch-icon" href="https://i.ibb.co.com/JW4Th8NK/almawaddah-icon.png">
+    <meta name="theme-color" content="#be123c">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <style>
                     @page { size: A4 portrait; margin: 0; }
                     * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
                     body { margin: 0; padding: 0; font-family: 'Times New Roman', serif; }
@@ -4327,6 +4358,67 @@
                     toast.remove();
                 }, 300);
             }, 3000);
+        }
+        
+        /* ==================== PWA Install Prompt ==================== */
+        let deferredPrompt;
+        let installBannerTimer;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallBanner();
+        });
+
+        function showInstallBanner() {
+            const banner = document.getElementById('pwa-install-banner');
+            if (!banner || !deferredPrompt) return;
+            
+            banner.classList.remove('hidden');
+            banner.classList.add('flex');
+            
+            // Auto hide after 20 seconds
+            installBannerTimer = setTimeout(() => {
+                hideInstallBanner();
+            }, 20000);
+        }
+
+        function hideInstallBanner() {
+            const banner = document.getElementById('pwa-install-banner');
+            if (!banner) return;
+            
+            banner.classList.add('hidden');
+            banner.classList.remove('flex');
+            
+            if (installBannerTimer) {
+                clearTimeout(installBannerTimer);
+            }
+        }
+
+        async function installPWA() {
+            if (!deferredPrompt) {
+                showToast('Aplikasi sudah terpasang atau tidak tersedia untuk instalasi.', 'warning');
+                return;
+            }
+            
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+                showToast('Aplikasi berhasil diinstal!', 'success');
+            }
+            
+            deferredPrompt = null;
+            hideInstallBanner();
+        }
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((reg) => console.log('SW registered:', reg.scope))
+                    .catch((err) => console.log('SW registration failed:', err));
+            });
         }
     </script>
 </body>
