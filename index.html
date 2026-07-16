@@ -220,6 +220,22 @@
             </div>
         </div>
 
+        <!-- Latest News Preview on Landing -->
+        <section class="py-16 bg-rose-50/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-end mb-8">
+                    <div>
+                        <span class="text-xs text-rose-600 font-bold tracking-widest uppercase block">Kabar Terbaru</span>
+                        <h3 class="font-serif text-2xl font-bold text-rose-950 mt-1">Berita & Kegiatan Pondok</h3>
+                    </div>
+                    <button onclick="showPublicView('news')" class="text-xs text-rose-600 font-bold hover:underline flex items-center gap-1">
+                        Lihat Semua Berita <i class="fa-solid fa-arrow-right-long"></i>
+                    </button>
+                </div>
+                <div id="landing-news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+        </section>
+
         <!-- Private Dashboard View -->
         <div id="view-news" class="view-section hidden py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="border-b border-rose-100 pb-6 mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -599,6 +615,28 @@
         </div>
     </div>
 
+    <!-- Password Protection Modal for Spreadsheet Settings -->
+    <div id="password-modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div id="password-modal-container" class="bg-white rounded-3xl max-w-md w-full shadow-2xl overflow-hidden scale-95 transform transition-all duration-300">
+            <div class="bg-gradient-to-r from-rose-950 to-rose-900 px-6 py-4 text-white flex justify-between items-center">
+                <h3 class="font-serif font-bold text-sm tracking-tight"><i class="fa-solid fa-lock mr-1.5"></i> Verifikasi Kata Sandi</h3>
+                <button onclick="closePasswordModal()" class="text-rose-100 hover:text-white text-lg transition-colors"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <p class="text-xs text-slate-600">Masukkan kata sandi khusus untuk mengubah konfigurasi spreadsheet backend.</p>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1 text-xs">Kata Sandi</label>
+                    <input type="password" id="sheet-password-input" placeholder="Masukkan kata sandi" class="w-full px-4 py-2 border border-rose-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-500">
+                </div>
+                <p id="sheet-password-error" class="text-[10px] text-red-500 hidden"></p>
+                <div class="flex gap-2">
+                    <button onclick="closePasswordModal()" class="flex-1 py-2 bg-rose-50 text-rose-700 rounded-xl text-xs font-bold">Batal</button>
+                    <button onclick="verifySheetPassword()" class="flex-1 py-2 bg-gradient-to-r from-rose-500 to-rose-700 text-white rounded-xl text-xs font-bold">Verifikasi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         /* ==================== DATABASE & INITIAL STATE ==================== */
         const DEFAULT_STUDENTS = [
@@ -659,8 +697,8 @@
             tagline: "Pesantren Tahfidz Putri",
             logo: "", 
             theme: "rose",
-            bannerWelcome: "Ahlan Wa Sahlan, Admin Utama",
-            bannerDesc: "Kelola data santri, ustadzah, halaqah, dan pantau perkembangan tahfidz Al Mawaddah.",
+            bannerWelcome: "Assalamu'alaikum Wr. Wb. Ahlan Wa Sahlan",
+            bannerDesc: "Selamat datang di portal E-Tahfidz Al Mawaddah. Semoga senantiasa sehat dan berkah selalu hari ini.",
             certLeaderName: "Kepala Pondok Al Mawaddah",
             certLogo: "",
             certSignature: "",
@@ -825,14 +863,19 @@
 
         // Push/Pull terpusat berdasarkan mode backend (dipakai tombol UI)
         async function pushToCloud() {
-            if (backendMode === 'sheets') await pushDataToGoogleSheets();
-            else if (backendMode === 'd1') await pushToD1(true);
-            else showToast('Pilih mode backend terlebih dahulu.', 'warning');
+            if (!webAppUrl) {
+                showToast('Spreadsheet Backend belum dikonfigurasi.', 'warning');
+                return;
+            }
+            openSheetPasswordModal('push');
         }
+
         async function pullFromCloud() {
-            if (backendMode === 'sheets') await pullDataFromGoogleSheets();
-            else if (backendMode === 'd1') await pullFromD1(true);
-            else showToast('Pilih mode backend terlebih dahulu.', 'warning');
+            if (!webAppUrl) {
+                showToast('Spreadsheet Backend belum dikonfigurasi.', 'warning');
+                return;
+            }
+            openSheetPasswordModal('pull');
         }
 
         let currentRole = 'admin'; 
@@ -955,6 +998,7 @@
             applyTheme(appSettings.theme);
             syncBrandingAndSettings();
             renderLandingStats();
+            renderLandingNews();
             renderNewsPage();
             showPublicView('landing');
             
@@ -1717,19 +1761,16 @@
 
         function setBackendMode(mode) {
             if (!enforceRoleAccess(['admin'])) return;
-            backendMode = mode;
-            localStorage.setItem('m_backend_mode', mode);
-            const cloudBadge = document.getElementById('sync-cloud-status');
-            if (mode === 'local') {
-                cloudBadge.classList.add('hidden');
-            } else if (mode === 'sheets') {
-                if (webAppUrl) { cloudBadge.classList.remove('hidden'); pullDataFromGoogleSheetsSilent(); }
-            } else if (mode === 'd1') {
-                if (d1ApiKey) { cloudBadge.classList.remove('hidden'); pullFromD1Silent(); }
+            if (mode !== 'sheets') {
+                showToast('Hanya mode Google Sheets yang diizinkan.', 'warning');
+                return;
             }
+            backendMode = 'sheets';
+            localStorage.setItem('m_backend_mode', 'sheets');
+            const cloudBadge = document.getElementById('sync-cloud-status');
+            if (webAppUrl) { cloudBadge.classList.remove('hidden'); pullDataFromGoogleSheetsSilent(); }
             if (typeof setAdminTab === 'function') setAdminTab('branding');
-            const label = mode === 'local' ? 'Lokal (Browser)' : (mode === 'sheets' ? 'Google Sheets' : 'Cloudflare D1');
-            showToast('Mode backend: ' + label, 'info');
+            showToast('Mode backend: Google Sheets', 'info');
         }
 
         /* ==================== NAVIGATION CONTROLLERS ==================== */
@@ -1759,6 +1800,25 @@
             document.getElementById('cms-banner-welcome').textContent = appSettings.bannerWelcome;
             document.getElementById('cms-banner-desc').textContent = appSettings.bannerDesc;
             document.getElementById('user-role-badge').textContent = currentRole.toUpperCase();
+
+            const userName = loggedInUser ? loggedInUser.name : 'Pengguna';
+            let roleWelcome = '';
+            let roleDesc = '';
+
+            if (currentRole === 'admin') {
+                roleWelcome = `Assalamu'alaikum Wr. Wb. Ahlan Wa Sahlan, ${userName}`;
+                roleDesc = 'Kelola data santri, ustadzah, halaqah, dan pantau perkembangan tahfidz Al Mawaddah.';
+            } else if (currentRole === 'ustadzah') {
+                roleWelcome = `Assalamu'alaikum Wr. Wb. Ahlan Wa Sahlan, Ustadzah ${userName}`;
+                roleDesc = 'Semoga senantiasa sehat dan berkah selalu hari ini. Pastikan setiap setoran hafalan santri terdata dan tersimpan dengan baik ya Ustadzah ' + userName + '.';
+            } else if (currentRole === 'parent') {
+                const parentName = userName.includes('Ayah') || userName.includes('Ibu') || userName.includes('Bunda') ? userName : `Ayah/Bunda ${userName}`;
+                roleWelcome = `Assalamu'alaikum Wr. Wb. Ahlan Wa Sahlan, ${parentName}`;
+                roleDesc = 'Semoga senantiasa sehat dan berkah selalu hari ini. Alhamdulillah disini kami laporkan perkembangan data hafalan Al-Qur'an ' + parentName + '.';
+            }
+
+            document.getElementById('cms-banner-welcome').textContent = roleWelcome;
+            document.getElementById('cms-banner-desc').textContent = roleDesc;
 
             if (currentRole === 'admin') {
                 document.getElementById('admin-dashboard-view').classList.remove('hidden');
@@ -2307,18 +2367,6 @@
             else if (adminActiveTab === 'branding') {
                 container.innerHTML = `
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Backend mode selector -->
-                        <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4 md:col-span-2">
-                            <h3 class="font-serif font-bold text-sm text-mawaddah-plum border-b pb-2"><i class="fa-solid fa-database text-rose-500 mr-1.5"></i> Mode Penyimpanan Backend</h3>
-                            <p class="text-xs text-slate-500">Pilih di mana data mutabaah, santri, ustadzah & master disimpan secara permanen.</p>
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                <button onclick="setBackendMode('local')" class="py-3 rounded-2xl border text-xs font-bold transition-all ${backendMode === 'local' ? 'border-rose-500 bg-rose-50 text-rose-700' : 'bg-white text-slate-500 hover:bg-rose-50'}"><i class="fa-solid fa-laptop mr-1"></i> Lokal (Browser)</button>
-                                <button onclick="setBackendMode('sheets')" class="py-3 rounded-2xl border text-xs font-bold transition-all ${backendMode === 'sheets' ? 'border-emerald-500 bg-emerald-50 text-emerald-700' : 'bg-white text-slate-500 hover:bg-emerald-50'}"><i class="fa-solid fa-file-excel mr-1"></i> Google Sheets</button>
-                                <button onclick="setBackendMode('d1')" class="py-3 rounded-2xl border text-xs font-bold transition-all ${backendMode === 'd1' ? 'border-sky-500 bg-sky-50 text-sky-700' : 'bg-white text-slate-500 hover:bg-sky-50'}"><i class="fa-solid fa-cloud mr-1"></i> Cloudflare D1</button>
-                            </div>
-                            <p class="text-[10px] text-slate-400 leading-relaxed">Mode <b>Lokal</b> menyimpan di browser masing-masing (tidak terpusat). <b>Google Sheets</b> & <b>Cloudflare D1</b> menyimpan terpusat & real-time antar perangkat.</p>
-                        </div>
-
                         <!-- Branding & Logo -->
                         <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
                             <h3 class="font-serif font-bold text-sm text-mawaddah-plum border-b pb-2"><i class="fa-solid fa-id-card text-rose-500 mr-1.5"></i> Identitas & Branding</h3>
@@ -2340,43 +2388,23 @@
                         </div>
 
                         <!-- Spreadsheet Connection settings -->
-                        <div id="sheet-config-card" class="${backendMode === 'sheets' ? '' : 'hidden'} bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
+                        <div id="sheet-config-card" class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4 md:col-span-2">
                             <h3 class="font-serif font-bold text-sm text-mawaddah-plum border-b pb-2"><i class="fa-solid fa-file-excel text-emerald-600 mr-1.5"></i> Google Sheets Integrasi Backend</h3>
                             <div class="space-y-3 text-xs">
                                 <div>
                                     <label class="block font-bold text-slate-700 mb-1">URL Web App Google Apps Script</label>
-                                    <input type="text" id="sheet-api-url" value="${webAppUrl}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-4 py-2 border rounded-xl">
+                                    <input type="text" id="sheet-api-url" value="${webAppUrl}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-4 py-2 border rounded-xl" readonly>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2">
                                     <button onclick="testSheetConnection()" class="py-2.5 bg-rose-950 text-white font-bold rounded-xl hover:bg-rose-900"><i class="fa-solid fa-link"></i> Tes Koneksi</button>
-                                    <button onclick="pushToCloud()" class="py-2.5 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700"><i class="fa-solid fa-cloud-arrow-up"></i> Push ke Cloud</button>
-                                </div>
-                                <button onclick="pullFromCloud()" class="w-full py-2 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-600"><i class="fa-solid fa-cloud-arrow-down"></i> Ambil Data Cloud (Pull)</button>
-                                <p class="text-[10px] text-slate-400 leading-relaxed mt-1">
-                                    * Hubungkan backend Google Sheet untuk menyimpan data setoran hafalan & master secara permanen dan real-time.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Cloudflare D1 Connection settings -->
-                        <div id="d1-config-card" class="${backendMode === 'd1' ? '' : 'hidden'} bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
-                            <h3 class="font-serif font-bold text-sm text-mawaddah-plum border-b pb-2"><i class="fa-solid fa-cloud text-sky-600 mr-1.5"></i> Cloudflare D1 Integrasi Backend</h3>
-                            <div class="space-y-3 text-xs">
-                                <div>
-                                    <label class="block font-bold text-slate-700 mb-1">URL Endpoint D1 (Pages Function)</label>
-                                    <input type="text" id="d1-url" value="${d1Url}" placeholder="/api/db" class="w-full px-4 py-2 border rounded-xl">
-                                </div>
-                                <div>
-                                    <label class="block font-bold text-slate-700 mb-1">API Key D1</label>
-                                    <input type="password" id="d1-apikey" value="${d1ApiKey}" placeholder="Isi API Key yang sama dengan secret Cloudflare" class="w-full px-4 py-2 border rounded-xl">
+                                    <button onclick="openSheetPasswordModal('edit')" class="py-2.5 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700"><i class="fa-solid fa-pen"></i> Ubah Link</button>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2">
-                                    <button onclick="testD1Connection()" class="py-2.5 bg-rose-950 text-white font-bold rounded-xl hover:bg-rose-900"><i class="fa-solid fa-link"></i> Tes Koneksi</button>
-                                    <button onclick="pushToCloud()" class="py-2.5 bg-sky-600 text-white font-bold rounded-xl hover:bg-sky-700"><i class="fa-solid fa-cloud-arrow-up"></i> Push ke D1</button>
+                                    <button onclick="openSheetPasswordModal()" class="py-2.5 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700"><i class="fa-solid fa-cloud-arrow-up"></i> Push ke Cloud</button>
+                                    <button onclick="openSheetPasswordModal('pull')" class="py-2.5 bg-sky-600 text-white font-bold rounded-xl hover:bg-sky-700"><i class="fa-solid fa-cloud-arrow-down"></i> Pull dari Cloud</button>
                                 </div>
-                                <button onclick="pullFromCloud()" class="w-full py-2 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-600"><i class="fa-solid fa-cloud-arrow-down"></i> Ambil Data D1 (Pull)</button>
                                 <p class="text-[10px] text-slate-400 leading-relaxed mt-1">
-                                    * Simpan data terpusat di database Cloudflare D1. API Key harus sama dengan secret <code>API_KEY</code> di Cloudflare (dashboard / wrangler secret).
+                                    * Hubungkan backend Google Sheet untuk menyimpan data setoran hafalan & master secara permanen dan real-time. Untuk mengubah URL, masukkan kata sandi khusus.
                                 </p>
                             </div>
                         </div>
@@ -4391,6 +4419,82 @@
                 container.classList.remove('modal-certificate-preview');
             }, 300);
         }
+
+        /* ==================== PASSWORD PROTECTION FOR SPREADSHEET ==================== */
+        let sheetPasswordAttempts = 0;
+        let pendingSheetAction = null;
+
+        function openSheetPasswordModal(action = null) {
+            pendingSheetAction = action;
+            sheetPasswordAttempts = 0;
+            document.getElementById('sheet-password-input').value = '';
+            document.getElementById('sheet-password-error').classList.add('hidden');
+            
+            const backdrop = document.getElementById('password-modal-backdrop');
+            const container = document.getElementById('password-modal-container');
+            
+            backdrop.classList.remove('hidden');
+            setTimeout(() => {
+                backdrop.classList.add('opacity-100');
+                container.classList.remove('scale-95');
+                container.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closePasswordModal() {
+            const backdrop = document.getElementById('password-modal-backdrop');
+            const container = document.getElementById('password-modal-container');
+            
+            backdrop.classList.remove('opacity-100');
+            container.classList.remove('scale-100');
+            container.classList.add('scale-95');
+            setTimeout(() => {
+                backdrop.classList.add('hidden');
+            }, 300);
+            
+            pendingSheetAction = null;
+        }
+
+        function verifySheetPassword() {
+            const input = document.getElementById('sheet-password-input').value.trim();
+            const errorEl = document.getElementById('sheet-password-error');
+            const urlInput = document.getElementById('sheet-api-url');
+            
+            if (input === 'GANTILINK') {
+                errorEl.classList.add('hidden');
+                closePasswordModal();
+                showToast('Verifikasi berhasil! Akses spreadsheet diberikan.', 'success');
+                
+                if (pendingSheetAction === 'edit') {
+                    urlInput.removeAttribute('readonly');
+                    urlInput.focus();
+                    showToast('URL sekarang dapat diubah.', 'info');
+                } else if (pendingSheetAction === 'pull') {
+                    pullFromCloud();
+                } else {
+                    pushToCloud();
+                }
+                
+                pendingSheetAction = null;
+            } else {
+                sheetPasswordAttempts++;
+                errorEl.textContent = `Kata sandi salah! Sisa percobaan: ${3 - sheetPasswordAttempts}`;
+                errorEl.classList.remove('hidden');
+                
+                if (sheetPasswordAttempts >= 3) {
+                    setTimeout(() => {
+                        closePasswordModal();
+                        showToast('Terlalu banyak percobaan salah. Akses ditolak.', 'danger');
+                    }, 1000);
+                }
+            }
+        }
+
+        document.getElementById('sheet-password-input')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                verifySheetPassword();
+            }
+        });
 
         function showToast(message, type = 'success') {
             const box = document.getElementById('toast-box');
