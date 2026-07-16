@@ -1280,24 +1280,24 @@
             const semester = now.getMonth() < 6 ? 'Ganjil' : 'Genap';
             const map = {
                 bulanan: {
-                    id: `Capaian Hafalan Bulan ${bln} ${thn}`,
-                    ar: `إنجاز الحفظ لشهر ${bln} ${thn}`,
-                    sub: 'telah mencapai hafalan Al-Qur\'an'
+                    id: `Sertifikat Capaian Hafalan Bulanan`,
+                    period: `${bln} ${thn}`,
+                    ar: `شهادة إنجاز الحفظ الشهري`
                 },
                 semester: {
-                    id: `Capaian Hafalan Semester ${semester} ${thn}`,
-                    ar: `إنجاز الحفظ للفصل الدراسي ${semester} ${thn}`,
-                    sub: 'telah mencapai hafalan Al-Qur\'an'
+                    id: `Sertifikat Capaian Hafalan Semester`,
+                    period: `Semester ${semester} ${thn}`,
+                    ar: `شهادة إنجاز الحفظ الفصلي`
                 },
                 tahunan: {
-                    id: `Capaian Hafalan Tahunan ${thn}`,
-                    ar: `إنجاز الحفظ السنوي ${thn}`,
-                    sub: 'telah mencapai hafalan Al-Qur\'an'
+                    id: `Sertifikat Capaian Hafalan Tahunan`,
+                    period: `Tahun ${thn}`,
+                    ar: `شهادة إنجاز الحفظ السنوي`
                 },
                 kelulusan: {
-                    id: `Kelulusan Tahfidz Jenjang`,
-                    ar: `إتمام حفظ القرآن الكريم لمرحلة`,
-                    sub: 'telah menyelesaikan hafalan Al-Qur\'an'
+                    id: `Syahadah Khatam Al-Qur'an`,
+                    period: '',
+                    ar: `شهادة خاتم القرآن الكريم`
                 }
             };
             return map[type] || map.bulanan;
@@ -1313,13 +1313,7 @@
             const stamp = appSettings.certStamp || '';
             const certTheme = appSettings.certTheme || 'rose';
 
-            const certTypeMap = {
-                bulanan: { id: `Sertifikat Capaian Hafalan Bulanan`, ar: `شهادة إنجاز الحفظ الشهري` },
-                semester: { id: `Sertifikat Capaian Hafalan Semester`, ar: `شهادة إنجاز الحفظ الفصلي` },
-                tahunan: { id: `Sertifikat Capaian Hafalan Tahunan`, ar: `شهادة إنجاز الحفظ السنوي` },
-                kelulusan: { id: `Syahadah Khatam Al-Qur'an`, ar: `شهادة خاتم القرآن الكريم` }
-            };
-            const certType = certTypeMap[type] || certTypeMap.kelulusan;
+            const certType = getCertText(type);
 
             const certNumber = `09/Tahfidz-AlMawaddah/SRG/VII/2026`;
 
@@ -1364,7 +1358,8 @@
                             <div style="text-align: center; padding: 18px 0 16px;">
                                 <h1 style="font-family: 'Times New Roman', serif; font-size: 26px; font-weight: 800; color: ${colors.primary}; letter-spacing: 2px; margin: 0 0 4px; text-transform: uppercase;">${certType.id}</h1>
                                 <p style="font-size: 17px; color: ${colors.primary}; font-weight: 600; margin: 0 0 4px;" dir="rtl">${certType.ar}</p>
-                                <p style="font-size: 15px; color: ${colors.dark}; font-weight: 600; margin: 6px 0 0; letter-spacing: 0.5px;">Sertifikat Capaian Hafalan ${juz} Juz</p>
+                                ${certType.period ? `<p style="font-size: 15px; color: ${colors.dark}; font-weight: 700; margin: 6px 0 0; letter-spacing: 0.5px; text-transform: uppercase;">${certType.period}</p>` : ''}
+                                <p style="font-size: 15px; color: ${colors.dark}; font-weight: 600; margin: ${certType.period ? '4' : '6'}px 0 0; letter-spacing: 0.5px;">Sertifikat Capaian Hafalan ${juz} Juz</p>
                                 <p style="font-size: 14px; color: ${colors.dark}; margin: 4px 0 0; font-weight: 500;">Nomor: ${certNumber}</p>
                             </div>
 
