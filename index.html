@@ -743,7 +743,7 @@
         let masterHalaqahs = JSON.parse(localStorage.getItem('m_master_halaqahs')) || DEFAULT_MASTER_HALAQAHS;
         let masterSurahList = JSON.parse(localStorage.getItem('m_master_surah')) || DEFAULT_SURAH_LIST;
         let leaves = JSON.parse(localStorage.getItem('m_leaves')) || [];
-        let webAppUrl = localStorage.getItem('m_webapp_url') || '';
+        let webAppUrl = localStorage.getItem('m_webapp_url') || 'https://script.google.com/macros/s/ISI_URL_APPS_SCRIPT_ANDA/exec';
 
         // Backend mode: 'local' (browser only) | 'sheets' (Google Apps Script) | 'd1' (Cloudflare D1)
         let backendMode = localStorage.getItem('m_backend_mode') || 'local';
@@ -862,12 +862,13 @@
         }
 
         // Push/Pull terpusat berdasarkan mode backend (dipakai tombol UI)
+        // Upload (Push) sudah tidak memerlukan password agar sinkronisasi lancar.
         async function pushToCloud() {
             if (!webAppUrl) {
                 showToast('Spreadsheet Backend belum dikonfigurasi.', 'warning');
                 return;
             }
-            openSheetPasswordModal('push');
+            pushDataToGoogleSheets();
         }
 
         async function pullFromCloud() {
@@ -875,7 +876,22 @@
                 showToast('Spreadsheet Backend belum dikonfigurasi.', 'warning');
                 return;
             }
-            openSheetPasswordModal('pull');
+            pullDataFromGoogleSheets();
+        }
+
+        /* ==================== DEMO ACCOUNTS (SIMULASI APLIKASI) ==================== */
+        // Kembalikan fungsi pengambilan data akun demo untuk keperluan simulasi login.
+        function getDemoAccounts() {
+            return [
+                { email: "admin@almawaddah.id", username: "admin", role: "admin", password: "123456", name: "Admin Al Mawaddah" },
+                { email: "ustadzah@almawaddah.id", username: "ustadzah", role: "ustadzah", password: "123456", name: "Ustadzah Pembina" },
+                { email: "wali@almawaddah.id", username: "wali", role: "parent", password: "123456", name: "Wali Santri", waliId: "WS0001" },
+                { email: "lukman@almawaddah.id", username: "WS0001", role: "parent", password: "123456", name: "Ahmad Suhardi", waliId: "WS0001" },
+                { email: "lukman@almawaddah.id", username: "WS0002", role: "parent", password: "123456", name: "Lukman Hakim", waliId: "WS0002" },
+                { email: "yusuf@almawaddah.id", username: "WS0003", role: "parent", password: "123456", name: "M. Yusuf Sorong", waliId: "WS0003" },
+                { email: "rahmat@almawaddah.id", username: "WS0004", role: "parent", password: "123456", name: "Rahmat Hidayat", waliId: "WS0004" },
+                { email: "hasan@almawaddah.id", username: "WS0005", role: "parent", password: "123456", name: "Hasanuddin", waliId: "WS0005" }
+            ];
         }
 
         let currentRole = 'admin'; 
@@ -2400,8 +2416,8 @@
                                     <button onclick="openSheetPasswordModal('edit')" class="py-2.5 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700"><i class="fa-solid fa-pen"></i> Ubah Link</button>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2">
-                                    <button onclick="openSheetPasswordModal()" class="py-2.5 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700"><i class="fa-solid fa-cloud-arrow-up"></i> Push ke Cloud</button>
-                                    <button onclick="openSheetPasswordModal('pull')" class="py-2.5 bg-sky-600 text-white font-bold rounded-xl hover:bg-sky-700"><i class="fa-solid fa-cloud-arrow-down"></i> Pull dari Cloud</button>
+                                    <button onclick="pushToCloud()" class="py-2.5 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700"><i class="fa-solid fa-cloud-arrow-up"></i> Push ke Cloud</button>
+                                    <button onclick="pullFromCloud()" class="py-2.5 bg-sky-600 text-white font-bold rounded-xl hover:bg-sky-700"><i class="fa-solid fa-cloud-arrow-down"></i> Pull dari Cloud</button>
                                 </div>
                                 <p class="text-[10px] text-slate-400 leading-relaxed mt-1">
                                     * Hubungkan backend Google Sheet untuk menyimpan data setoran hafalan & master secara permanen dan real-time. Untuk mengubah URL, masukkan kata sandi khusus.
