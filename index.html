@@ -296,9 +296,6 @@
                     <button onclick="setAdminTab('master')" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5" id="tab-btn-master">
                         <i class="fa-solid fa-database"></i> Master Kelas & Halaqah
                     </button>
-                    <button onclick="setAdminTab('news')" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5" id="tab-btn-news">
-                        <i class="fa-solid fa-newspaper"></i> Kelola Berita
-                    </button>
                     <button onclick="setAdminTab('cms')" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5" id="tab-btn-cms">
                         <i class="fa-solid fa-bullhorn"></i> Kelola Konten & CMS
                     </button>
@@ -2263,38 +2260,6 @@
                     </div>
                 `;
                 renderMasterLists();
-            }
-
-            else if (adminActiveTab === 'news') {
-                container.innerHTML = `
-                    <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h3 class="text-lg font-bold font-serif text-mawaddah-plum"><i class="fa-solid fa-newspaper text-rose-500"></i> Kelola Berita Pesantren</h3>
-                                <p class="text-xs text-rose-500">Tambah, sunting, atau hapus artikel berita yang dipublikasikan di Landing Page publik.</p>
-                            </div>
-                            <button onclick="openAddNewsModal()" class="px-3 py-2 bg-rose-500 text-white rounded-xl text-xs font-bold">
-                                <i class="fa-solid fa-plus mr-1"></i> Berita Baru
-                            </button>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-rose-100 text-left text-xs">
-                                <thead>
-                                    <tr class="text-rose-600 uppercase bg-rose-50/50">
-                                        <th class="py-2.5 px-3 rounded-l-xl">Tanggal</th>
-                                        <th class="py-2.5 px-3">Kategori</th>
-                                        <th class="py-2.5 px-3">Judul Berita</th>
-                                        <th class="py-2.5 px-3 text-center">Foto</th>
-                                        <th class="py-2.5 px-3 text-center">Status</th>
-                                        <th class="py-2.5 px-3 rounded-r-xl text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="admin-news-list" class="divide-y divide-rose-50"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                `;
-                renderAdminNewsTable();
             }
 
             else if (adminActiveTab === 'cms') {
